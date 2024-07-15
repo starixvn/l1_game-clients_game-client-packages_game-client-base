@@ -9,6 +9,7 @@ export * from "./game";
 export * as GameBaccaratX from "./game-baccaratx";
 export * as GameCrash from "./game-crash";
 export * as RoundPF from "./game/round-pf";
+export * as GamePusoy from "./game-pusoy";
 export * as Notification from "./notification";
 export * as Player from "./players";
 export * as Shared from "./shared";
