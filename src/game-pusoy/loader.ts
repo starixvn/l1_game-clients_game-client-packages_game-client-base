@@ -19,10 +19,12 @@ import { RoundStore } from "./rounds";
 
 export const features = [Auth, Players, SiteConfigs, Pusoy, Notification, UnderMaintenance, ChipSetting];
 
-export const onContainerCreated = (container: Container) => {
+export const onContainerCreated = (container: Container, setting: GameSetting) => {
+    container.bind(GameSetting).toConstantValue(setting);
+    container.bind(OldGameSetting).toConstantValue(setting as any);
+
     container.bind(OldRoundStore).to(RoundStore as any);
     container.bind(OldDisableGameHandlers).to(DisableGameHandlers as any);
     container.bind(ConnectionHandlers.InGameHandler).to(InGameHandler as any);
-    container.bind(OldGameSetting).to(GameSetting as any);
     container.bind(OldHideGameHandler).to(HideGameHandler as any);
 };
