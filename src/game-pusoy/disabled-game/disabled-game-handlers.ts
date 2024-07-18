@@ -20,7 +20,7 @@ export class DisableGameHandlers implements IHandler<GameServiceMessage.Disabled
         @inject(DisabledGameStore) protected readonly disabledGameStore: DisabledGameStore,
         @inject(NoticeStore) protected readonly noticeStore: NoticeStore,
         @inject(AppHandlers.BackToOperatorLobby) protected readonly backToOperatorLobby: AppHandlers.BackToOperatorLobby,
-        @inject(RoundTimeHandlers) protected readonly roundTimeHandlers:  
+        @inject(RoundTimeHandlers) protected readonly roundTimeHandlers: RoundTimeHandlers
     ) {
         this.onClosedHandle = this.onClosedHandle.bind(this);
     }
