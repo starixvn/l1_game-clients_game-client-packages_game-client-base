@@ -19,3 +19,5 @@ export * as GameConfigs from "../game/game-configs";
 export * as GameGuide from "../game/game-guides";
 
 export * as Rounds from "./rounds";
+
+export * from "./game-configs";
