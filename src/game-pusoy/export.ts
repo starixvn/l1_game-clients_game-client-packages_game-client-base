@@ -19,6 +19,6 @@ export * as GameConfigs from "./game-configs";
 export * as GameGuide from "../game/game-guides";
 
 export * as Rounds from "./rounds";
-export * as Bets from "./bets";
+export * as Bet from "./bets";
 
 export * from "./game-configs";

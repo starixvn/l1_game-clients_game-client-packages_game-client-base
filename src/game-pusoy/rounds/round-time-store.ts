@@ -30,7 +30,7 @@ export const TimelineKey = {
  */
 @injectable()
 export class RoundTimeStore {
-    private timeline: Record<string, number> = {};
+    public timeline: Record<string, number> = {};
 
     private _remaining = 0;
 
@@ -39,7 +39,7 @@ export class RoundTimeStore {
     runner: NodeJS.Timer;
 
     constructor() {
-        makeAutoObservable(this, { runner: false });
+        makeAutoObservable(this, { runner: false, timeline: false });
     }
 
     configure(timeline: Record<string, number> = { transition: 54, deal: 51, arrangement: 50 }) {

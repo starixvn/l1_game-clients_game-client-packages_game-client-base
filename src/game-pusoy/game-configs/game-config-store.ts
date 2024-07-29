@@ -2,6 +2,7 @@ import { inject, injectable } from "inversify";
 import { GameServiceMessage } from "../../shared";
 import { GameConfigStore as BaseGameConfigStore } from "../../game/game-configs";
 import { RoundTimeStore } from "../rounds";
+import { makeAutoObservable } from "mobx";
 
 export type Durations = {
     timeline: {
@@ -33,6 +34,7 @@ export class GameConfigStore extends BaseGameConfigStore {
 
     constructor(@inject(RoundTimeStore) protected readonly roundTimeStore: RoundTimeStore) {
         super();
+        makeAutoObservable(this);
     }
 
     setGameConfigs(gameConfigs: PusoyGameConfigs) {
