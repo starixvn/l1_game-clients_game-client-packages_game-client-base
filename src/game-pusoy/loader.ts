@@ -6,7 +6,11 @@ import { ConnectionHandlers } from "../game/connection";
 import { DisableGameHandlers as OldDisableGameHandlers } from "../game/disabled-game";
 import { GameSetting as OldGameSetting } from "../game/game-configs";
 import { HideGameHandler as OldHideGameHandler } from "../game/hide-game";
-import { RoundStore as OldRoundStore } from "../game/rounds";
+import {
+    RoundStore as OldRoundStore,
+    RoundTimeStore as OldRoundTimeStore,
+    RoundTimeHandlers as OldRoundTimeHandlers,
+} from "../game/rounds";
 import * as Notification from "../notification";
 import * as Players from "../players";
 import * as UnderMaintenance from "../under-maintenance";
@@ -15,7 +19,7 @@ import { DisableGameHandlers } from "./disabled-game";
 import * as Pusoy from "./export";
 import { GameSetting } from "./game-configs";
 import { HideGameHandler } from "./hide-game";
-import { RoundStore } from "./rounds";
+import { RoundStore, RoundTimeHandlers, RoundTimeStore } from "./rounds";
 import { BetHandler as OldBetHandler } from "../game/bets";
 import { BetHandler } from "../game-pusoy/bets/bet-handler";
 
@@ -26,6 +30,8 @@ export const onContainerCreated = (container: Container, setting: GameSetting) =
     container.bind(OldGameSetting).toConstantValue(setting as any);
     container.bind(OldBetHandler).to(BetHandler);
     container.bind(OldRoundStore).to(RoundStore as any);
+    container.bind(OldRoundTimeHandlers).to(RoundTimeHandlers as any);
+    container.bind(OldRoundTimeStore).to(RoundTimeStore as any);
     container.bind(OldDisableGameHandlers).to(DisableGameHandlers as any);
     container.bind(ConnectionHandlers.InGameHandler).to(InGameHandler as any);
     container.bind(OldHideGameHandler).to(HideGameHandler as any);

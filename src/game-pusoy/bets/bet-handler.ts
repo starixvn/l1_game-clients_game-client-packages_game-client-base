@@ -12,7 +12,7 @@ export class BetHandler extends BetHandlerBase {
     }
 
     isValidBet(amount: number) {
-        if (this.isInPhaseBet()) {
+        if (!this.isInPhaseBet()) {
             return false;
         }
 
