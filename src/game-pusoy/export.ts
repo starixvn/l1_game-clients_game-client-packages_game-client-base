@@ -14,10 +14,11 @@ export * as Errors from "../game/errors";
 export * as ExcludedGame from "../game/excluded-game";
 
 export * as DisableGame from "../game/disabled-game";
-export * as GameConfigs from "../game/game-configs";
+export * as GameConfigs from "./game-configs";
 
 export * as GameGuide from "../game/game-guides";
 
 export * as Rounds from "./rounds";
+export * as Bets from "./bets";
 
 export * from "./game-configs";

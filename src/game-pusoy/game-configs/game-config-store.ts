@@ -37,12 +37,12 @@ export class GameConfigStore extends BaseGameConfigStore {
 
     setGameConfigs(gameConfigs: PusoyGameConfigs) {
         if (gameConfigs) {
-            this.initialized = true;
             if (gameConfigs.enableFreeBet === undefined) {
                 gameConfigs.enableFreeBet = false;
             }
             Object.assign(this, gameConfigs);
             this.roundTimeStore.configure(gameConfigs.durations.timeline);
+            this.initialized = true;
         }
     }
 }
