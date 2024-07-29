@@ -8,6 +8,13 @@ export type RoundTimeSetting = {
     animation: number;
 };
 
+export const TimelineKey = {
+    transition: "transition",
+    deal: "deal",
+    arrangement: "arrangement",
+    animation: "animation",
+};
+
 /**
  * Timeline:
  *

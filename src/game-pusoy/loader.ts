@@ -16,13 +16,15 @@ import * as Pusoy from "./export";
 import { GameSetting } from "./game-configs";
 import { HideGameHandler } from "./hide-game";
 import { RoundStore } from "./rounds";
+import { BetHandler as OldBetHandler } from "../game/bets";
+import { BetHandler } from "../game-pusoy/bets/bet-handler";
 
 export const features = [Auth, Players, SiteConfigs, Pusoy, Notification, UnderMaintenance, ChipSetting];
 
 export const onContainerCreated = (container: Container, setting: GameSetting) => {
     container.bind(GameSetting).toConstantValue(setting);
     container.bind(OldGameSetting).toConstantValue(setting as any);
-
+    container.bind(OldBetHandler).to(BetHandler);
     container.bind(OldRoundStore).to(RoundStore as any);
     container.bind(OldDisableGameHandlers).to(DisableGameHandlers as any);
     container.bind(ConnectionHandlers.InGameHandler).to(InGameHandler as any);
