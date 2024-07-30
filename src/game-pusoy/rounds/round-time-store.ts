@@ -108,6 +108,10 @@ export class RoundTimeStore {
         return this.remaining > 0 && this.in(TimelineKey.transition);
     }
 
+    get remainingTimeToPlaceBet() {
+        return this.remaining - this.timeline.deal;
+    }
+
     get running() {
         return !!this.runner;
     }
