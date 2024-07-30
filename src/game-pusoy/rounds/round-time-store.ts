@@ -100,6 +100,14 @@ export class RoundTimeStore {
         return current >= this.remaining && this.remaining > nextTime;
     }
 
+    get isInArrangementTime() {
+        return this.remaining > 0 && this.in(TimelineKey.arrangement);
+    }
+
+    get isInTransitionTime() {
+        return this.remaining > 0 && this.in(TimelineKey.transition);
+    }
+
     get running() {
         return !!this.runner;
     }
