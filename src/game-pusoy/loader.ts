@@ -34,7 +34,7 @@ export const onContainerCreated = (container: Container, setting: GameSetting) =
     container.bind(OldRoundStore).to(RoundStore as any);
     container.bind(OldRoundTimeHandlers).to(RoundTimeHandlers as any);
     container.bind(OldRoundTimeStore).to(RoundTimeStore as any);
-    container.bind(OldGameConfigStore).to(GameConfigStore);
+    container.bind(OldGameConfigStore).to(GameConfigStore as any);
     container.bind(OldDisableGameHandlers).to(DisableGameHandlers as any);
     container.bind(ConnectionHandlers.InGameHandler).to(InGameHandler as any);
     container.bind(OldHideGameHandler).to(HideGameHandler as any);

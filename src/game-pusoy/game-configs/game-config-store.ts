@@ -1,6 +1,5 @@
 import { inject, injectable } from "inversify";
 import { GameServiceMessage } from "../../shared";
-import { GameConfigStore as BaseGameConfigStore } from "../../game/game-configs";
 import { RoundTimeStore } from "../rounds";
 import { makeAutoObservable } from "mobx";
 
@@ -28,12 +27,13 @@ export type PusoyGameConfigs = GameServiceMessage.GameConfigs & {
 };
 
 @injectable()
-export class GameConfigStore extends BaseGameConfigStore {
+export class GameConfigStore {
+    stakeLevels: string[] = [];
+    initialized = false;
     durations: any;
     suitesMapper: { [key: string]: string };
 
     constructor(@inject(RoundTimeStore) protected readonly roundTimeStore: RoundTimeStore) {
-        super();
         makeAutoObservable(this);
     }
 
