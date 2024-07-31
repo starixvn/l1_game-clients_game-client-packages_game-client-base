@@ -10,6 +10,7 @@ import {
     RoundStore as OldRoundStore,
     RoundTimeStore as OldRoundTimeStore,
     RoundTimeHandlers as OldRoundTimeHandlers,
+    RoundHandlers as OldRoundHandlers,
 } from "../game/rounds";
 import * as Notification from "../notification";
 import * as Players from "../players";
@@ -19,10 +20,9 @@ import { DisableGameHandlers } from "./disabled-game";
 import * as Pusoy from "./export";
 import { GameSetting, GameConfigStore } from "./game-configs";
 import { HideGameHandler } from "./hide-game";
-import { RoundStore, RoundTimeHandlers, RoundTimeStore } from "./rounds";
+import { RoundStore, RoundTimeHandlers, RoundTimeStore, RoundHandlers } from "./rounds";
 import { BetHandler as OldBetHandler } from "../game/bets";
 import { GameConfigStore as OldGameConfigStore } from "../game/game-configs";
-
 import { BetHandler } from "../game-pusoy/bets/bet-handler";
 
 export const features = [Auth, Players, SiteConfigs, Pusoy, Notification, UnderMaintenance, ChipSetting];
@@ -45,4 +45,7 @@ export const onContainerCreated = (container: Container, setting: GameSetting) =
 
     container.bind(GameConfigStore).to(GameConfigStore as any);
     container.bind(OldGameConfigStore).toService(GameConfigStore as any);
+
+    // container.bind(RoundHandlers).to(RoundHandlers as any);
+    container.bind(OldRoundHandlers).to(RoundHandlers as any);
 };

@@ -32,6 +32,7 @@ export class GameConfigStore {
     initialized = false;
     durations: any;
     suitesMapper: { [key: string]: string };
+    scoreConfig: any;
 
     constructor(@inject(RoundTimeStore) protected readonly roundTimeStore: RoundTimeStore) {
         makeAutoObservable(this);

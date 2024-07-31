@@ -20,5 +20,6 @@ export * as GameGuide from "../game/game-guides";
 
 export * as Rounds from "./rounds";
 export * as Bet from "./bets";
+export * as Arrangement from "./arrangement";
 
 export * from "./game-configs";
