@@ -37,10 +37,19 @@ export class ArrangementHandler {
 }
 
 const isChangeSegment = (hand: Hand<number[]>, currentHand: Hand<number[]>) => {
-    const isDifferent = (segment: number[], currentSegment: number[]) => {
-        const segmentSet = new Set(segment);
-        const different = currentSegment.filter((x) => !segmentSet.has(x));
-        return different.length > 0;
+    const isDifferent = (newSegment: number[], currentSegment: number[]) => {
+        if (newSegment.length !== currentSegment.length) {
+            return true;
+        }
+        const segmentSet = new Set(newSegment);
+
+        for (let i = 0; i < newSegment.length; i++) {
+            if (!segmentSet.has(currentSegment[i])) {
+                return true;
+            }
+        }
+
+        return false;
     };
 
     return (

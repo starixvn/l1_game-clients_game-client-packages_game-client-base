@@ -48,7 +48,7 @@ export class GameConfigStore {
             }
             Object.assign(this, gameConfigs);
             this.roundTimeStore.configure(gameConfigs.durations.timeline);
-            this.roundStore.suitesMapper = gameConfigs.suitesMapper;
+            this.roundStore.setSuitesMapper(gameConfigs.suitesMapper);
             this.initialized = true;
         }
     }
