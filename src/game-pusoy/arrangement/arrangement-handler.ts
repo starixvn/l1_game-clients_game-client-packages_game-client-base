@@ -1,40 +1,38 @@
 import { injectable, inject } from "inversify";
-import { ConnectionStore } from "../../game/connection";
+import { ConnectionHandlers, ConnectionStore } from "../../game/connection";
 import { Hand, PusoyClientMessages } from "../pusoy-service-messages";
 import { RoundStore } from "../rounds";
+import { MainPlayerStore } from "../../players";
 
 @injectable()
 export class ArrangementHandler {
     constructor(
         @inject(RoundStore) protected readonly roundStore: RoundStore,
-        @inject(ConnectionStore) private readonly connectionStore: ConnectionStore
+        @inject(ConnectionStore) private readonly connectionStore: ConnectionStore,
+        @inject(MainPlayerStore) private readonly playerStore: MainPlayerStore,
+        @inject(ConnectionHandlers.RetryGameHandler) protected readonly retryGameHandler: ConnectionHandlers.RetryGameHandler
     ) {}
+
+    sendArrangementToServer(hand: Hand<number[]>) {
+        this.connectionStore.send(PusoyClientMessages.changeArrangement, {
+            hand: hand,
+            playerId: this.roundStore.initPlayerHand?.playerId,
+            playerName: this.playerStore.name,
+            roundId: this.roundStore.roundId,
+            submit: false,
+        });
+    }
 
     changeHand(hand: Hand<number[]>) {
         const isChange = isChangeSegment(hand, this.roundStore?.currentHand);
         this.roundStore.currentHand = hand;
         if (isChange) {
-            this.connectionStore.send(PusoyClientMessages.changeArrangement, {
-                hand: hand,
-                playerId: this.roundStore.initPlayerHand?.playerId,
-                slot: this.roundStore.initPlayerHand?.slot,
-                submit: false,
-            });
+            this.sendArrangementToServer(hand);
         }
     }
 
     submitHand() {
-        const { front, middle, back } = this.roundStore.currentHand;
-        this.connectionStore.send(PusoyClientMessages.changeArrangement, {
-            hand: {
-                front: front,
-                middle: middle,
-                back: back,
-            },
-            playerId: this.roundStore.initPlayerHand?.playerId,
-            slot: this.roundStore.initPlayerHand?.slot,
-            submit: true,
-        });
+        this.sendArrangementToServer(this.roundStore.currentHand);
     }
 }
 
