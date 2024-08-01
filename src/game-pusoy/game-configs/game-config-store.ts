@@ -1,6 +1,6 @@
 import { inject, injectable } from "inversify";
 import { GameServiceMessage } from "../../shared";
-import { RoundTimeStore } from "../rounds";
+import { RoundStore, RoundTimeStore } from "../rounds";
 import { makeAutoObservable } from "mobx";
 
 export type Durations = {
@@ -30,11 +30,14 @@ export type PusoyGameConfigs = GameServiceMessage.GameConfigs & {
 export class GameConfigStore {
     stakeLevels: string[] = [];
     initialized = false;
-    durations: any;
-    suitesMapper: { [key: string]: string };
-    scoreConfig: any;
+    durations: any = {};
+    suitesMapper: { [key: string]: string } = {};
+    scoreConfig: any = {};
 
-    constructor(@inject(RoundTimeStore) protected readonly roundTimeStore: RoundTimeStore) {
+    constructor(
+        @inject(RoundTimeStore) protected readonly roundTimeStore: RoundTimeStore,
+        @inject(RoundStore) protected readonly roundStore: RoundStore
+    ) {
         makeAutoObservable(this);
     }
 
@@ -45,6 +48,7 @@ export class GameConfigStore {
             }
             Object.assign(this, gameConfigs);
             this.roundTimeStore.configure(gameConfigs.durations.timeline);
+            this.roundStore.suitesMapper = gameConfigs.suitesMapper;
             this.initialized = true;
         }
     }

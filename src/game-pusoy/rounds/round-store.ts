@@ -1,29 +1,44 @@
-import { injectable, inject } from "inversify";
+import { injectable } from "inversify";
 import { makeAutoObservable } from "mobx";
-import { GameConfigStore } from "../game-configs";
 import { Hand, PlayerHand } from "../pusoy-service-messages";
 
 export type HandData = {
     hand: Hand<number[]>;
-    suitConfig: { [key: string]: number };
+    suitConfig: { [key: string]: string };
     scoreConfig: any;
 };
 
 @injectable()
 export class RoundStore {
-    constructor(@inject(GameConfigStore) protected readonly gameConfigStore: GameConfigStore) {
+    suitesMapper: { [key: string]: string } = {};
+    scoreConfig: any = {};
+    constructor() {
         makeAutoObservable(this);
     }
 
     roundId = 0;
 
-    playerHand: PlayerHand;
+    initPlayerHand: PlayerHand = {
+        hand: {
+            front: [],
+            middle: [],
+            back: [],
+        },
+        playerId: undefined,
+        slot: undefined,
+    };
 
-    get hand() {
+    currentHand: Hand<number[]> = {
+        front: [],
+        middle: [],
+        back: [],
+    };
+
+    get hand(): HandData {
         return {
-            hand: this.playerHand.hand,
-            suitConfig: this.gameConfigStore.suitesMapper,
-            scoreConfig: this.gameConfigStore.scoreConfig,
+            hand: this.initPlayerHand?.hand,
+            suitConfig: this.suitesMapper,
+            scoreConfig: this.scoreConfig,
         };
     }
 }
