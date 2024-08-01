@@ -21,9 +21,7 @@ import * as Pusoy from "./export";
 import { GameSetting, GameConfigStore } from "./game-configs";
 import { HideGameHandler } from "./hide-game";
 import { RoundStore, RoundTimeHandlers, RoundTimeStore, RoundHandlers } from "./rounds";
-import { BetHandler as OldBetHandler } from "../game/bets";
 import { GameConfigStore as OldGameConfigStore } from "../game/game-configs";
-import { BetHandler } from "../game-pusoy/bets/bet-handler";
 
 export const features = [Auth, Players, SiteConfigs, Pusoy, Notification, UnderMaintenance, ChipSetting];
 
@@ -31,7 +29,6 @@ export const onContainerCreated = (container: Container, setting: GameSetting) =
     container.bind(GameSetting).toConstantValue(setting);
     container.bind(OldGameSetting).toConstantValue(setting as any);
 
-    container.bind(OldBetHandler).to(BetHandler);
     container.bind(OldRoundTimeHandlers).to(RoundTimeHandlers as any);
     container.bind(OldDisableGameHandlers).to(DisableGameHandlers as any);
     container.bind(ConnectionHandlers.InGameHandler).to(InGameHandler as any);

@@ -39,6 +39,10 @@ export namespace PusoyServiceMessages {
     export class SubmittedPlayer extends BasePlayer {
         static eventName = "submittedPlayer";
     }
+
+    export class StartDeal {
+        static eventName = "startDeal";
+    }
 }
 
 export namespace PusoyClientMessages {
