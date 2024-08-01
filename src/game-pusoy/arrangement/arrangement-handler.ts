@@ -13,13 +13,13 @@ export class ArrangementHandler {
         @inject(ConnectionHandlers.RetryGameHandler) protected readonly retryGameHandler: ConnectionHandlers.RetryGameHandler
     ) {}
 
-    sendArrangementToServer(hand: Hand<number[]>) {
+    sendArrangementToServer(hand: Hand<number[]>, submit = false) {
         this.connectionStore.send(PusoyClientMessages.changeArrangement, {
             hand: hand,
             playerId: this.roundStore.initPlayerHand?.playerId,
             playerName: this.playerStore.name,
             roundId: this.roundStore.roundId,
-            submit: false,
+            submit,
         });
     }
 
@@ -32,7 +32,7 @@ export class ArrangementHandler {
     }
 
     submitHand() {
-        this.sendArrangementToServer(this.roundStore.currentHand);
+        this.sendArrangementToServer(this.roundStore.currentHand, true);
     }
 }
 
