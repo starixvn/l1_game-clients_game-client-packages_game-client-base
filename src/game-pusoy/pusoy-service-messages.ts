@@ -10,11 +10,34 @@ export type PlayerHand = {
     slot: number;
 };
 
+class BasePlayer {
+    id: string;
+    name: string;
+    red: number;
+    avatarId: number;
+    type: boolean;
+    rate?: number;
+}
+
 export namespace PusoyServiceMessages {
     export class RoundData {
         roundId: number;
         playerHand: PlayerHand;
-        static eventname = "pusoyRound";
+        submittedPlayers: SubmittedPlayer[];
+        otherPlayers: OtherPlayer[];
+        static eventName = "pusoyRound";
+    }
+
+    export class OtherPlayer extends BasePlayer {
+        static eventName = "otherPlayer";
+    }
+
+    export class OtherPlayers {
+        static eventName = "otherPlayers";
+    }
+
+    export class SubmittedPlayer extends BasePlayer {
+        static eventName = "submittedPlayer";
     }
 }
 

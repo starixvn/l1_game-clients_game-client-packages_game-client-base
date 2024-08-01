@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 import { makeAutoObservable } from "mobx";
-import { Hand, PlayerHand } from "../pusoy-service-messages";
+import { Hand, PlayerHand, PusoyServiceMessages } from "../pusoy-service-messages";
 
 export type HandData = {
     hand: Hand<number[]>;
@@ -12,11 +12,9 @@ export type HandData = {
 export class RoundStore {
     suitesMapper: { [key: string]: string } = {};
     scoreConfig: any = {};
-    constructor() {
-        makeAutoObservable(this);
-    }
-
     roundId = 0;
+    otherPlayers: PusoyServiceMessages.OtherPlayer[] = [];
+    submittedPlayers: PusoyServiceMessages.SubmittedPlayer[] = [];
 
     initPlayerHand: PlayerHand = {
         hand: {
@@ -33,6 +31,10 @@ export class RoundStore {
         middle: [],
         back: [],
     };
+
+    constructor() {
+        makeAutoObservable(this);
+    }
 
     get hand(): HandData {
         return {

@@ -2,7 +2,6 @@ import { injectable, inject } from "inversify";
 import { RoundStore } from "./round-store";
 import { PusoyServiceMessages } from "../pusoy-service-messages";
 import { IMultipleHandlers } from "../../shared";
-import { makeObservable, observable } from "mobx";
 
 @injectable()
 export class RoundHandlers implements IMultipleHandlers {
@@ -16,12 +15,22 @@ export class RoundHandlers implements IMultipleHandlers {
             middle: [],
             back: [],
         };
+        this.store.submittedPlayers = data?.submittedPlayers || [];
+        this.store.otherPlayers = data?.otherPlayers || [];
+    }
+
+    handleSubmittedPlayer(otherPlayer: PusoyServiceMessages.SubmittedPlayer) {
+        this.store.submittedPlayers.push(otherPlayer);
     }
 
     eventHandleList = [
         {
-            name: PusoyServiceMessages.RoundData.eventname,
+            name: PusoyServiceMessages.RoundData.eventName,
             handle: this.handleRoundData,
+        },
+        {
+            name: PusoyServiceMessages.SubmittedPlayer.eventName,
+            handle: this.handleSubmittedPlayer,
         },
     ];
 }
