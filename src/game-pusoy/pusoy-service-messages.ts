@@ -17,6 +17,7 @@ class BasePlayer {
     avatarId: number;
     type: boolean;
     rate?: number;
+    slot: number;
 }
 
 export namespace PusoyServiceMessages {
