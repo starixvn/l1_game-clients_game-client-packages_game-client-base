@@ -20,3 +20,4 @@ export * as Rounds from "./rounds";
 export * as Bet from "./bets";
 export * as Arrangement from "./arrangement";
 export * as Settlement from "./settlements";
+export * as Messages from "./pusoy-service-messages";
