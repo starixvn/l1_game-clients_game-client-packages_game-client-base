@@ -10,6 +10,17 @@ export type PlayerHand = {
     slot: number;
 };
 
+export type SettlementResult = {
+    crack: { isCrack: boolean; units: number };
+    natural: { name: string; units: number };
+    normal: Hand<number>;
+    pusoy: { mini: Record<number, number>; full: number };
+    royalty: Hand<{ name: string; units: number }>;
+    sum: number;
+    slot: number;
+    playerId: string;
+};
+
 class BasePlayer {
     id: string;
     name: string;
