@@ -14,47 +14,14 @@ export class ArrangementHandler {
     ) {}
 
     sendArrangementToServer(hand: Hand<number[]>, submit = false) {
-        this.connectionStore.send(PusoyClientMessages.changeArrangement, {
-            hand: hand,
-            playerId: this.roundStore.initPlayerHand?.playerId,
-            playerName: this.playerStore.name,
-            roundId: this.roundStore.roundId,
-            submit,
-        });
-    }
-
-    changeHand(hand: Hand<number[]>) {
-        const isChange = isChangeSegment(hand, this.roundStore?.currentHand);
-        this.roundStore.currentHand = hand;
-        if (isChange) {
-            this.sendArrangementToServer(hand);
+        if (hand) {
+            this.connectionStore.send(PusoyClientMessages.changeArrangement, {
+                hand: hand,
+                playerId: this.roundStore.initPlayerHand?.playerId,
+                playerName: this.playerStore.name,
+                roundId: this.roundStore.roundId,
+                submit,
+            });
         }
-    }
-
-    submitHand() {
-        this.sendArrangementToServer(this.roundStore.currentHand, true);
     }
 }
-
-const isChangeSegment = (hand: Hand<number[]>, currentHand: Hand<number[]>) => {
-    const isDifferent = (newSegment: number[], currentSegment: number[]) => {
-        if (newSegment.length !== currentSegment.length) {
-            return true;
-        }
-        const segmentSet = new Set(newSegment);
-
-        for (let i = 0; i < newSegment.length; i++) {
-            if (!segmentSet.has(currentSegment[i])) {
-                return true;
-            }
-        }
-
-        return false;
-    };
-
-    return (
-        isDifferent(hand.front, currentHand.front) ||
-        isDifferent(hand.middle, currentHand.middle) ||
-        isDifferent(hand.back, currentHand.back)
-    );
-};

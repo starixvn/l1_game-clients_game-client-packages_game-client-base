@@ -2,6 +2,8 @@ import { injectable, inject } from "inversify";
 import { RoundStore } from "./round-store";
 import { PusoyServiceMessages } from "../pusoy-service-messages";
 import { IMultipleHandlers } from "../../shared";
+import { MainPlayerStore } from "../../players";
+import { RoundTimeStore } from "./round-time-store";
 
 @injectable()
 export class RoundHandlers implements IMultipleHandlers {
@@ -10,11 +12,6 @@ export class RoundHandlers implements IMultipleHandlers {
     handleRoundData(data: PusoyServiceMessages.RoundData) {
         this.store.roundId = data?.roundId;
         this.store.initPlayerHand = data?.playerHand;
-        this.store.currentHand = data?.playerHand?.hand || {
-            front: [],
-            middle: [],
-            back: [],
-        };
         this.store.submittedPlayers = data?.submittedPlayers || [];
         this.store.otherPlayers = data?.otherPlayers || [];
     }

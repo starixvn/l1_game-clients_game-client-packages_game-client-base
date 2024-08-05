@@ -49,6 +49,8 @@ export namespace PusoyServiceMessages {
     }
 
     export class SubmittedPlayer extends BasePlayer {
+        id: string;
+        name: string;
         static eventName = "submittedPlayer";
     }
 

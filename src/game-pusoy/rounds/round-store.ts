@@ -45,12 +45,6 @@ export class RoundStore {
         slot: undefined,
     };
 
-    currentHand: Hand<number[]> = {
-        front: [],
-        middle: [],
-        back: [],
-    };
-
     constructor() {
         makeAutoObservable(this);
     }
