@@ -57,6 +57,10 @@ export class RoundStore {
         };
     }
 
+    get suitesMapper(): { [key: string]: string } {
+        return this._suitesMapper;
+    }
+
     setSuitesMapper(suitesMapper: { [key: string]: string }) {
         this._suitesMapper = suitesMapper;
     }

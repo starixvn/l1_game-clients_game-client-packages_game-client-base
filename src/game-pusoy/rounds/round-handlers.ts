@@ -1,23 +1,32 @@
-import { injectable, inject } from "inversify";
-import { RoundStore } from "./round-store";
-import { PusoyServiceMessages } from "../pusoy-service-messages";
-import { IMultipleHandlers } from "../../shared";
+import { inject, injectable } from "inversify";
 import { MainPlayerStore } from "../../players";
-import { RoundTimeStore } from "./round-time-store";
+import { IMultipleHandlers } from "../../shared";
+import { ArrangementStore } from "../arrangement";
+import { PusoyServiceMessages } from "../pusoy-service-messages";
+import { RoundStore } from "./round-store";
 
 @injectable()
 export class RoundHandlers implements IMultipleHandlers {
-    constructor(@inject(RoundStore) protected readonly store: RoundStore) {}
+    constructor(
+        @inject(RoundStore) protected readonly roundStore: RoundStore,
+        @inject(MainPlayerStore) private readonly playerStore: MainPlayerStore,
+        @inject(ArrangementStore) private readonly arrangementStore: ArrangementStore
+    ) {}
 
     handleRoundData(data: PusoyServiceMessages.RoundData) {
-        this.store.roundId = data?.roundId;
-        this.store.initPlayerHand = data?.playerHand;
-        this.store.submittedPlayers = data?.submittedPlayers || [];
-        this.store.otherPlayers = data?.otherPlayers || [];
+        this.roundStore.roundId = data?.roundId;
+        this.roundStore.initPlayerHand = data?.playerHand;
+        this.roundStore.submittedPlayers = data?.submittedPlayers || [];
+        this.roundStore.otherPlayers = data?.otherPlayers || [];
+        this.arrangementStore.mainPlayerSubmitted =
+            this.roundStore.submittedPlayers.filter((p) => p.name === this.playerStore.name).length > 0;
     }
 
-    handleSubmittedPlayer(otherPlayer: PusoyServiceMessages.SubmittedPlayer) {
-        this.store.submittedPlayers.push(otherPlayer);
+    handleSubmittedPlayer(player: PusoyServiceMessages.SubmittedPlayer) {
+        this.roundStore.submittedPlayers.push(player);
+        if (player.name === this.playerStore.name) {
+            this.arrangementStore.mainPlayerSubmitted = true;
+        }
     }
 
     eventHandleList = [

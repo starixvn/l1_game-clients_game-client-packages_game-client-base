@@ -1,11 +1,11 @@
 import { inject, injectable } from "inversify";
 import { RoundStore, RoundTimeStore } from "../rounds";
 import { MainPlayerStore } from "../../players";
-import { makeAutoObservable } from "mobx";
+import { action, computed, makeAutoObservable } from "mobx";
 
 @injectable()
 export class ArrangementStore {
-    private _mainPlayerSubmitted: boolean;
+    private _mainPlayerSubmitted: boolean = false;
 
     constructor(
         @inject(RoundTimeStore) protected readonly roundTimeStore: RoundTimeStore,
@@ -16,7 +16,6 @@ export class ArrangementStore {
     }
 
     get isShowArrangement(): boolean {
-        this.mainPlayerSubmitted = this.roundStore.submittedPlayers.filter((p) => p.name === this.playerStore.name).length > 0;
         return !this.mainPlayerSubmitted && this.roundTimeStore.isInArrangementTime;
     }
 
