@@ -1,6 +1,6 @@
 import { inject, injectable } from "inversify";
 import { GameServiceMessage, IMultipleHandlers } from "../../shared";
-import { SettlementStore } from "./settlement-store";
+import { AnimationOrder, SettlementStore } from "./settlement-store";
 
 @injectable()
 export class SettlementHandlers implements IMultipleHandlers {
@@ -8,6 +8,11 @@ export class SettlementHandlers implements IMultipleHandlers {
 
     handleFinish(finish: GameServiceMessage.Finish | undefined) {
         this.settlementStore.setSettlementStore(finish);
+    }
+
+    handleFinishAnimation(animation: AnimationOrder) {
+        this.settlementStore.updateFinishAnimation(animation);
+        this.settlementStore.updateNextAnimation();
     }
 
     eventHandleList = [
