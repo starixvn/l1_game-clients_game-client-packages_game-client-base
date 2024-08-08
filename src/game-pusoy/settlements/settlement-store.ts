@@ -2,15 +2,19 @@ import { injectable } from "inversify";
 import { makeAutoObservable } from "mobx";
 import { PlayerHand, SettlementResult } from "../pusoy-service-messages";
 
-export enum AnimationOrder {
-    crack,
-    natural,
-    normal,
-    mini,
-    fullPusoy,
-    royalty,
-    chipFly,
-}
+export const ANIMATION_STAGES = {
+    crack: "crack",
+    natural: "natural",
+    normal: "normal",
+    mini: "mini",
+    fullPusoy: "fullPusoy",
+    royalty: "royalty",
+    chipFly: "chipFly",
+};
+
+export type AnimationStage = keyof typeof ANIMATION_STAGES;
+
+export const ANIMATION_STAGES_KEYS = Object.keys(ANIMATION_STAGES) as AnimationStage[];
 
 @injectable()
 export class SettlementStore {
@@ -22,16 +26,16 @@ export class SettlementStore {
     result: Record<string, PlayerHand> = null;
     settlementResult: Record<string, SettlementResult> = null;
     settleEffectDuration: Record<string, number> = null;
-    showAnimation: Record<AnimationOrder, boolean> = {
-        [AnimationOrder.crack]: false,
-        [AnimationOrder.natural]: false,
-        [AnimationOrder.normal]: false,
-        [AnimationOrder.mini]: false,
-        [AnimationOrder.fullPusoy]: false,
-        [AnimationOrder.royalty]: false,
-        [AnimationOrder.chipFly]: false,
+    showAnimation: Record<AnimationStage, boolean> = {
+        crack: false,
+        natural: false,
+        normal: false,
+        mini: false,
+        fullPusoy: false,
+        royalty: false,
+        chipFly: false,
     };
-    settleAnimation: AnimationOrder[] = [];
+    settleAnimation: AnimationStage[] = [];
 
     setSettlementStore(finish: any) {
         finish?.roundId && (this.roundId = finish.roundId);
@@ -40,16 +44,14 @@ export class SettlementStore {
         finish?.settleEffectDuration && this.setAnimation(finish.settleEffectDuration);
     }
 
-    setAnimation(settleEffectDuration: Record<string, number>) {
+    setAnimation(settleEffectDuration: Record<AnimationStage, number>) {
         this.settleEffectDuration = settleEffectDuration;
 
-        this.settleAnimation = Object.keys(settleEffectDuration)
-            .filter((key) => settleEffectDuration[key] > 0)
-            .map((key) => AnimationOrder[key]);
+        this.settleAnimation = (Object.keys(settleEffectDuration) as AnimationStage[]).filter((key) => settleEffectDuration[key] > 0);
 
-        this.settleAnimation.push(AnimationOrder.chipFly);
+        this.settleAnimation.push(ANIMATION_STAGES.chipFly as AnimationStage);
 
-        this.settleAnimation.sort((a, b) => a - b);
+        this.settleAnimation.sort((a, b) => ANIMATION_STAGES_KEYS.indexOf(a) - ANIMATION_STAGES_KEYS.indexOf(b));
 
         this.showAnimation[this.settleAnimation[0]] = true;
     }
@@ -60,7 +62,7 @@ export class SettlementStore {
         }
     }
 
-    updateFinishAnimation(animation: AnimationOrder) {
+    updateFinishAnimation(animation: AnimationStage) {
         this.showAnimation[animation] = false;
 
         if (this.settleAnimation.length > 0) {
