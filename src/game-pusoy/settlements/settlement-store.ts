@@ -49,8 +49,6 @@ export class SettlementStore {
 
         this.settleAnimation = (Object.keys(settleEffectDuration) as AnimationStage[]).filter((key) => settleEffectDuration[key] > 0);
 
-        this.settleAnimation.push(ANIMATION_STAGES.chipFly as AnimationStage);
-
         this.settleAnimation.sort((a, b) => ANIMATION_STAGES_KEYS.indexOf(a) - ANIMATION_STAGES_KEYS.indexOf(b));
 
         this.showAnimation[this.settleAnimation[0]] = true;
