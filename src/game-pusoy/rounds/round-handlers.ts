@@ -23,7 +23,7 @@ export class RoundHandlers implements IMultipleHandlers {
     }
 
     handleSubmittedPlayer(player: PusoyServiceMessages.SubmittedPlayer) {
-        this.roundStore.submittedPlayers.push(player);
+        this.roundStore.submittedPlayers = [...this.roundStore.submittedPlayers, player];
         if (player.name === this.playerStore.name) {
             this.arrangementStore.mainPlayerSubmitted = true;
         }
