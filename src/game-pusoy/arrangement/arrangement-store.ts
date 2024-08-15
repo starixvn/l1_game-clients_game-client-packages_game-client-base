@@ -19,6 +19,10 @@ export class ArrangementStore {
         return !this.mainPlayerSubmitted && this.roundTimeStore.isInArrangementTime;
     }
 
+    get isShowReArrange(): boolean {
+        return this.mainPlayerSubmitted && this.roundTimeStore.isInArrangementTime;
+    }
+
     get mainPlayerSubmitted(): boolean {
         return this._mainPlayerSubmitted;
     }

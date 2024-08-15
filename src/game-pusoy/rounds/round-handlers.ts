@@ -29,6 +29,15 @@ export class RoundHandlers implements IMultipleHandlers {
         }
     }
 
+    handleRearrangePlayer(player: PusoyServiceMessages.RearrangePlayer) {
+        if (player.canRearrange) {
+            this.roundStore.submittedPlayers = this.roundStore.submittedPlayers.filter((p) => p.id !== player.playerId);
+            if (player.playerName === this.playerStore.name) {
+                this.arrangementStore.mainPlayerSubmitted = false;
+            }
+        }
+    }
+
     eventHandleList = [
         {
             name: PusoyServiceMessages.RoundData.eventName,
@@ -37,6 +46,10 @@ export class RoundHandlers implements IMultipleHandlers {
         {
             name: PusoyServiceMessages.SubmittedPlayer.eventName,
             handle: this.handleSubmittedPlayer,
+        },
+        {
+            name: PusoyServiceMessages.RearrangePlayer.eventName,
+            handle: this.handleRearrangePlayer,
         },
     ];
 }

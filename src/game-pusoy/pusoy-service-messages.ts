@@ -57,8 +57,16 @@ export namespace PusoyServiceMessages {
     export class StartDeal {
         static eventName = "startDeal";
     }
+
+    export class RearrangePlayer {
+        playerName: string;
+        playerId: string;
+        canRearrange: boolean;
+        static eventName = "rearrangePlayer";
+    }
 }
 
 export namespace PusoyClientMessages {
     export const changeArrangement = "submitArrangement";
+    export const rearrange = "rearrange";
 }

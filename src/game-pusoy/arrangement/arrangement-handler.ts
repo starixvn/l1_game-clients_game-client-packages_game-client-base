@@ -1,8 +1,8 @@
-import { injectable, inject } from "inversify";
+import { inject, injectable } from "inversify";
 import { ConnectionHandlers, ConnectionStore } from "../../game/connection";
+import { MainPlayerStore } from "../../players";
 import { Hand, PusoyClientMessages } from "../pusoy-service-messages";
 import { RoundStore } from "../rounds";
-import { MainPlayerStore } from "../../players";
 
 @injectable()
 export class ArrangementHandler {
@@ -23,5 +23,13 @@ export class ArrangementHandler {
                 submit,
             });
         }
+    }
+
+    sendRearrangeToServer() {
+        this.connectionStore.send(PusoyClientMessages.rearrange, {
+            playerId: this.roundStore.initPlayerHand?.playerId,
+            playerName: this.playerStore.name,
+            roundId: this.roundStore.roundId,
+        });
     }
 }
