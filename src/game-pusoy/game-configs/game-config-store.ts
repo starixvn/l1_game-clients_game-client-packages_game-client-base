@@ -13,7 +13,7 @@ export type Durations = {
     animation: {
         crack: number;
         natural: number;
-        compareHands: number;
+        normal: number;
         pusoy: {
             mini: number;
             full: number;
