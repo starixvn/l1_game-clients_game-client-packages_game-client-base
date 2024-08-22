@@ -11,6 +11,7 @@ export class BetHandler extends BetHandlerBase {
     handle(betChoice: string) {
         const betData = this.createBetData({ betChoice });
         this.handleBetData(betData);
+        this.roundTimeStore.startDeal = false;
     }
 
     handleBetData(data: any) {
