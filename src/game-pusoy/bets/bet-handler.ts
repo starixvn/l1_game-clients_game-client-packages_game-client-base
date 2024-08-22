@@ -42,6 +42,7 @@ export class BetHandler extends BetHandlerBase {
     handleStartDeal(startDeal: boolean) {
         if (startDeal) {
             this.roundTimeStore.play();
+            this.roundTimeStore.startDeal = startDeal;
         }
     }
 

@@ -36,6 +36,8 @@ export class RoundTimeStore {
 
     private paused = false;
 
+    private _startDeal = false;
+
     runner: NodeJS.Timer;
 
     constructor() {
@@ -108,6 +110,10 @@ export class RoundTimeStore {
         return this.remaining > 0 && this.in(TimelineKey.transition);
     }
 
+    get isAtDealTime() {
+        return this.remaining > 0 && this.startDeal && this.at(TimelineKey.deal);
+    }
+
     get remainingTimeToPlaceBet() {
         return this.remaining - this.timeline.deal;
     }
@@ -122,5 +128,13 @@ export class RoundTimeStore {
 
     set remaining(value: number) {
         this._remaining = value;
+    }
+
+    get startDeal() {
+        return this._startDeal;
+    }
+
+    set startDeal(value: boolean) {
+        this._startDeal = value;
     }
 }
