@@ -18,7 +18,6 @@ export class BetHandler extends BetHandlerBase {
         if (this.isValidBet(amount)) {
             this.betStore.isProcessingBet = true;
             this.roundTimeStore.pause();
-            this.roundTimeStore.startDeal = false;
             this.connectionStore.send(GameClientEmitMessage.Bet.eventName, data);
             this.retryGameHandler.handle();
         }

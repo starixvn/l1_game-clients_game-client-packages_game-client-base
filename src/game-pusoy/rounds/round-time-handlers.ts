@@ -16,6 +16,10 @@ export class RoundTimeHandlers implements IMultipleHandlers {
         this.store.play();
     }
 
+    handleAlreadyDealt() {
+        this.store.startDeal = false;
+    }
+
     eventHandleList = [
         {
             name: GameServiceMessage.remainingTime,
