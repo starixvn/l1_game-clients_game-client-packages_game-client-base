@@ -16,6 +16,16 @@ export type AnimationStage = keyof typeof ANIMATION_STAGES;
 
 export const ANIMATION_STAGES_KEYS = Object.keys(ANIMATION_STAGES) as AnimationStage[];
 
+const DEFAULT_SHOW_ANIMATION = {
+    crack: false,
+    natural: false,
+    normal: false,
+    mini: false,
+    fullPusoy: false,
+    royalty: false,
+    chipFly: false,
+};
+
 @injectable()
 export class SettlementStore {
     constructor() {
@@ -26,15 +36,7 @@ export class SettlementStore {
     result: Record<string, PlayerHand> = null;
     settlementResult: Record<string, SettlementResult> = null;
     settleEffectDuration: Record<string, number> = null;
-    showAnimation: Record<AnimationStage, boolean> = {
-        crack: false,
-        natural: false,
-        normal: false,
-        mini: false,
-        fullPusoy: false,
-        royalty: false,
-        chipFly: false,
-    };
+    showAnimation: Record<AnimationStage, boolean> = { ...DEFAULT_SHOW_ANIMATION };
     settleAnimation: AnimationStage[] = [];
 
     setSettlementStore(finish: any) {
@@ -51,6 +53,7 @@ export class SettlementStore {
 
         this.settleAnimation.sort((a, b) => ANIMATION_STAGES_KEYS.indexOf(a) - ANIMATION_STAGES_KEYS.indexOf(b));
 
+        this.showAnimation = { ...DEFAULT_SHOW_ANIMATION };
         this.showAnimation[this.settleAnimation[0]] = true;
     }
 
