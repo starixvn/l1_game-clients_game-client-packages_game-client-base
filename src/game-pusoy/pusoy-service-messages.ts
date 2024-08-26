@@ -69,4 +69,5 @@ export namespace PusoyServiceMessages {
 export namespace PusoyClientMessages {
     export const changeArrangement = "submitArrangement";
     export const rearrange = "rearrange";
+    export const survey = "survey";
 }
