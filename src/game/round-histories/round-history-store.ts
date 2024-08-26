@@ -57,7 +57,7 @@ export class RoundHistoryStore {
             animationHighlight: this.roundTimeStore.isShowAnimationResult || this.roundTimeStore.isShowResult,
             settleTimeReceivedFinish:
                 (this.roundTimeStore.isShowAnimationResult || this.roundTimeStore.isShowResult) &&
-                this.settlementStore.currentFinish &&
+                !!this.settlementStore.currentFinish &&
                 this.settlementStore.currentFinish.roundId >= lastRound.roundId,
         };
 
