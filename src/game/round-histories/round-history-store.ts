@@ -22,6 +22,7 @@ export interface IFirstJoinGameHistory {
     roundHistory: RoundHistory;
     staticHighlight: boolean;
     animationHighlight: boolean;
+    settleTimeReceivedFinish?: boolean;
 }
 
 @injectable()
@@ -54,6 +55,10 @@ export class RoundHistoryStore {
             roundHistory: lastRound,
             staticHighlight: this.roundTimeStore.isPlacingBet || this.roundTimeStore.isStartRound,
             animationHighlight: this.roundTimeStore.isShowAnimationResult || this.roundTimeStore.isShowResult,
+            settleTimeReceivedFinish:
+                (this.roundTimeStore.isShowAnimationResult || this.roundTimeStore.isShowResult) &&
+                this.settlementStore.currentFinish &&
+                this.settlementStore.currentFinish.roundId >= lastRound.roundId,
         };
 
         if (this.roundTimeStore.isShowAnimationResult || this.roundTimeStore.isShowResult) {
