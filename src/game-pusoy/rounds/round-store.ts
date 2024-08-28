@@ -34,6 +34,13 @@ export class RoundStore {
     public set submittedPlayers(value: PusoyServiceMessages.SubmittedPlayer[]) {
         this._submittedPlayers = value;
     }
+    private _playerBalance = 0;
+    public get playerBalance() {
+        return this._playerBalance;
+    }
+    public set playerBalance(value) {
+        this._playerBalance = value;
+    }
 
     initPlayerHand: PlayerHand = {
         hand: {
