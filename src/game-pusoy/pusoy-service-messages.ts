@@ -29,6 +29,7 @@ class BasePlayer {
     type: boolean;
     rate?: number;
     slot: number;
+    balance: number;
 }
 
 export namespace PusoyServiceMessages {
@@ -37,6 +38,7 @@ export namespace PusoyServiceMessages {
         playerHand: PlayerHand;
         submittedPlayers: SubmittedPlayer[];
         otherPlayers: OtherPlayer[];
+        playerBalance: number;
         static eventName = "pusoyRound";
     }
 
