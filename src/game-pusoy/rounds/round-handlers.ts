@@ -18,7 +18,7 @@ export class RoundHandlers implements IMultipleHandlers {
         this.roundStore.initPlayerHand = data?.playerHand;
         this.roundStore.submittedPlayers = data?.submittedPlayers || [];
         this.roundStore.otherPlayers = data?.otherPlayers || [];
-        this.roundStore.playerBalance = data?.playerBalance || 0;
+        this.roundStore.playerBalance = data?.playerBalance || this.roundStore.playerBalance;
         this.arrangementStore.mainPlayerSubmitted =
             this.roundStore.submittedPlayers.filter((p) => p.name === this.playerStore.name).length > 0;
     }
