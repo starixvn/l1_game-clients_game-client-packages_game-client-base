@@ -66,6 +66,11 @@ export namespace PusoyServiceMessages {
         canRearrange: boolean;
         static eventName = "rearrangePlayer";
     }
+
+    export class SurveyStatus {
+        surveyUpdated: boolean;
+        static eventName = "surveyUpdated";
+    }
 }
 
 export namespace PusoyClientMessages {
