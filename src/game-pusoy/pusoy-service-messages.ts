@@ -68,7 +68,6 @@ export namespace PusoyServiceMessages {
     }
 
     export class SurveyStatus {
-        surveyUpdated: boolean;
         static eventName = "surveyUpdated";
     }
 }
