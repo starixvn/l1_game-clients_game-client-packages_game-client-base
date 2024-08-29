@@ -14,8 +14,8 @@ export class SurveyHandler {
         this.connectionStore.send(PusoyClientMessages.survey, { wishToPlayWithRealMoney });
     }
 
-    handleUpdateSurveyStatus(survey: PusoyServiceMessages.SurveyStatus) {
-        this.surveyStore.setSurveyStatus(survey.surveyUpdated);
+    handleUpdateSurveyStatus(status: boolean) {
+        this.surveyStore.setSurveyStatus(status);
     }
 
     eventHandleList = [
