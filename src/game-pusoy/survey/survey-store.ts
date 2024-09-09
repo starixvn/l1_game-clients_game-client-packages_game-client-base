@@ -4,6 +4,7 @@ import { makeAutoObservable } from "mobx";
 @injectable()
 export class SurveyStore {
     statusUpdated = false;
+    openSurveyPopup = false;
 
     constructor() {
         makeAutoObservable(this);
@@ -11,5 +12,9 @@ export class SurveyStore {
 
     setSurveyStatus(status: boolean) {
         this.statusUpdated = status;
+    }
+
+    setOpenSurveyPopup(open: boolean) {
+        this.openSurveyPopup = open;
     }
 }

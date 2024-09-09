@@ -18,6 +18,10 @@ export class SurveyHandler {
         this.surveyStore.setSurveyStatus(status);
     }
 
+    handleOpenSurveyPopup(open: boolean) {
+        this.surveyStore.setOpenSurveyPopup(open);
+    }
+
     eventHandleList = [
         {
             name: PusoyServiceMessages.SurveyStatus.eventName,
