@@ -21,4 +21,5 @@ export * as Bet from "./bets";
 export * as Arrangement from "./arrangement";
 export * as Settlement from "./settlements";
 export * as Survey from "./survey";
+export * as Player from "./players";
 export * from "./pusoy-service-messages";

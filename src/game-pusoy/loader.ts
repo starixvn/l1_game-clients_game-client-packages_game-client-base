@@ -22,6 +22,8 @@ import { GameSetting, GameConfigStore } from "./game-configs";
 import { HideGameHandler } from "./hide-game";
 import { RoundStore, RoundTimeHandlers, RoundTimeStore, RoundHandlers } from "./rounds";
 import { GameConfigStore as OldGameConfigStore } from "../game/game-configs";
+import { MainPlayerHandlers } from "../players";
+import { PusoyMainPlayerHandlers } from "./players";
 
 export const features = [Auth, Players, SiteConfigs, Pusoy, Notification, UnderMaintenance, ChipSetting];
 
@@ -34,6 +36,7 @@ export const onContainerCreated = (container: Container, setting: GameSetting) =
     container.bind(ConnectionHandlers.InGameHandler).to(InGameHandler as any);
     container.bind(OldHideGameHandler).to(HideGameHandler as any);
     container.bind(OldRoundHandlers).to(RoundHandlers as any);
+    container.bind(MainPlayerHandlers).to(PusoyMainPlayerHandlers);
 
     container.bind(RoundStore).to(RoundStore as any);
     container.bind(OldRoundStore).toService(RoundStore as any);
