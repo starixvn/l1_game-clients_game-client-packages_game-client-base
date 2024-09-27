@@ -44,7 +44,7 @@ export class RoundTimeStore {
         makeAutoObservable(this, { runner: false, timeline: false });
     }
 
-    configure(timeline: Record<string, number> = { transition: 54, deal: 51, arrangement: 50 }) {
+    configure(timeline: Record<string, number> = { transition: 56, deal: 53, arrangement: 50, animation: 81 }) {
         this.timeline = timeline;
     }
 
