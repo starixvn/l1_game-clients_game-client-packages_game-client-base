@@ -7,7 +7,7 @@ import { NoticeInfo, NoticeStore, NoticeType } from "../../game/notices";
 import { GameServiceMessage, IHandler } from "../../shared";
 import { DefaultLanguage, SupportedLanguages } from "../../shared/languages";
 import { Translator } from "../../shared/utils/localization-manager";
-import { RoundTimeHandlers, RoundTimeStore } from "../rounds";
+import { RoundTimeHandlers, RoundTimeStore, TimelineKey } from "../rounds";
 import { AppTypes } from "./../../shared/constants/app-type";
 
 @injectable()
@@ -50,23 +50,20 @@ export class DisableGameHandlers implements IHandler<GameServiceMessage.Disabled
         this.disabledGameStore.setShowPopup(true);
     }
 
-    inGameHandle(disabledGameInfo: GameServiceMessage.DisabledGameInfo) {
-        if (this.disabledGameStore.disabled) {
-            if (!this.disabledGameStore.showPopup && !this.roundTimeStore.in("arrangement")) {
-                this.showPopupHandle(disabledGameInfo);
-                this.roundTimeStore.stop();
-            }
-        } else {
-            this.disabledGameStore.setGameStatus(true);
-            this.roundTimeStore.pause();
-        }
+    inGameHandle() {
+        this.disabledGameStore.setGameStatus(true);
     }
 
     joinGameHandle(disabledGameInfo: GameServiceMessage.DisabledGameInfo) {
-        !this.disabledGameStore.showPopup && this.showPopupHandle(disabledGameInfo);
+        if (!this.disabledGameStore.showPopup) {
+            this.showPopupHandle(disabledGameInfo);
+            this.roundTimeStore.stop();
+        }
     }
 
     handle(disabledGameInfo: GameServiceMessage.DisabledGameInfo) {
-        this.roundTimeStore.in("arrangement") ? this.inGameHandle(disabledGameInfo) : this.joinGameHandle(disabledGameInfo);
+        this.roundTimeStore.in(TimelineKey.arrangement) || this.roundTimeStore.in(TimelineKey.animation)
+            ? this.inGameHandle()
+            : this.joinGameHandle(disabledGameInfo);
     }
 }
