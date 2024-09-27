@@ -95,8 +95,8 @@ export class RoundTimeStore {
 
         const nextEntry = Object.entries(this.timeline)
             .sort((x) => x[1])
-            .filter((x) => x[1] < current)
-            .at(0);
+            .filter((x) => x[1] < current)[0];
+
         const nextTime = !!nextEntry ? nextEntry[1] : 0;
 
         return current >= this.remaining && this.remaining > nextTime;
