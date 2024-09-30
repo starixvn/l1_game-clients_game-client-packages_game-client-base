@@ -9,6 +9,7 @@ import { DefaultLanguage, SupportedLanguages } from "../../shared/languages";
 import { Translator } from "../../shared/utils/localization-manager";
 import { RoundTimeHandlers, RoundTimeStore, TimelineKey } from "../rounds";
 import { AppTypes } from "./../../shared/constants/app-type";
+import { reaction } from "mobx";
 
 @injectable()
 export class DisableGameHandlers implements IHandler<GameServiceMessage.DisabledGameInfo> {
@@ -23,6 +24,15 @@ export class DisableGameHandlers implements IHandler<GameServiceMessage.Disabled
         @inject(RoundTimeHandlers) protected readonly roundTimeHandlers: RoundTimeHandlers
     ) {
         this.onClosedHandle = this.onClosedHandle.bind(this);
+
+        reaction(
+            () => this.connectionStore.isConnectFailed,
+            (isConnectFailed) => isConnectFailed && this.handleConnectFailedOrDisConnect()
+        );
+        reaction(
+            () => this.connectionStore.isDisconnect,
+            (isDisconnect) => isDisconnect && this.handleConnectFailedOrDisConnect()
+        );
     }
 
     onClosedHandle() {
@@ -65,5 +75,9 @@ export class DisableGameHandlers implements IHandler<GameServiceMessage.Disabled
         this.roundTimeStore.in(TimelineKey.arrangement) || this.roundTimeStore.in(TimelineKey.animation)
             ? this.inGameHandle()
             : this.joinGameHandle(disabledGameInfo);
+    }
+
+    handleConnectFailedOrDisConnect() {
+        this.roundTimeStore.stop();
     }
 }
