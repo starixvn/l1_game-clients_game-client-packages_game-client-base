@@ -24,6 +24,8 @@ import { RoundStore, RoundTimeHandlers, RoundTimeStore, RoundHandlers } from "./
 import { GameConfigStore as OldGameConfigStore } from "../game/game-configs";
 import { MainPlayerHandlers } from "../players";
 import { PusoyMainPlayerHandlers } from "./players";
+import { NoPermissionHandlers as OldNoPermissionHandlers } from "../game/excluded-game";
+import { NoPermissionHandlers } from "./excluded-game";
 
 export const features = [Auth, Players, SiteConfigs, Pusoy, Notification, UnderMaintenance, ChipSetting];
 
@@ -37,6 +39,7 @@ export const onContainerCreated = (container: Container, setting: GameSetting) =
     container.bind(OldHideGameHandler).to(HideGameHandler as any);
     container.bind(OldRoundHandlers).to(RoundHandlers as any);
     container.bind(MainPlayerHandlers).to(PusoyMainPlayerHandlers);
+    container.bind(OldNoPermissionHandlers).to(NoPermissionHandlers as any);
 
     container.bind(RoundStore).to(RoundStore as any);
     container.bind(OldRoundStore).toService(RoundStore as any);
