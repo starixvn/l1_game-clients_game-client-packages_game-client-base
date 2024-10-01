@@ -9,7 +9,6 @@ export * as Orientation from "../game/orientation";
 export * as Connection from "../game/connection";
 export * as Notices from "../game/notices";
 export * as Errors from "../game/errors";
-export * as ExcludedGame from "../game/excluded-game";
 export * as GameGuide from "../game/game-guides";
 
 export * as GameConfigs from "./game-configs";
@@ -22,4 +21,6 @@ export * as Arrangement from "./arrangement";
 export * as Settlement from "./settlements";
 export * as Survey from "./survey";
 export * as Player from "./players";
+export * as ExcludedGame from "./excluded-game";
+
 export * from "./pusoy-service-messages";
