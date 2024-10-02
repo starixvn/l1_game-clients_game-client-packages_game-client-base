@@ -38,6 +38,7 @@ export class DisableGameHandlers implements IHandler<GameServiceMessage.Disabled
     onClosedHandle() {
         if (!this.isInstantApp()) {
             this.backToOperatorLobby.handle();
+            this.connectionStore.onDisconnected();
         }
     }
 
@@ -57,7 +58,6 @@ export class DisableGameHandlers implements IHandler<GameServiceMessage.Disabled
         });
 
         this.disabledGameStore.setShowPopup(true);
-        this.connectionStore.onDisconnected();
     }
 
     inGameHandle() {
