@@ -137,4 +137,8 @@ export class RoundTimeStore {
     set startDeal(value: boolean) {
         this._startDeal = value;
     }
+
+    get isPause() {
+        return this.paused;
+    }
 }
