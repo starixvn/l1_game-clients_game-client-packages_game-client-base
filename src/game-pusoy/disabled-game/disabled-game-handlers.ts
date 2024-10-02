@@ -37,7 +37,6 @@ export class DisableGameHandlers implements IHandler<GameServiceMessage.Disabled
 
     onClosedHandle() {
         if (!this.isInstantApp()) {
-            this.connectionStore.onDisconnected();
             this.backToOperatorLobby.handle();
         }
     }
@@ -58,6 +57,7 @@ export class DisableGameHandlers implements IHandler<GameServiceMessage.Disabled
         });
 
         this.disabledGameStore.setShowPopup(true);
+        this.connectionStore.onDisconnected();
     }
 
     inGameHandle() {
@@ -67,8 +67,9 @@ export class DisableGameHandlers implements IHandler<GameServiceMessage.Disabled
     joinGameHandle(disabledGameInfo: GameServiceMessage.DisabledGameInfo) {
         if (!this.disabledGameStore.showPopup) {
             this.showPopupHandle(disabledGameInfo);
-            this.roundTimeStore.stop();
         }
+
+        this.roundTimeStore.stop();
     }
 
     handle(disabledGameInfo: GameServiceMessage.DisabledGameInfo) {
