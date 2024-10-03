@@ -39,6 +39,7 @@ export namespace PusoyServiceMessages {
         submittedPlayers: SubmittedPlayer[];
         otherPlayers: OtherPlayer[];
         playerBalance: number;
+        observer: boolean;
         static eventName = "pusoyRound";
     }
 
