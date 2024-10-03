@@ -42,6 +42,14 @@ export class RoundStore {
         this._playerBalance = value;
     }
 
+    private _observingRound = false;
+    public get observingRound() {
+        return this._observingRound;
+    }
+    public set observingRound(value) {
+        this._observingRound = value;
+    }
+
     initPlayerHand: PlayerHand = {
         hand: {
             front: [],
