@@ -401,16 +401,6 @@ export namespace GameServiceMessage {
 
         static eventName = "gameConfigs";
     }
-
-    export class PlayerHand {
-        hand: {
-            front: number[];
-            middle: number[];
-            back: number[];
-        };
-        slot: number;
-        static eventName = "playerHand";
-    }
 }
 
 export namespace NotificationServiceMessage {
