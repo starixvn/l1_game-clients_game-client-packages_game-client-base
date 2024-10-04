@@ -2,15 +2,17 @@ import { inject, injectable } from "inversify";
 import { MainPlayerStore } from "../../players";
 import { IMultipleHandlers } from "../../shared";
 import { ArrangementStore } from "../arrangement";
-import { PusoyServiceMessages } from "../pusoy-service-messages";
+import { PusoyClientMessages, PusoyServiceMessages } from "../pusoy-service-messages";
 import { RoundStore } from "./round-store";
+import { ConnectionStore } from "../../game/connection";
 
 @injectable()
 export class RoundHandlers implements IMultipleHandlers {
     constructor(
         @inject(RoundStore) protected readonly roundStore: RoundStore,
         @inject(MainPlayerStore) private readonly playerStore: MainPlayerStore,
-        @inject(ArrangementStore) private readonly arrangementStore: ArrangementStore
+        @inject(ArrangementStore) private readonly arrangementStore: ArrangementStore,
+        @inject(ConnectionStore) private readonly connectionStore: ConnectionStore
     ) {}
 
     handleRoundData(data: PusoyServiceMessages.RoundData) {
@@ -38,6 +40,10 @@ export class RoundHandlers implements IMultipleHandlers {
                 this.arrangementStore.mainPlayerSubmitted = false;
             }
         }
+    }
+
+    handleCreateNewTable() {
+        this.connectionStore.send(PusoyClientMessages.createNewTable, null);
     }
 
     eventHandleList = [
