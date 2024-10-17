@@ -20,6 +20,10 @@ export class RoundTimeHandlers implements IMultipleHandlers {
         this.store.startDeal = false;
     }
 
+    handleRoundEnd() {
+        this.store.pause();
+    }
+
     eventHandleList = [
         {
             name: GameServiceMessage.remainingTime,
