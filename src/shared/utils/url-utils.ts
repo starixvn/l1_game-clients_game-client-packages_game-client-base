@@ -74,4 +74,11 @@ export namespace UrlUtils {
     export function getSubDirectory(subDirectory: string) {
         return subDirectory?.length > 0 ? `${subDirectory}/` : "";
     }
+
+    export function buildShareResource(configs: SiteConfigs) {
+        const subDirectory = configs?.subDirectory ? `/${configs?.subDirectory}` : "";
+        const path = `${subDirectory}/shared-resources`;
+
+        return buildUrl("http", path, configs);
+    }
 }

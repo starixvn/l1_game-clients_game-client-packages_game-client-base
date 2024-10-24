@@ -24,4 +24,5 @@ export class SiteConfigs {
     boostedOddsDelayTimeByMinutes?: number;
     storagePrefixKey?: string;
     gameServiceSubDomain?: string;
+    gatewaySubDomain?: string;
 }
