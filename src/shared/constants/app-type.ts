@@ -4,4 +4,6 @@ export const AppTypes = {
     Instant: 3,
     MegaKeno: 4,
     App: 5,
+    DesktopDirect: 6,
+    MobileDirect: 7,
 };

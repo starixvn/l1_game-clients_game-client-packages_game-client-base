@@ -62,7 +62,7 @@ export class AppStore {
                 this.isPlayForFun = true;
             }
 
-            if (this.isOpenPortraitDirectly(refData)) {
+            if (this.isOpenPortraitDirectly(appType)) {
                 this.isPortraitDirectMode = true;
             }
 
@@ -97,8 +97,8 @@ export class AppStore {
         return directRef.some((data) => data === refData);
     }
 
-    private isOpenPortraitDirectly(refData: string) {
-        return "f_direct" === refData;
+    private isOpenPortraitDirectly(appType: string) {
+        return appType === AppTypes.DesktopDirect.toString();
     }
 
     saveDirectModeInfo() {
