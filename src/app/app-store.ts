@@ -64,6 +64,7 @@ export class AppStore {
 
             if (this.isOpenPortraitDirectly(appType)) {
                 this.isPortraitDirectMode = true;
+                this.isAutoCreateNickname = true;
             }
 
             this.urlInfo.ref = refData;
