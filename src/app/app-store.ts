@@ -17,6 +17,11 @@ interface IDirectMode {
     urlInfo: IUrlInfo;
 }
 
+interface IPortraitDirectMode {
+    session: string;
+    isPortraitDirectMode: boolean;
+}
+
 @injectable()
 export class AppStore {
     isUM = false;
@@ -31,6 +36,7 @@ export class AppStore {
     isUserGesture = false;
     isTouchedScreen = false;
     isClearStorage = false;
+    isPortraitDirectMode = false;
 
     constructor() {
         makeAutoObservable(this);
@@ -54,6 +60,10 @@ export class AppStore {
 
             if (this.isPlayForFunMode(refData)) {
                 this.isPlayForFun = true;
+            }
+
+            if (this.isOpenPortraitDirectly(refData)) {
+                this.isPortraitDirectMode = true;
             }
 
             this.urlInfo.ref = refData;
@@ -87,6 +97,10 @@ export class AppStore {
         return directRef.some((data) => data === refData);
     }
 
+    private isOpenPortraitDirectly(refData: string) {
+        return "f_direct" === refData;
+    }
+
     saveDirectModeInfo() {
         const sessionInfo = StorageManager.get(localStorageKeys.session) as ISessionInfo;
         const data: IDirectMode = {
@@ -95,6 +109,15 @@ export class AppStore {
             urlInfo: this.urlInfo,
         };
         StorageManager.set(localStorageKeys.directMode, data);
+    }
+
+    savePortraitDirectModeInfo() {
+        const sessionInfo = StorageManager.get(localStorageKeys.session) as ISessionInfo;
+        const data: IPortraitDirectMode = {
+            session: sessionInfo.session,
+            isPortraitDirectMode: this.isPortraitDirectMode,
+        };
+        StorageManager.set(localStorageKeys.portraitDirectMode, data);
     }
 
     saveReturnUrl() {
@@ -118,6 +141,16 @@ export class AppStore {
             if (sessionInfo.session === data.session) {
                 this.isDirectMode = data.isDirectMode;
                 this.urlInfo = data.urlInfo;
+            }
+        }
+    }
+
+    loadPortraitDirectMode() {
+        const data = StorageManager.get(localStorageKeys.portraitDirectMode) as IPortraitDirectMode;
+        if (data) {
+            const sessionInfo = StorageManager.get(localStorageKeys.session) as ISessionInfo;
+            if (sessionInfo.session === data.session) {
+                this.isPortraitDirectMode = data.isPortraitDirectMode;
             }
         }
     }

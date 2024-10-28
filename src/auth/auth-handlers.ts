@@ -180,6 +180,7 @@ export namespace AuthHandlers {
                     this.authStore.setAuthStoreFromStorage(StorageManager.get(localStorageKeys.session) as ISessionInfo);
                     this.appStore.loadReturnUrlAnd();
                     this.appStore.loadDirectMode();
+                    this.appStore.loadPortraitDirectMode();
                     this.appStore.loadApp();
                     await this.handleAuthorize();
                 }
@@ -219,6 +220,11 @@ export namespace AuthHandlers {
             if (this.appStore.isDirectMode) {
                 this.appStore.saveDirectModeInfo();
             }
+
+            if (this.appStore.isPortraitDirectMode) {
+                this.appStore.savePortraitDirectModeInfo();
+            }
+
             this.appStore.saveReturnUrl();
             this.appStore.saveIsApp();
             if (urlParams) {
