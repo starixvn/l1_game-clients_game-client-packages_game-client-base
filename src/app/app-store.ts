@@ -99,7 +99,7 @@ export class AppStore {
     }
 
     private isOpenPortraitDirectly(appType: string) {
-        return appType === AppTypes.DesktopDirect.toString();
+        return appType === AppTypes.MobileDirect.toString();
     }
 
     saveDirectModeInfo() {
