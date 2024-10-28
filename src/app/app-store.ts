@@ -62,11 +62,6 @@ export class AppStore {
                 this.isPlayForFun = true;
             }
 
-            if (this.isOpenPortraitDirectly(appType)) {
-                this.isPortraitDirectMode = true;
-                this.isAutoCreateNickname = true;
-            }
-
             this.urlInfo.ref = refData;
         }
 
@@ -85,6 +80,11 @@ export class AppStore {
 
         if (JSON.parse(urlParams.get(URLParams?.isUserGesture))) {
             this.isUserGesture = true;
+        }
+
+        if (this.isOpenPortraitDirectly(appType)) {
+            this.isPortraitDirectMode = true;
+            this.isAutoCreateNickname = true;
         }
     }
 
