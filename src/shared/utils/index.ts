@@ -10,5 +10,6 @@ export * from "./logger";
 export * from "./mobx-logger";
 export * from "./name-generator";
 export * from "./number-utils";
+export * from "./socket-utils";
 export * from "./storage-manager";
 export * from "./url-utils";
