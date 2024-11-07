@@ -12,5 +12,6 @@ export const URLParams = {
     parentUrl: "purl",
     isUserGesture: "isUserGesture",
     gameIdsSupportBoostedOddsForInstantSite: "gameIdsSupportBoostedOddsForInstantSite",
-    operator: "op"
+    operator: "op",
+    offerGames: "ogs",
 };
