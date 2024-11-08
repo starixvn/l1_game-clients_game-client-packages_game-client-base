@@ -31,7 +31,6 @@ export class AppStore {
     isUserGesture = false;
     isTouchedScreen = false;
     isClearStorage = false;
-    offerGames: number[] = [];
 
     constructor() {
         makeAutoObservable(this);
@@ -46,8 +45,6 @@ export class AppStore {
         const refData = urlParams.get(URLParams.ref);
         const returnUrl = urlParams.get(URLParams.returnUrl);
         const appType = urlParams.get(URLParams.appType);
-        const offerGames = urlParams.get(URLParams.offerGames) as any;
-        console.log("offerGames--", offerGames);
 
         if (refData) {
             if (this.isOpenDirectly(refData) || this.isPlayForFunMode(refData)) {
@@ -77,10 +74,6 @@ export class AppStore {
 
         if (JSON.parse(urlParams.get(URLParams?.isUserGesture))) {
             this.isUserGesture = true;
-        }
-
-        if (offerGames) {
-            this.offerGames = offerGames;
         }
     }
 
