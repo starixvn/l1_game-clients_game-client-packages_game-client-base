@@ -86,15 +86,26 @@ export class StorageManager {
         return StorageManager.supportStorage;
     }
 
-    static get(name: string) {
+    static get(name: string, exactName = false) {
+        if (exactName) {
+            return StorageManager.getCurrentStorage().get(name);
+        }
         return StorageManager.getCurrentStorage().get(StorageManager.getName(name));
     }
 
-    static set(name: string, value: string | object) {
+    static set(name: string, value: string | object, exactName = false) {
+        if (exactName) {
+            StorageManager.getCurrentStorage().set(name, value);
+            return;
+        }
         StorageManager.getCurrentStorage().set(StorageManager.getName(name), value);
     }
 
-    static remove(name: string) {
+    static remove(name: string, exactName = false) {
+        if (exactName) {
+            StorageManager.getCurrentStorage().remove(name);
+            return;
+        }
         StorageManager.getCurrentStorage().remove(StorageManager.getName(name));
     }
 
