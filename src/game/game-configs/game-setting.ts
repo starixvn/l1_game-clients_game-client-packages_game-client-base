@@ -10,6 +10,7 @@ export type DurationSetting = {
 
 export class GameSetting {
     id: number;
+    lobbyId?: number;
     name: string;
     configName?: string;
     durations: DurationSetting;
