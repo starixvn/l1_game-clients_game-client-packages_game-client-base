@@ -4,7 +4,7 @@ export namespace CrossStorageUtils {
     export const set = (key: string, data: any, exactName = false) => {
         StorageManager.set(key, data, exactName);
 
-        BrowserDomUtils.postMessageToParent({ saveStorage: { key, data } });
+        BrowserDomUtils.postMessageToParent({ saveStorage: { key: data } });
     };
 
     export const get = (key: string, exactName = false) => {
