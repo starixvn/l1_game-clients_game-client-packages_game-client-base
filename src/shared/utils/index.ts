@@ -1,6 +1,7 @@
 export * from "./analytics-manager";
 export * from "./browser-dom-utils";
 export * from "./card-utils";
+export * from "./cross-storage-utils";
 export * from "./date-time-utils";
 export * from "./error-utils";
 export * from "./format-utils";
