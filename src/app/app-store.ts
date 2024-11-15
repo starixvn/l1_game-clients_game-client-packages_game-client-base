@@ -17,7 +17,7 @@ interface IDirectMode {
     urlInfo: IUrlInfo;
 }
 
-interface IPortraitDirectMode {
+export interface IPortraitDirectMode {
     session: string;
     isPortraitDirectMode: boolean;
 }

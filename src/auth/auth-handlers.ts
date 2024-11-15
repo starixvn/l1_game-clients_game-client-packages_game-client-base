@@ -252,6 +252,7 @@ export namespace AuthHandlers {
             StorageManager.remove(localStorageKeys.directMode);
             StorageManager.remove(localStorageKeys.returnUrl);
             StorageManager.remove(localStorageKeys.isApp);
+            StorageManager.remove(localStorageKeys.portraitDirectMode);
         }
 
         private async handleAuthorize(session?: string, username?: string) {
