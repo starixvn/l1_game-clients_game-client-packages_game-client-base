@@ -32,6 +32,7 @@ export namespace AppHandlers {
         }
 
         handleOpenGame(gameId: number) {
+            this.appStore.isLoading = true;
             this.playerSelectionClearHandler.handle();
             const params = this.getParamAuthorize(gameId);
             BrowserDomUtils.postMessageToParent({ ...params, backLobby: true });
