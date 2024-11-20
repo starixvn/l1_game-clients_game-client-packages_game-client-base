@@ -79,6 +79,6 @@ export namespace UrlUtils {
         const subDirectory = configs?.subDirectory ? `/${configs?.subDirectory}` : "";
         const path = `${subDirectory}/shared-resources`;
 
-        return buildUrl("http", path, configs);
+        return buildUrl("http", path, configs, configs.clientSubDomain);
     }
 }

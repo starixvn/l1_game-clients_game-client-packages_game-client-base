@@ -25,4 +25,5 @@ export class SiteConfigs {
     storagePrefixKey?: string;
     gameServiceSubDomain?: string;
     gatewaySubDomain?: string;
+    clientSubDomain?: string;
 }
