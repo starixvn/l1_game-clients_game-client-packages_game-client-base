@@ -1,3 +1,16 @@
+## [1.57.1](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.57.0...v1.57.1) (2024-11-25)
+
+
+### Bug Fixes
+
+* hande offer-games ([26d5e6e](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/26d5e6e028f29d9423fa394debbe53ef88f59302))
+* update build url shared resource ([63beebd](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/63beebd42bfd82aa46b2981a5165b93010e95f7e))
+
+
+### Reverts
+
+* handle receive offer-games ([dd20e5a](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/dd20e5a9022b44a47c78a2eea632ae5523f2de56))
+
 # [1.57.0](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.56.0...v1.57.0) (2024-10-10)
 
 
