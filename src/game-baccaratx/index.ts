@@ -6,3 +6,4 @@ export * as BaccaratXConfigs from "./game-configs";
 export * as Multiplier from "./multiplier";
 export * as ShoePF from "./shoe-pf";
 export * as Shoe from "./shoes";
+export * as Rounds from "./rounds";

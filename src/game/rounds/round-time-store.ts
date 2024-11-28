@@ -35,8 +35,8 @@ const RoundTimeInitValue = -99999;
 export class RoundTimeStore {
     private _roundTime = RoundTimeInitValue;
     private _roundState = ROUND_STATE.NONE;
-    private _countdownTimer = 0;
-    private _remaining = 0;
+    protected _countdownTimer = 0;
+    protected _remaining = 0;
     startNewRound = false;
     endRound = false;
     startPlacingBet = false;
@@ -58,18 +58,14 @@ export class RoundTimeStore {
         return this.gameSetting.durations.lockingBet;
     }
     get generatingResult() {
-        return this.gameSetting.durations.generatingResult;
+        return this.gameSetting.durations.generatingResult ?? 0;
     }
     get showingResult() {
-        return this.gameSetting.durations.showingResult;
+        return this.gameSetting.durations.showingResult ?? 0;
     }
     get startRound() {
         return this.gameSetting.durations.startRound;
     }
-    get wholeShoe() {
-        return this.gameSetting.durations.wholeShoe;
-    }
-
     get initialized() {
         return this.roundTime !== RoundTimeInitValue;
     }
@@ -99,21 +95,10 @@ export class RoundTimeStore {
     }
 
     get isShowAnimationResult() {
-        if (this.roundTime > this.wholeRound) {
-            return this.roundTime <= this.wholeShoe && this.roundTime > this.wholeShoe - this.generatingResult;
-        }
-
         return (this.roundTime <= this.wholeRound && this.roundTime > this.wholeRound - this.generatingResult) || this.roundTime === 0;
     }
 
     get isShowResult() {
-        if (this.roundTime > this.wholeRound) {
-            return (
-                this.roundTime <= this.wholeShoe - this.generatingResult &&
-                this.roundTime >= this.wholeShoe - this.generatingResult - this.showingResult
-            );
-        }
-
         return (
             this.roundTime <= this.wholeRound - this.generatingResult + 1 &&
             this.roundTime > this.placingBet + this.startRound &&
@@ -213,17 +198,7 @@ export class RoundTimeStore {
         }
 
         if (this.isShowResult) {
-            let duration = 0;
-
-            if (this.roundTime > this.wholeRound) {
-                const minTime = this.wholeShoe - this.generatingResult - this.showingResult;
-                duration = this.roundTime - minTime;
-            } else {
-                duration = this.roundTime - this.placingBet - this.startRound;
-            }
-
-            this._remaining = duration;
-            this._countdownTimer = duration;
+            this.calculateRoundStatusWhenShowResult();
         }
 
         if (this.isStartingRound) {
@@ -239,6 +214,12 @@ export class RoundTimeStore {
             this._remaining = this.roundTime;
             this._countdownTimer = this.roundTime;
         }
+    }
+
+    protected calculateRoundStatusWhenShowResult() {
+        const duration = this.roundTime - this.placingBet - this.startRound;
+        this._remaining = duration;
+        this._countdownTimer = duration;
     }
 
     getCurrentRoundState(): string {

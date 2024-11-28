@@ -5,7 +5,6 @@ export type DurationSetting = {
     showingResult?: number;
     generatingResult?: number;
     startRound?: number;
-    wholeShoe?: number;
 };
 
 export class GameSetting {
