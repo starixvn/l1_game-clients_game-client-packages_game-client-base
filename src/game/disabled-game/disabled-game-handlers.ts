@@ -68,8 +68,6 @@ export class DisableGameHandlers implements IMultipleHandlers {
     handleUM(value: boolean) {
         if (value) {
             this.inGameHandle();
-        } else {
-            this.roundTimeStore.resetRoundTime();
         }
         this.disabledGameStore.isUM = value;
     }
