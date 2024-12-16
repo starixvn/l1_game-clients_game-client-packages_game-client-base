@@ -39,10 +39,10 @@ export class DisableGameHandlers implements IMultipleHandlers {
         return this.authStore.system === AppTypes.Instant;
     }
 
-    showPopupHandle(disabledGameInfo: GameServiceMessage.DisabledGameInfo) {
+    showPopupHandle() {
         const language = SupportedLanguages.includes(this.authStore.language) ? this.authStore.language : DefaultLanguage;
         this.noticeStore.addNotice({
-            message: disabledGameInfo[language],
+            message: this.disabledGameStore.disableGameInfo[language],
             title: Translator.commonTranslate("notice"),
             type: NoticeType.Error,
             onClose: this.onClosedHandle,
@@ -53,25 +53,24 @@ export class DisableGameHandlers implements IMultipleHandlers {
         this.disabledGameStore.setShowPopup(true);
     }
 
-    inGameHandle(disabledGameInfo: GameServiceMessage.DisabledGameInfo) {
-        if (this.disabledGameStore.disabled) {
-            if (!this.disabledGameStore.showPopup && this.roundTimeStore.isShowDisabledGameMessage && !this.settlementStore.currentFinish) {
-                this.showPopupHandle(disabledGameInfo);
-                this.roundRunningHandlers.stopRunner();
-            }
-        } else {
-            this.disabledGameStore.setGameStatus(true);
-            this.roundTimeStore.resetRoundTime();
+    inGameHandle() {
+        if (!this.disabledGameStore.showPopup && this.roundTimeStore.isShowDisabledGameMessage && !this.settlementStore.currentFinish) {
+            this.showPopupHandle();
+            this.roundRunningHandlers.stopRunner();
         }
+        this.disabledGameStore.setGameStatus(true);
     }
 
     handleDisableGameInfo(disabledGameInfo: GameServiceMessage.DisabledGameInfo) {
-        if (this.disabledGameStore.isUM) {
-            this.inGameHandle(disabledGameInfo);
-        }
+        this.disabledGameStore.setDisableGameInfo(disabledGameInfo);
     }
 
     handleUM(value: boolean) {
+        if (value) {
+            this.inGameHandle();
+        } else {
+            this.roundTimeStore.resetRoundTime();
+        }
         this.disabledGameStore.isUM = value;
     }
 
