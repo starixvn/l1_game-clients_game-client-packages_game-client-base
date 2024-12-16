@@ -19,7 +19,7 @@ export class GameConfigHandlers implements IMultipleHandlers {
         this.appStore.isLoading = false;
         this.noticeStore.hideNotice();
         this.disabledGameStore.setShowPopup(false);
-        this.disabledGameStore.isUM = false;
+        this.disabledGameStore.setGameStatus(false);
     }
 
     eventHandleList = [

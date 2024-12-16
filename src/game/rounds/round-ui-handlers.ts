@@ -40,7 +40,6 @@ export namespace RoundUIHandlers {
             this.roundStore.resetForNewRound();
             this.settlementStatusStore.resetSettlementStatus();
             this.settlementStore.resetSettlementStore();
-            this.disableGameStore.setGameStatus(false);
         }
     }
 }

@@ -58,18 +58,17 @@ export class DisableGameHandlers implements IMultipleHandlers {
             this.showPopupHandle();
             this.roundRunningHandlers.stopRunner();
         }
-        this.disabledGameStore.setGameStatus(true);
     }
 
     handleDisableGameInfo(disabledGameInfo: GameServiceMessage.DisabledGameInfo) {
         this.disabledGameStore.setDisableGameInfo(disabledGameInfo);
     }
 
-    handleUM(value: boolean) {
-        if (value) {
+    handleUM(um: boolean) {
+        this.disabledGameStore.disabled = um;
+        if (um) {
             this.inGameHandle();
         }
-        this.disabledGameStore.isUM = value;
     }
 
     eventHandleList = [
