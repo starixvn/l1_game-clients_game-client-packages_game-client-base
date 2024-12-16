@@ -5,6 +5,7 @@ import { ChipStore } from "../chips";
 import { SettlementStatusStore, SettlementStore } from "../settlements";
 import { RoundStore } from "./round-store";
 import { RoundTimeStore } from "./round-time-store";
+import { DisabledGameStore } from "../disabled-game";
 
 export namespace RoundUIHandlers {
     @injectable()
@@ -14,7 +15,8 @@ export namespace RoundUIHandlers {
             @inject(RoundStore) private readonly roundStore: RoundStore,
             @inject(SettlementStatusStore) private readonly settlementStatusStore: SettlementStatusStore,
             @inject(SettlementStore) private readonly settlementStore: SettlementStore,
-            @inject(ChipStore) private readonly chipStore: ChipStore
+            @inject(ChipStore) private readonly chipStore: ChipStore,
+            @inject(DisabledGameStore) private readonly disableGameStore: DisabledGameStore
         ) {
             reaction(
                 () => this.roundTimeStore.isStartingRound,
@@ -38,6 +40,7 @@ export namespace RoundUIHandlers {
             this.roundStore.resetForNewRound();
             this.settlementStatusStore.resetSettlementStatus();
             this.settlementStore.resetSettlementStore();
+            this.disableGameStore.setGameStatus(false);
         }
     }
 }

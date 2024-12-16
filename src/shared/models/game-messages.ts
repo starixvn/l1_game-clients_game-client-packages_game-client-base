@@ -60,6 +60,8 @@ export namespace GameClientEmitMessage {
 export namespace GameServiceMessage {
     export const toGame = "toGame";
 
+    export const signedIn = "signedIn";
+
     export class User {
         name: string;
         UID: number;

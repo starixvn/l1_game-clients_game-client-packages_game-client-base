@@ -10,6 +10,7 @@ import { RoundTimeStore } from "../rounds/round-time-store";
 import { AppTypes } from "./../../shared/constants/app-type";
 import { DisabledGameStore } from "./disabled-game-store";
 import { DefaultLanguage, SupportedLanguages } from "../../shared/languages";
+import { SettlementStore } from "../settlements";
 
 @injectable()
 export class DisableGameHandlers implements IHandler<GameServiceMessage.DisabledGameInfo> {
@@ -21,7 +22,8 @@ export class DisableGameHandlers implements IHandler<GameServiceMessage.Disabled
         @inject(DisabledGameStore) protected readonly disabledGameStore: DisabledGameStore,
         @inject(NoticeStore) protected readonly noticeStore: NoticeStore,
         @inject(AppHandlers.BackToOperatorLobby) protected readonly backToOperatorLobby: AppHandlers.BackToOperatorLobby,
-        @inject(RoundRunningHandlers) protected readonly roundRunningHandlers: RoundRunningHandlers
+        @inject(RoundRunningHandlers) protected readonly roundRunningHandlers: RoundRunningHandlers,
+        @inject(SettlementStore) private readonly settlementStore: SettlementStore
     ) {
         this.onClosedHandle = this.onClosedHandle.bind(this);
     }
@@ -53,7 +55,11 @@ export class DisableGameHandlers implements IHandler<GameServiceMessage.Disabled
 
     inGameHandle(disabledGameInfo: GameServiceMessage.DisabledGameInfo) {
         if (this.disabledGameStore.disabled) {
-            if (!this.disabledGameStore.showPopup && this.roundTimeStore.isShowDisabledGameMessage) {
+            if (
+                !this.disabledGameStore.showPopup &&
+                this.roundTimeStore.isShowDisabledGameMessage &&
+                !this.settlementStore.isFinishedShowResult
+            ) {
                 this.showPopupHandle(disabledGameInfo);
                 this.roundRunningHandlers.stopRunner();
             }

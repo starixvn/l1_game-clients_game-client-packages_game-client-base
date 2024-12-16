@@ -8,4 +8,6 @@ export class JoinGameStore {
     }
 
     toGame = {};
+
+    signedIn = false;
 }

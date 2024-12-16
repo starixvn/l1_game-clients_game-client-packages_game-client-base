@@ -19,4 +19,5 @@ export class GameSetting {
     numberOfRoundHistory: number;
     validateBalanceWhenBet?: boolean;
     durationShowPromptMessage?: number;
+    isMiniGame?: boolean;
 }

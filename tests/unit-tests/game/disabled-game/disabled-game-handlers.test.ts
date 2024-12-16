@@ -11,6 +11,7 @@ import { RoundTimeStore } from "../../../../src/game/rounds/round-time-store";
 import { GameServiceMessage } from "../../../../src/shared";
 import { gameSettings } from "../../container.test";
 import { AppTypes } from "./../../../../src/shared/constants/app-type";
+import { SettlementStore } from "../../../../src/game/settlements";
 
 jest.mock("../../../../src/shared/utils/localization-manager", () => {
     return {
@@ -39,7 +40,8 @@ describe("DisableGameHandlers tests", () => {
         roundTimeStore: RoundTimeStore,
         backToOperatorLobby: AppHandlers.BackToOperatorLobby,
         handler: DisableGameHandlers,
-        roundRunningHandlers: RoundRunningHandlers;
+        roundRunningHandlers: RoundRunningHandlers,
+        settlementStore: SettlementStore;
 
     beforeAll(() => {
         // arrange
@@ -51,6 +53,8 @@ describe("DisableGameHandlers tests", () => {
 
         noticeStore = new NoticeStore();
         noticeStore.addNotice = jest.fn();
+
+        settlementStore = stub<SettlementStore>();
 
         roundTimeStore = new RoundTimeStore(gameSettings);
         roundTimeStore.resetRoundTime = jest.fn();
@@ -70,7 +74,8 @@ describe("DisableGameHandlers tests", () => {
             disabledGameStore,
             noticeStore,
             backToOperatorLobby,
-            roundRunningHandlers
+            roundRunningHandlers,
+            settlementStore
         );
     });
 
@@ -142,6 +147,7 @@ describe("DisableGameHandlers tests", () => {
                     disabledGameStore.showPopup = false;
                     roundTimeStore.placingBet = 36;
                     roundTimeStore.roundTime = 33;
+                    settlementStore.isFinishedShowResult = false;
 
                     handler.showPopupHandle = jest.fn();
                     roundRunningHandlers.stopRunner = jest.fn();
