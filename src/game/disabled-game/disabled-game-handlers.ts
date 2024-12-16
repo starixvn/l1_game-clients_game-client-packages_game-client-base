@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify";
 import { AppHandlers } from "../../app/app-handlers";
 import { AuthStore } from "../../auth";
-import { GameServiceMessage, IHandler } from "../../shared";
+import { GameServiceMessage, IHandler, IMultipleHandlers } from "../../shared";
 import { Translator } from "../../shared/utils/localization-manager";
 import { ConnectionStore } from "../connection/connection-store";
 import { NoticeInfo, NoticeStore, NoticeType } from "../notices";
@@ -13,7 +13,7 @@ import { DefaultLanguage, SupportedLanguages } from "../../shared/languages";
 import { SettlementStore } from "../settlements";
 
 @injectable()
-export class DisableGameHandlers implements IHandler<GameServiceMessage.DisabledGameInfo> {
+export class DisableGameHandlers implements IMultipleHandlers {
     name = GameServiceMessage.DisabledGameInfo.eventName;
     constructor(
         @inject(ConnectionStore) protected readonly connectionStore: ConnectionStore,
@@ -55,11 +55,7 @@ export class DisableGameHandlers implements IHandler<GameServiceMessage.Disabled
 
     inGameHandle(disabledGameInfo: GameServiceMessage.DisabledGameInfo) {
         if (this.disabledGameStore.disabled) {
-            if (
-                !this.disabledGameStore.showPopup &&
-                this.roundTimeStore.isShowDisabledGameMessage &&
-                !this.settlementStore.isFinishedShowResult
-            ) {
+            if (!this.disabledGameStore.showPopup && this.roundTimeStore.isShowDisabledGameMessage && !this.settlementStore.currentFinish) {
                 this.showPopupHandle(disabledGameInfo);
                 this.roundRunningHandlers.stopRunner();
             }
@@ -69,11 +65,24 @@ export class DisableGameHandlers implements IHandler<GameServiceMessage.Disabled
         }
     }
 
-    joinGameHandle(disabledGameInfo: GameServiceMessage.DisabledGameInfo) {
-        !this.disabledGameStore.showPopup && this.showPopupHandle(disabledGameInfo);
+    handleDisableGameInfo(disabledGameInfo: GameServiceMessage.DisabledGameInfo) {
+        if (this.disabledGameStore.isUM) {
+            this.inGameHandle(disabledGameInfo);
+        }
     }
 
-    handle(disabledGameInfo: GameServiceMessage.DisabledGameInfo) {
-        this.roundTimeStore.endRound ? this.inGameHandle(disabledGameInfo) : this.joinGameHandle(disabledGameInfo);
+    handleUM(value: boolean) {
+        this.disabledGameStore.isUM = value;
     }
+
+    eventHandleList = [
+        {
+            name: GameServiceMessage.DisabledGameInfo.eventName,
+            handle: this.handleDisableGameInfo,
+        },
+        {
+            name: GameServiceMessage.um,
+            handle: this.handleUM,
+        },
+    ];
 }

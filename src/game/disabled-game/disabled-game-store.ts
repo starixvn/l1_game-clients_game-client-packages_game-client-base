@@ -4,6 +4,7 @@ import { makeAutoObservable } from "mobx";
 export class DisabledGameStore {
     disabled = false;
     showPopup = false;
+    _isUM = false;
 
     constructor() {
         makeAutoObservable(this);
@@ -15,5 +16,13 @@ export class DisabledGameStore {
 
     setShowPopup(showPopup: boolean) {
         this.showPopup = showPopup;
+    }
+
+    public get isUM() {
+        return this._isUM;
+    }
+
+    public set isUM(value: boolean) {
+        this._isUM = value;
     }
 }
