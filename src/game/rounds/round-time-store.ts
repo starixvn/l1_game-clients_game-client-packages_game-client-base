@@ -138,7 +138,7 @@ export class RoundTimeStore {
     }
 
     get isShowDisabledGameMessage() {
-        return this._roundTime <= this.placingBet || this._roundTime == this.wholeRound;
+        return this._roundTime <= this.placingBet || this._roundTime === this.wholeRound;
     }
 
     get isDisplayingResultState() {
