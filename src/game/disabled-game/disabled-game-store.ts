@@ -9,6 +9,8 @@ export class DisabledGameStore {
     disableGameInfo: GameServiceMessage.DisabledGameInfo = null;
     noticeDisable: Notice = null;
 
+    _isResetRoundTime = false;
+
     constructor() {
         makeAutoObservable(this);
     }
@@ -28,4 +30,13 @@ export class DisabledGameStore {
     setNoticeDisable(notice: Notice) {
         this.noticeDisable = notice;
     }
+
+    get isResetRoundTime() {
+        return this._isResetRoundTime;
+    }
+
+    set isResetRoundTime(isReset: boolean) {
+        this._isResetRoundTime = isReset;
+    }
+
 }
