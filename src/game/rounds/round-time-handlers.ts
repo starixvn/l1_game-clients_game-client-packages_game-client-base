@@ -2,18 +2,22 @@ import { inject, injectable } from "inversify";
 import { GameServiceMessage, IMultipleHandlers } from "../../shared";
 import { RoundRunningHandlers } from "./round-running-handlers";
 import { RoundTimeStore } from "./round-time-store";
+import { DisabledGameStore } from "../disabled-game";
 
 @injectable()
 export class RoundTimeHandlers implements IMultipleHandlers {
     constructor(
         @inject(RoundTimeStore) protected readonly store: RoundTimeStore,
-        @inject(RoundRunningHandlers) protected readonly roundRunningHandlers: RoundRunningHandlers
+        @inject(RoundRunningHandlers) protected readonly roundRunningHandlers: RoundRunningHandlers,
+        @inject(DisabledGameStore) protected readonly disabledGameStore: DisabledGameStore
     ) {}
 
     handleRemainingTime(remainingTime: number) {
         this.roundRunningHandlers.stopRunner();
         this.store.roundTime = remainingTime;
-        this.roundRunningHandlers.startRunner();
+        if (!this.disabledGameStore.disabled) {
+            this.roundRunningHandlers.startRunner();
+        }
     }
 
     handleStartNewRoundStatus(snr: boolean) {

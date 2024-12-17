@@ -15,11 +15,14 @@ export class GameConfigHandlers implements IMultipleHandlers {
     ) {}
 
     handleGameConfigs(gameConfigs: GameServiceMessage.GameConfigs) {
+        if (this.disabledGameStore.disabled && this.gameConfigStore.initialized) {      
+            this.disabledGameStore.setNoticeDisable(null);
+            this.disabledGameStore.setGameStatus(false);
+        }
         this.gameConfigStore.setGameConfigs(gameConfigs);
         this.appStore.isLoading = false;
         this.noticeStore.hideNotice();
-        this.disabledGameStore.setShowPopup(false);
-        this.disabledGameStore.setGameStatus(false);
+    
     }
 
     eventHandleList = [
