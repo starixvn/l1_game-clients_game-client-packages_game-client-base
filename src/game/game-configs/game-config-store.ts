@@ -13,6 +13,8 @@ export class GameConfigStore {
     enableFreeBet = false;
     originalOdds?: GameServiceMessage.Odds = null;
     boostedChoices?: string[] = [];
+    betLevels?: string[] = [];
+    defaultBetLevel?: number = 0;
 
     initialized = false;
 
