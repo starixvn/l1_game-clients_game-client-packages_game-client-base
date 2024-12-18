@@ -1,3 +1,17 @@
+## [1.57.3](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.57.2...v1.57.3) (2024-12-18)
+
+
+### Bug Fixes
+
+*  disable game message, join mini game ([af4c90d](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/af4c90d955bb0daf989b59bc550ee31e2f707857))
+*  disabled game handlers ([c7a11bd](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/c7a11bd22c72e516cd4b5af719a6f2760e66058b))
+* compare round time ([e01a616](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/e01a61614b956c8a98ad7dc2ce236534d6fdf7f3))
+* remove code unused ([7bad46c](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/7bad46c5738b919abb129f975fc886366f196fff))
+* remove isUM ([c85badb](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/c85badbe1752ebe2ac6358159ed714049c72dd5a))
+* reset round time ([0dd7409](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/0dd7409ffaa1f99d2a000e833e408f788220ed4c))
+* update disable game ([b18a93b](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/b18a93bfee65fe8af656a7310655cdf4ab5c0782))
+* update notice disable ([8e5c2ef](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/8e5c2ef9b96b19d9a86e934c1d575d40b559774c))
+
 ## [1.57.2](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.57.1...v1.57.2) (2024-12-16)
 
 
