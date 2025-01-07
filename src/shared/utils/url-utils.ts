@@ -81,11 +81,4 @@ export namespace UrlUtils {
 
         return buildUrl("http", path, configs, configs.clientSubDomain);
     }
-
-    export function buildProxyUrl(configs: SiteConfigs, path: string) {
-        const envEntrySpecific = configs?.entrySpecific ? `/${configs.entrySpecific}` : "";
-        const fullPath = `${envEntrySpecific}${path}`;
-
-        return buildUrl("http", fullPath, configs, configs.clientSubDomain);
-    }
 }

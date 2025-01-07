@@ -26,6 +26,4 @@ export class SiteConfigs {
     gameServiceSubDomain?: string;
     gatewaySubDomain?: string;
     clientSubDomain?: string;
-    clientSubDomain?: string;
-    entrySpecific?: string;
 }
