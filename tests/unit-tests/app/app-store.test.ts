@@ -63,6 +63,18 @@ describe("appStore tests", () => {
             // assert
             expect(store.umInfo).toEqual(umInfo);
         });
+
+        it("should post umInfo to parent", () => {
+            // arrange
+            const store = new AppStore();
+            const umInfo: UMInfo = { startTime: new Date(1000), endTime: new Date(2000), operatorId: "" };
+
+            // act
+            store.setUM(umInfo);
+
+            // assert
+            expect(BrowserDomUtils.postMessageToParent).toHaveBeenCalledWith({ isUnderMaintain: true, umInfo });
+        });
     });
 
     describe("setURLStore", () => {

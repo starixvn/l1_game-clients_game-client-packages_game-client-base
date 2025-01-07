@@ -6,3 +6,5 @@ reports/
 yarn.lock
 
 /examples/cocos-3x/profiles/v2/packages/scene.json
+
+.codegpt

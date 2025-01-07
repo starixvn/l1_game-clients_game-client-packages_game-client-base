@@ -45,6 +45,7 @@ export class AppStore {
     setUM(umInfo: UMInfo) {
         this.isUM = true;
         this.umInfo = umInfo;
+        BrowserDomUtils.postMessageToParent({ isUnderMaintain: true, umInfo });
     }
 
     setURLStore(urlParams: URLSearchParams) {
