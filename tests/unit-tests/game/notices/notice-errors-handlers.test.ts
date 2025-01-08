@@ -181,14 +181,12 @@ describe("NoticeErrorsHandlers", () => {
         let noticeStore: NoticeStore;
         let backToOperatorLobbyHandler: AppHandlers.BackToOperatorLobby;
         let authStore: AuthStore;
-        let appStore: AppStore;
         beforeAll(() => {
             gameSetting = stub<GameSetting>();
             noticeStore = stub<NoticeStore>();
             connectionStore = stub<ConnectionStore>();
             backToOperatorLobbyHandler = stub<AppHandlers.BackToOperatorLobby>();
             authStore = stub<AuthStore>({ system: AppTypes.App });
-            appStore = stub<AppStore>();
         });
 
         beforeEach(() => {
@@ -197,8 +195,7 @@ describe("NoticeErrorsHandlers", () => {
                 connectionStore,
                 noticeStore,
                 backToOperatorLobbyHandler,
-                authStore,
-                appStore
+                authStore
             );
             (Translator.gameTranslate as jest.Mock).mockReturnValueOnce("Game name");
             (Translator.getMessageFollowSystem as jest.Mock).mockReturnValueOnce("lost game connection");
@@ -242,14 +239,12 @@ describe("NoticeErrorsHandlers", () => {
         let noticeStore: NoticeStore;
         let backToOperatorLobbyHandler: AppHandlers.BackToOperatorLobby;
         let authStore: AuthStore;
-        let appStore: AppStore;
         beforeAll(() => {
             gameSetting = stub<GameSetting>();
             noticeStore = stub<NoticeStore>();
             connectionStore = stub<ConnectionStore>();
             backToOperatorLobbyHandler = stub<AppHandlers.BackToOperatorLobby>();
             authStore = stub<AuthStore>({ system: AppTypes.MobileDirect });
-            appStore = stub<AppStore>({ isLoading: false });
         });
 
         beforeEach(() => {
@@ -258,8 +253,7 @@ describe("NoticeErrorsHandlers", () => {
                 connectionStore,
                 noticeStore,
                 backToOperatorLobbyHandler,
-                authStore,
-                appStore
+                authStore
             );
             (Translator.gameTranslate as jest.Mock).mockReturnValueOnce("Game name");
             (Translator.getMessageFollowSystem as jest.Mock).mockReturnValueOnce("lost game connection");
@@ -277,12 +271,12 @@ describe("NoticeErrorsHandlers", () => {
                 type: NoticeType.Error,
                 onClose: expect.any(Function),
                 noticeInfo: NoticeInfo.LostGameConnection,
+                showBtnConfirmButton: true,
             });
             expect(Translator.getMessageFollowSystem).toHaveBeenCalledWith(AppTypes.MobileDirect, "message_lost_game_connection", {
                 gameName: "Game name",
             });
             expect(Translator.commonTranslate).toHaveBeenCalledWith("notice");
-            expect(appStore.isLoading).toBe(false);
         });
     });
 });

@@ -95,9 +95,7 @@ export namespace NoticeErrorsHandlers {
             @inject(AppHandlers.BackToOperatorLobby)
             protected readonly backToOperatorLobbyHandler: AppHandlers.BackToOperatorLobby,
             @inject(AuthStore)
-            protected readonly authStore: AuthStore,
-            @inject(AppStore)
-            protected readonly appStore: AppStore
+            protected readonly authStore: AuthStore
         ) {
             reaction(
                 () => this.connectionStore.isConnectFailed,
@@ -153,8 +151,7 @@ export namespace NoticeErrorsHandlers {
             const gameName = Translator.gameTranslate("game_name");
             const message = Translator.getMessageFollowSystem(this.authStore.system, "message_lost_game_connection", { gameName });
             const reConnect = () => {
-                this.connectionStore.initConnection();
-                this.appStore.isLoading = true;
+                window.location.reload();
             };
             this.noticeStore.addNotice({
                 message,
@@ -162,6 +159,7 @@ export namespace NoticeErrorsHandlers {
                 type: NoticeType.Error,
                 onClose: reConnect,
                 noticeInfo: NoticeInfo.LostGameConnection,
+                showBtnConfirmButton: true,
             });
         }
     }
