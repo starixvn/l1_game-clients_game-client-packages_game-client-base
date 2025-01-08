@@ -95,7 +95,9 @@ export namespace NoticeErrorsHandlers {
             @inject(AppHandlers.BackToOperatorLobby)
             protected readonly backToOperatorLobbyHandler: AppHandlers.BackToOperatorLobby,
             @inject(AuthStore)
-            protected readonly authStore: AuthStore
+            protected readonly authStore: AuthStore,
+            @inject(AppStore)
+            protected readonly appStore: AppStore
         ) {
             reaction(
                 () => this.connectionStore.isConnectFailed,
@@ -152,6 +154,7 @@ export namespace NoticeErrorsHandlers {
             const message = Translator.getMessageFollowSystem(this.authStore.system, "message_lost_game_connection", { gameName });
             const reConnect = () => {
                 this.connectionStore.initConnection();
+                this.appStore.isLoading = true;
             };
             this.noticeStore.addNotice({
                 message,
