@@ -101,14 +101,31 @@ export namespace NoticeErrorsHandlers {
                 () => this.connectionStore.isConnectFailed,
                 (isConnectFailed) => isConnectFailed && !this.isInstantApp() && this.showNotice()
             );
+
             reaction(
                 () => this.connectionStore.isDisconnect,
                 (isDisconnect) => isDisconnect && this.handleDisConnect()
+            );
+
+            reaction(
+                () => ({
+                    isConnectFailed: this.connectionStore.isConnectFailed,
+                    isDisconnect: this.connectionStore.isDisconnect,
+                }),
+                ({ isConnectFailed, isDisconnect }) => {
+                    if (this.isMobileDirect() && (isConnectFailed || isDisconnect)) {
+                        this.showMobileDirectNotice();
+                    }
+                }
             );
         }
 
         isInstantApp() {
             return this.authStore.system === AppTypes.Instant;
+        }
+
+        isMobileDirect() {
+            return this.authStore.system === AppTypes.MobileDirect;
         }
 
         showNotice() {
@@ -128,6 +145,21 @@ export namespace NoticeErrorsHandlers {
 
         handleDisConnect() {
             this.backToOperatorLobbyHandler.handle();
+        }
+
+        showMobileDirectNotice() {
+            const gameName = Translator.gameTranslate("game_name");
+            const message = Translator.getMessageFollowSystem(this.authStore.system, "message_lost_game_connection", { gameName });
+            const reConnect = () => {
+                this.connectionStore.initConnection();
+            };
+            this.noticeStore.addNotice({
+                message,
+                title: Translator.commonTranslate("notice"),
+                type: NoticeType.Error,
+                onClose: reConnect,
+                noticeInfo: NoticeInfo.LostGameConnection,
+            });
         }
     }
 }

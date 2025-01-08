@@ -231,4 +231,51 @@ describe("NoticeErrorsHandlers", () => {
             expect(backToOperatorLobbyHandler.handle).toHaveBeenCalled();
         });
     });
+
+    describe("DirectNotice", () => {
+        let handler: NoticeErrorsHandlers.BackToOperatorLobbyHandler;
+        let gameSetting: GameSetting;
+        let connectionStore: ConnectionStore;
+        let noticeStore: NoticeStore;
+        let backToOperatorLobbyHandler: AppHandlers.BackToOperatorLobby;
+        let authStore: AuthStore;
+        beforeAll(() => {
+            gameSetting = stub<GameSetting>();
+            noticeStore = stub<NoticeStore>();
+            connectionStore = stub<ConnectionStore>();
+            backToOperatorLobbyHandler = stub<AppHandlers.BackToOperatorLobby>();
+            authStore = stub<AuthStore>({ system: AppTypes.MobileDirect });
+        });
+
+        beforeEach(() => {
+            handler = new NoticeErrorsHandlers.BackToOperatorLobbyHandler(
+                gameSetting,
+                connectionStore,
+                noticeStore,
+                backToOperatorLobbyHandler,
+                authStore
+            );
+            (Translator.gameTranslate as jest.Mock).mockReturnValueOnce("Game name");
+            (Translator.getMessageFollowSystem as jest.Mock).mockReturnValueOnce("lost game connection");
+            (Translator.commonTranslate as jest.Mock).mockReturnValueOnce("Notice");
+        });
+
+        it("should add notice when showing mobile direct notice", () => {
+            // act
+            handler.showMobileDirectNotice();
+
+            // assert
+            expect(noticeStore.addNotice).toHaveBeenCalledWith({
+                message: "lost game connection",
+                title: "Notice",
+                type: NoticeType.Error,
+                onClose: expect.any(Function),
+                noticeInfo: NoticeInfo.LostGameConnection,
+            });
+            expect(Translator.getMessageFollowSystem).toHaveBeenCalledWith(AppTypes.MobileDirect, "message_lost_game_connection", {
+                gameName: "Game name",
+            });
+            expect(Translator.commonTranslate).toHaveBeenCalledWith("notice");
+        });
+    });
 });
