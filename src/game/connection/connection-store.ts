@@ -111,7 +111,6 @@ export class ConnectionStore {
     }
 
     onConnectFailed(error?: Error) {
-        console.log("isConnectFailed", true, error);
         this.isConnectFailed = true;
         this.isInstant() && this.postDisconnectMessage();
         this.handleConnectionStatus(false, error);
@@ -125,7 +124,6 @@ export class ConnectionStore {
 
     handleDisconnectionReason(reason = "") {
         if (this.isServerDisconnect(reason)) {
-            console.log("isDisconnect", true);
             this.isDisconnect = true;
             return;
         }
