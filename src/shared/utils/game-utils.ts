@@ -21,10 +21,5 @@ export class GameUtils {
 
     public static async copyToClipboard(data: string) {
         BrowserDomUtils.postMessageToParent({ copyToClipboard: data });
-        try {
-            await navigator?.clipboard?.writeText(data);
-        } catch (e) {
-            console.error(e);
-        }
     }
 }
