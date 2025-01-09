@@ -11,10 +11,6 @@ export class BrowserDomUtils {
         if (parentUrl) {
             const url = GameUtils.base64Decode(parentUrl);
             window.parent?.postMessage(data, url);
-            return;
-        }
-        if (document?.referrer) {
-            window.parent?.postMessage(data, document.referrer);
         }
     }
 }
