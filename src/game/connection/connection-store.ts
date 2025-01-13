@@ -45,6 +45,9 @@ export class ConnectionStore {
     signedIn = false;
     isDisconnect = false;
 
+    private connectionTimeout: NodeJS.Timeout;
+    private readonly CONNECTION_TIMEOUT_MS = 1000;
+
     initConnection(customizeOptions?: ISocketOption) {
         this.reset();
 
@@ -70,7 +73,17 @@ export class ConnectionStore {
 
     initBaseListener() {
         if (this.connection) {
-            this.connection.on(events.connect, this.onConnected.bind(this));
+            // Set timeout for connection
+            this.connectionTimeout = setTimeout(() => {
+                if (!this.isConnected) {
+                    this.onConnectFailed(new Error("Connection timeout - No response from server"));
+                }
+            }, this.CONNECTION_TIMEOUT_MS);
+
+            this.connection.on(events.connect, () => {
+                clearTimeout(this.connectionTimeout);
+                this.onConnected();
+            });
             this.connection.on(events.signedIn, this.onSignedIn.bind(this));
             this.connection.on(events.connectError, this.onConnectFailed.bind(this));
             this.connection.on(events.connectFailed, this.onConnectFailed.bind(this));
@@ -183,6 +196,7 @@ export class ConnectionStore {
     }
 
     reset() {
+        clearTimeout(this.connectionTimeout);
         this.connection = null;
         this.isConnected = null;
         this.isConnectFailed = false;
