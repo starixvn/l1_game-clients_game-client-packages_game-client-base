@@ -123,7 +123,14 @@ describe("ConnectionStore tests", () => {
                 store.connection = {
                     on: jest.fn(),
                 };
+                // Add mock for setTimeout and clearTimeout
+                jest.useFakeTimers();
             });
+
+            afterEach(() => {
+                jest.useRealTimers();
+            });
+
             it("should init listeners onConnected", () => {
                 // act
                 store.initBaseListener();
@@ -171,6 +178,65 @@ describe("ConnectionStore tests", () => {
                 expect(store.connection.on).toHaveBeenCalled();
                 expect(store.connection.on.mock.calls[4][0]).toBe(events.disconnect);
                 expect(store.connection.on.mock.calls[4][1].toString()).toBe(store.onDisconnected.bind(store).toString());
+            });
+
+            describe("when isMobileDirect is true", () => {
+                beforeEach(() => {
+                    authStore.system = AppTypes.MobileDirect;
+                    store.connection = {
+                        on: jest.fn(),
+                        onAny: jest.fn(),
+                        emit: jest.fn(),
+                    };
+                    // Mock clearTimeout
+                    jest.spyOn(global, "clearTimeout");
+                });
+
+                it("should set connection timeout and handle connect event with timeout clear", () => {
+                    // act
+                    store.initBaseListener();
+
+                    // assert
+                    expect(store.connection.on).toHaveBeenCalledWith(events.connect, expect.any(Function));
+
+                    // Simulate connection event
+                    store.connection.on.mock.calls[0][1]();
+
+                    // Verify clearTimeout was called
+                    expect(global.clearTimeout).toHaveBeenCalled();
+                    expect(store.isConnected).toBe(true);
+                    expect(store.connection.onAny).toHaveBeenCalled();
+                });
+
+                it("should trigger onConnectFailed when connection times out", () => {
+                    // arrange
+                    store.onConnectFailed = jest.fn();
+                    store.isConnected = false;
+
+                    // act
+                    store.initBaseListener();
+
+                    // Fast-forward through timeout
+                    jest.advanceTimersByTime(store.CONNECTION_TIMEOUT_MS);
+
+                    // assert
+                    expect(store.onConnectFailed).toHaveBeenCalledWith(new Error("Connection timeout - No response from server"));
+                });
+
+                it("should not trigger timeout if already connected", () => {
+                    // arrange
+                    store.onConnectFailed = jest.fn();
+                    store.isConnected = true;
+
+                    // act
+                    store.initBaseListener();
+
+                    // Fast-forward through timeout
+                    jest.advanceTimersByTime(store.CONNECTION_TIMEOUT_MS);
+
+                    // assert
+                    expect(store.onConnectFailed).not.toHaveBeenCalled();
+                });
             });
         });
     });
