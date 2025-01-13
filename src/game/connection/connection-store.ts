@@ -45,8 +45,8 @@ export class ConnectionStore {
     signedIn = false;
     isDisconnect = false;
 
-    connectionTimeout: NodeJS.Timeout;
-    readonly CONNECTION_TIMEOUT_MS = 1000;
+    mobileDirConnectionTimeout: NodeJS.Timeout;
+    readonly MOBILE_DIR_CONNECTION_TIMEOUT_MS = 1000;
 
     initConnection(customizeOptions?: ISocketOption) {
         this.reset();
@@ -74,14 +74,14 @@ export class ConnectionStore {
     initBaseListener() {
         if (this.connection) {
             if (this.isMobileDirect()) {
-                this.connectionTimeout = setTimeout(() => {
+                this.mobileDirConnectionTimeout = setTimeout(() => {
                     if (!this.isConnected) {
                         this.onConnectFailed(new Error("Connection timeout - No response from server"));
                     }
-                }, this.CONNECTION_TIMEOUT_MS);
+                }, this.MOBILE_DIR_CONNECTION_TIMEOUT_MS);
 
                 this.connection.on(events.connect, () => {
-                    clearTimeout(this.connectionTimeout);
+                    clearTimeout(this.mobileDirConnectionTimeout);
                     this.onConnected();
                 });
             } else {
@@ -209,6 +209,6 @@ export class ConnectionStore {
         this.isConnectFailed = false;
         this.signedIn = false;
         this.isDisconnect = false;
-        this.isMobileDirect() && clearTimeout(this?.connectionTimeout);
+        this.isMobileDirect() && clearTimeout(this?.mobileDirConnectionTimeout);
     }
 }
