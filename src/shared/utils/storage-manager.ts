@@ -132,4 +132,5 @@ export const localStorageKeys = {
     permanentGameUserSetting: "permanent-game-user-setting",
     operator: "op",
     portraitDirectMode: "portrait-direct-mode",
+    supportedGamesId: "supportedGamesId",
 };

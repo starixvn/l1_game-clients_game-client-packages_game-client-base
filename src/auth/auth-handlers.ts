@@ -244,6 +244,10 @@ export namespace AuthHandlers {
                 if (urlParams.has(URLParams.operator)) {
                     StorageManager.set(localStorageKeys.operator, urlParams.get(URLParams.operator));
                 }
+
+                if (urlParams.has(URLParams.supportedGamesId)) {
+                    StorageManager.set(localStorageKeys.supportedGamesId, urlParams.get(URLParams.supportedGamesId));
+                }
             }
         }
 

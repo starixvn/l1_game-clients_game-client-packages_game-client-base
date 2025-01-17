@@ -11,29 +11,31 @@ import { StorageManager, localStorageKeys } from "../../shared/utils/storage-man
 export namespace BoostedOddsPromotionsHandlers {
     @injectable()
     export class PromotionHelperHandlers implements IHandler<Array<BaseBoostedOddsModel>> {
+        private readonly promotionFilterStrategies = {
+            [AppTypes.Instant]: (data: Array<BaseBoostedOddsModel>) =>
+                this.filterByStorageGameIds(data, localStorageKeys.gameIdsSupportBoostedOddsForInstantSite),
+            [AppTypes.MobileDirect]: (data: Array<BaseBoostedOddsModel>) =>
+                this.filterByStorageGameIds(data, localStorageKeys.supportedGamesId),
+            default: (data: Array<BaseBoostedOddsModel>) => this.filterByOfferGames(data),
+        };
+
         constructor(
             @inject(MainPlayerStore) private readonly mainPlayerStore: MainPlayerStore,
             @inject(AuthStore) private readonly authStore: AuthStore
         ) {}
 
         handle(data: Array<BaseBoostedOddsModel>) {
-            return this.authStore.system === AppTypes.Instant
-                ? this.getPromotionsByOfferGamesForInstantVersion(data)
-                : this.getPromotionsByOfferGames(data);
+            const strategy = this.promotionFilterStrategies[this.authStore.system] || this.promotionFilterStrategies.default;
+            return strategy(data);
         }
 
-        getPromotionsByOfferGames(data: Array<BaseBoostedOddsModel>) {
+        private filterByOfferGames(data: Array<BaseBoostedOddsModel>) {
             return data.filter((promotion) => this.mainPlayerStore.offerGames?.some((game) => game.gameId === promotion.gameId));
         }
 
-        getPromotionsByOfferGamesForInstantVersion(data: Array<BaseBoostedOddsModel>) {
-            const gameIdsSupportBoostedOddsForInstantSite = StorageManager.get(localStorageKeys.gameIdsSupportBoostedOddsForInstantSite)
-                ?.toString()
-                .split(",");
-
-            return this.getPromotionsByOfferGames(data).filter((promotion) =>
-                gameIdsSupportBoostedOddsForInstantSite.some((gameId) => parseInt(gameId) === promotion.gameId)
-            );
+        private filterByStorageGameIds(data: Array<BaseBoostedOddsModel>, storageKey: string) {
+            const gameIds = StorageManager.get(storageKey)?.toString().split(",") ?? [];
+            return this.filterByOfferGames(data).filter((promotion) => gameIds.some((gameId) => parseInt(gameId) === promotion.gameId));
         }
     }
 
