@@ -29,4 +29,12 @@ export class GameConfigStore {
             Object.assign(this, gameConfigs);
         }
     }
+
+    setOdds(odds: GameServiceMessage.Odds) {
+        this.odds = odds;
+    }
+
+    setBoostedChoices(boostedChoices: string[]) {
+        this.boostedChoices = boostedChoices;
+    }
 }

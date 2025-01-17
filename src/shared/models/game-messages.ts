@@ -403,6 +403,13 @@ export namespace GameServiceMessage {
 
         static eventName = "gameConfigs";
     }
+
+    export class GameOdds {
+        values: Odds;
+        boostedChoices: string[];
+
+        static eventName = "odds";
+    }
 }
 
 export namespace NotificationServiceMessage {
