@@ -220,7 +220,7 @@ describe("ConnectionStore tests", () => {
                     jest.advanceTimersByTime(store.MOBILE_DIR_CONNECTION_TIMEOUT_MS);
 
                     // assert
-                    expect(store.onConnectFailed).toHaveBeenCalledWith(new Error("Connection timeout - No response from server"));
+                    expect(store.onConnectFailed).toHaveBeenCalled();
                 });
 
                 it("should not trigger timeout if already connected", () => {

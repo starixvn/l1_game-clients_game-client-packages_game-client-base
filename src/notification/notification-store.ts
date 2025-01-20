@@ -80,4 +80,8 @@ export class NotificationStore {
         this.isConnected = false;
         this.connection.disconnect();
     }
+
+    send(eventName: string, data?: any) {
+        this.connection?.emit(eventName, data || {});
+    }
 }

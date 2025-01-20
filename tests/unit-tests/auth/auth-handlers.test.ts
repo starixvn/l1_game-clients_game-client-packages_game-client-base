@@ -9,13 +9,13 @@ import { Mediator } from "../../../src/shared";
 
 import { NoticeStore } from "../../../src/game/notices/notice-store";
 import { PlayerSelectionHandlers } from "../../../src/game/player-selections";
+import { BrowserDomUtils } from "../../../src/shared/utils/browser-dom-utils";
 import { GameUtils } from "../../../src/shared/utils/game-utils";
 import { Translator } from "../../../src/shared/utils/localization-manager";
 import { sentryLogger } from "../../../src/shared/utils/logger";
 import { NameGenerator } from "../../../src/shared/utils/name-generator";
 import { StorageManager, localStorageKeys } from "../../../src/shared/utils/storage-manager";
 import { siteConfigs } from "../container.test";
-import { BrowserDomUtils } from "../../../src/shared/utils/browser-dom-utils";
 
 jest.mock("../../../src/shared/utils/game-utils");
 jest.mock("../../../src/shared/utils/name-generator");
@@ -41,11 +41,11 @@ jest.mock("../../../src/shared/utils/localization-manager", () => ({
     Translator: { translate: jest.fn(), gameTranslate: jest.fn(), commonTranslate: jest.fn().mockImplementation((key, option) => key) },
 }));
 
-let notificationServiceHandler: NotificationHandlers;
+let notificationServiceHandler: NotificationHandlers.Connect;
 
 describe("AuthHandlers tests", () => {
     beforeEach(() => {
-        notificationServiceHandler = new NotificationHandlers(new NotificationStore(new Mediator()), new SiteConfigs());
+        notificationServiceHandler = new NotificationHandlers.Connect(new NotificationStore(new Mediator()), new SiteConfigs());
     });
 
     describe("SignOut", () => {

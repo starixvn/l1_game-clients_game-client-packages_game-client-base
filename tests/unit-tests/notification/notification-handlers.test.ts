@@ -1,10 +1,11 @@
 import { stub } from "jest-auto-stub";
-import { NotificationStore } from "../../../src/notification";
-import { NotificationHandlers } from "../../../src/notification/notification-handlers";
 import { io } from "socket.io-client/dist/socket.io.js";
 import { io as ioMsgPack } from "socket.io-client/dist/socket.io.msgpack.min.js";
-import { siteConfigs } from "../container.test";
+import { NotificationStore } from "../../../src/notification";
+import { NotificationHandlers } from "../../../src/notification/notification-handlers";
+import { NotificationServiceMessage } from "../../../src/shared";
 import { UrlUtils } from "../../../src/shared/utils";
+import { siteConfigs } from "../container.test";
 
 jest.mock("../../../src/shared/utils/storage-manager", () => ({
     StorageManager: {
@@ -42,12 +43,12 @@ const fakeSession = {
 describe("NotificationHandlers tests", () => {
     describe("handle", () => {
         let cloneSiteConfigs;
-        let handler: NotificationHandlers;
+        let handler: NotificationHandlers.Connect;
         let notificationStore: NotificationStore;
         beforeEach(() => {
             cloneSiteConfigs = { ...siteConfigs };
             notificationStore = stub<NotificationStore>();
-            handler = new NotificationHandlers(notificationStore, cloneSiteConfigs);
+            handler = new NotificationHandlers.Connect(notificationStore, cloneSiteConfigs);
         });
 
         describe("when enableMsgpackParserOnNotification = true & isDev = true", () => {
@@ -109,6 +110,26 @@ describe("NotificationHandlers tests", () => {
                 expect(io).toHaveBeenCalledWith("https://notification.com", options);
                 expect(notificationStore.connection).toEqual(connection);
                 expect(notificationStore.initListener).toHaveBeenCalled();
+            });
+        });
+    });
+
+    describe("InitPromotionNotifications", () => {
+        let handler: NotificationHandlers.InitPromotionNotifications;
+        let notificationStore: NotificationStore;
+
+        beforeEach(() => {
+            notificationStore = stub<NotificationStore>();
+            handler = new NotificationHandlers.InitPromotionNotifications(notificationStore);
+        });
+
+        describe("handle", () => {
+            it("should call notificationStore.send with promotion notifications event name", () => {
+                // act
+                handler.handle();
+
+                // assert
+                expect(notificationStore.send).toHaveBeenCalledWith(NotificationServiceMessage.PromotionNotifications.eventName);
             });
         });
     });

@@ -50,7 +50,8 @@ export namespace AuthHandlers {
             @inject(MainPlayerStore) private readonly mainPlayerStore: MainPlayerStore,
             @inject(UserService) private readonly userService: UserService,
             @inject(SignOut) private readonly signOutHandler: SignOut,
-            @inject(NotificationHandlers) private readonly notificationHandlers: NotificationHandlers
+            @inject(NotificationHandlers.Connect)
+            private readonly notificationHandlers: NotificationHandlers.Connect
         ) {}
 
         async handle({ session = "", username = "" }) {

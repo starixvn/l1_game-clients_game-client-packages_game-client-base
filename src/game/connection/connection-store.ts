@@ -76,7 +76,7 @@ export class ConnectionStore {
             if (this.isMobileDirect()) {
                 this.mobileDirConnectionTimeout = setTimeout(() => {
                     if (!this.isConnected) {
-                        this.onConnectFailed(new Error("Connection timeout - No response from server"));
+                        this.onConnectFailed();
                     }
                 }, this.MOBILE_DIR_CONNECTION_TIMEOUT_MS);
 
