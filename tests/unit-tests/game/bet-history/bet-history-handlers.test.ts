@@ -1,12 +1,16 @@
 import { stub } from "jest-auto-stub";
 import { BetHistoryHandlers, BetHistoryModel, BetHistoryStore } from "../../../../src/game/bet-history";
 import { ConnectionStore } from "../../../../src/game/connection";
+import { NoticeStore } from "../../../../src/game/notices";
+import { MainPlayerStore } from "../../../../src/players";
 import { GameClientEmitMessage } from "../../../../src/shared";
 
 describe("BetHistoryPopupHandlers tests", () => {
     describe("handle", () => {
         it("should call to set store data", () => {
-            const store = new BetHistoryStore();
+            const noticeStore = stub<NoticeStore>();
+            const mainPlayerStore = new MainPlayerStore(noticeStore);
+            const store = new BetHistoryStore(mainPlayerStore);
             store.setData = jest.fn();
             const data: BetHistoryModel = {
                 page: 1,
