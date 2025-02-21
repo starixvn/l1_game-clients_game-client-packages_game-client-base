@@ -1,3 +1,28 @@
+## [1.57.4](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.57.3...v1.57.4) (2025-02-21)
+
+
+### Bug Fixes
+
+* add fractionalOddsFormat on bet history Model ([6a1a9e9](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/6a1a9e9388bae86262dad0730de391b398f14c12))
+* add handle odds ([d0ab7f9](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/d0ab7f9c385c07b09fa95f7a55ef7713b8f50fb1))
+* add timeout connect WS ([e0aeac7](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/e0aeac761b109c93312a6c2b684985044e855418))
+* post UM info to parent window ([3cd5bf2](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/3cd5bf280c74efd761d7e3e8ea882769aae22ba5))
+* reload page when reconnect ([f3a9173](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/f3a91737e89a283a49ee9059227de1196059989b))
+* remove copy to clipboard ([9e3736d](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/9e3736d51480d510876c3a368a25ad2456be96b3))
+* remove logs ([f3b3918](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/f3b391801e3c6583f0b226da3dcba1f18268947a))
+* remove unused code ([6833b96](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/6833b96190a9bb4f271ed95f990c193945957d49))
+* show loading when handle disconnect ([f5d85d2](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/f5d85d2b26c74476e5524782f4e585d9773f4d4c))
+* update clear storage ([85d1180](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/85d1180300d3178ef4096da0494da5d4a18a3ab4))
+* update config ([6a1b964](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/6a1b964f38c1e65dd63e624942f939f8dbdf5969))
+* update handle disconnect ([517931d](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/517931d02a7d3a8b1f94a760fb22f98fbc72d382))
+* update init promotion ([f42a6b1](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/f42a6b1f951b194368c55963d5d6f56aec733b89))
+* update isOpenPortraitDirectly ([93a9823](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/93a98231673e81e28e567e798414917f02bc73ef))
+* update isOpenPortraitDirectly ([162621e](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/162621e24cce8e88ec7b2f3694b61cac9e6489d9))
+* update isOpenPortraitDirectly - add isAutoCreateNickname ([3fd7cc3](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/3fd7cc3b76ebbf0ee6fc45e01db3c3a004777cb1))
+* update isOpenPortraitDirectly - MobileDirect ([e0a8271](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/e0a8271e80fb56fb657b2c16316b234908aa4ecf))
+* update show promotions follow supported gameIds ([b747d7f](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/b747d7f06af58ecdb054ec5ea4e6b7f69aa52309))
+* update test connect store ([225ed23](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/225ed23414d1d82e4e05d840a43b204fc7ca4e57))
+
 ## [1.57.3](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.57.2...v1.57.3) (2024-12-18)
 
 
