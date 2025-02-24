@@ -1,6 +1,6 @@
 {
     "name": "@sg/game-client-base",
-    "version": "1.58.0",
+    "version": "1.58.1-bj.5",
     "type": "commonjs",
     "types": "dist/index.d.ts",
     "main": "dist/index.js",
@@ -25,6 +25,7 @@
         "pub": "tsc && npm publish --registry http://npm.lumigame.com",
         "betaver": "npm version prerelease --preid beta",
         "pubbeta": "tsc && npm publish --registry http://npm.lumigame.com --tag beta",
+        "pubbeta-bj": "tsc && npm publish --registry http://npm.lumigame.com --tag bj",
         "semantic-release": "semantic-release",
         "generate-tolgee-data": "ts-node ./tolgee-generator/index.ts",
         "load-tolgee-data": "ts-node ./tolgee-generator/load-tolgee-realtime.ts",

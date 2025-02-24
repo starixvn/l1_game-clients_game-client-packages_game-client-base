@@ -10,6 +10,7 @@ export * as GameBaccaratX from "./game-baccaratx";
 export * as GameCrash from "./game-crash";
 export * as RoundPF from "./game/round-pf";
 export * as GamePusoy from "./game-pusoy";
+export * as GameBlackjack from "./game-blackjack";
 export * as Notification from "./notification";
 export * as Player from "./players";
 export * as Shared from "./shared";
@@ -18,4 +19,3 @@ export * from "./shared/models/game-messages";
 export * from "./shared/utils";
 export * from "./shared/utils/localization-manager";
 export * as Undermaintenace from "./under-maintenance";
-
