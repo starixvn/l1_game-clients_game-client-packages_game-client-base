@@ -111,6 +111,30 @@ export class ConnectionStore {
         } else {
             this.mediator.emit(event, data);
         }
+
+        this.emitMultipleKeyEvents(data);
+    }
+
+    emitMultipleKeyEvents(data: any) {
+        if (!data || Object.keys(data).length < 2) {
+            return;
+        }
+
+        const multipleKeyEvents = this.mediator.multipleKeyEvents;
+
+        for (const eventName of multipleKeyEvents) {
+            const requiredKeys = eventName.split(",").map((key) => key.trim());
+
+            const hasAllKeys = requiredKeys.every((key) => !!data[key]);
+            if (hasAllKeys) {
+                const eventData = requiredKeys.reduce((acc, key) => {
+                    acc[key] = data[key];
+                    return acc;
+                }, {} as Record<string, any>);
+
+                this.mediator.emit(eventName, eventData);
+            }
+        }
     }
 
     signIn() {

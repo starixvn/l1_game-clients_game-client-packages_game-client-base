@@ -15,9 +15,12 @@ export interface IMultipleHandlers {
 export class Mediator {
     private readonly event = new EventEmitter2({ maxListeners: 0 });
 
+    readonly multipleKeyEvents: string[] = [];
+
     registerHandler(handler: IHandler<any>) {
         if (!!handler.name) {
             this.event.on(handler.name, handler.handle.bind(handler));
+            this.addMultipleKeyEvent(handler.name);
         }
     }
 
@@ -25,8 +28,18 @@ export class Mediator {
         if (handlers && handlers.eventHandleList?.length > 0) {
             handlers.eventHandleList?.forEach((handler) => {
                 this.event.on(handler.name, handler.handle.bind(handlers));
+                this.addMultipleKeyEvent(handler.name);
             });
         }
+    }
+
+    addMultipleKeyEvent(name: string) {
+        const keys = name.split(",");
+        if (keys.length < 2) {
+            return;
+        }
+
+        this.multipleKeyEvents.push(name);
     }
 
     onAny(handler: (...params: any[]) => void) {
