@@ -1,3 +1,10 @@
+# [1.58.0](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.57.4...v1.58.0) (2025-02-25)
+
+
+### Features
+
+* Support Multiple Keys Handler ([8e78ada](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/8e78ada3274e0fe7da80405ae31cad5a83151e88))
+
 ## [1.57.4](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.57.3...v1.57.4) (2025-02-21)
 
 
