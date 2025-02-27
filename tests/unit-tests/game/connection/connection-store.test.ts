@@ -217,7 +217,7 @@ describe("ConnectionStore tests", () => {
                     store.initBaseListener();
 
                     // Fast-forward through timeout
-                    jest.advanceTimersByTime(store.MOBILE_DIR_CONNECTION_TIMEOUT_MS);
+                    jest.advanceTimersByTime(store.DEFAULT_CONNECTION_TIMEOUT);
 
                     // assert
                     expect(store.onConnectFailed).toHaveBeenCalled();
@@ -232,7 +232,7 @@ describe("ConnectionStore tests", () => {
                     store.initBaseListener();
 
                     // Fast-forward through timeout
-                    jest.advanceTimersByTime(store.MOBILE_DIR_CONNECTION_TIMEOUT_MS);
+                    jest.advanceTimersByTime(store.DEFAULT_CONNECTION_TIMEOUT);
 
                     // assert
                     expect(store.onConnectFailed).not.toHaveBeenCalled();

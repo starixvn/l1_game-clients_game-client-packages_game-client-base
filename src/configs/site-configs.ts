@@ -11,6 +11,8 @@ export class SiteConfigs {
     websocket: {
         proxyPath: string;
         route: string;
+        // Connection timeout in milliseconds
+        connectionTimeout?: number;
     };
     subDirectory?: string;
     isDev?: boolean;

@@ -30,6 +30,8 @@ export interface ISocketOption {
 
 @injectable()
 export class ConnectionStore {
+    readonly DEFAULT_CONNECTION_TIMEOUT = 1000;
+
     constructor(
         @inject(Mediator) protected readonly mediator: Mediator,
         @inject(GameSetting) protected readonly gameSetting: GameSetting,
@@ -46,7 +48,6 @@ export class ConnectionStore {
     isDisconnect = false;
 
     mobileDirConnectionTimeout: NodeJS.Timeout;
-    readonly MOBILE_DIR_CONNECTION_TIMEOUT_MS = 1000;
 
     initConnection(customizeOptions?: ISocketOption) {
         this.reset();
@@ -78,7 +79,7 @@ export class ConnectionStore {
                     if (!this.isConnected) {
                         this.onConnectFailed();
                     }
-                }, this.MOBILE_DIR_CONNECTION_TIMEOUT_MS);
+                }, this.siteConfigs.websocket.connectionTimeout ?? this.DEFAULT_CONNECTION_TIMEOUT);
 
                 this.connection.on(events.connect, () => {
                     clearTimeout(this.mobileDirConnectionTimeout);
