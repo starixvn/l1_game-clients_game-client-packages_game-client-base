@@ -11,8 +11,6 @@ export class SiteConfigs {
     websocket: {
         proxyPath: string;
         route: string;
-        // Connection timeout in milliseconds
-        connectionTimeout?: number;
     };
     subDirectory?: string;
     isDev?: boolean;
@@ -28,4 +26,5 @@ export class SiteConfigs {
     gameServiceSubDomain?: string;
     gatewaySubDomain?: string;
     clientSubDomain?: string;
+    wsConnectionTimeoutMs?: number;
 }

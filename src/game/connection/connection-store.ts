@@ -79,7 +79,7 @@ export class ConnectionStore {
                     if (!this.isConnected) {
                         this.onConnectFailed();
                     }
-                }, this.siteConfigs.websocket.connectionTimeout ?? this.DEFAULT_CONNECTION_TIMEOUT);
+                }, this.siteConfigs.wsConnectionTimeoutMs ?? this.DEFAULT_CONNECTION_TIMEOUT);
 
                 this.connection.on(events.connect, () => {
                     clearTimeout(this.mobileDirConnectionTimeout);
