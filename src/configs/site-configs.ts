@@ -26,5 +26,5 @@ export class SiteConfigs {
     gameServiceSubDomain?: string;
     gatewaySubDomain?: string;
     clientSubDomain?: string;
-    wsConnectionTimeoutMs?: number;
+    mobileDirTimeoutMs?: number;
 }

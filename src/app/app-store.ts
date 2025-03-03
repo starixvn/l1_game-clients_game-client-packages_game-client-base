@@ -22,6 +22,11 @@ export interface IPortraitDirectMode {
     isPortraitDirectMode: boolean;
 }
 
+export interface IPortraitMode {
+    session: string;
+    isPortraitMode: boolean;
+}
+
 @injectable()
 export class AppStore {
     isUM = false;
@@ -37,6 +42,7 @@ export class AppStore {
     isTouchedScreen = false;
     isClearStorage = false;
     isPortraitDirectMode = false;
+    isPortraitMode = false;
 
     constructor() {
         makeAutoObservable(this);
@@ -87,6 +93,10 @@ export class AppStore {
             this.isPortraitDirectMode = true;
             this.isAutoCreateNickname = true;
         }
+
+        if (JSON.parse(urlParams.get(URLParams?.isPortraitMode))) {
+            this.isPortraitMode = true;
+        }
     }
 
     private isPlayForFunMode(refData: string) {
@@ -122,6 +132,15 @@ export class AppStore {
         StorageManager.set(localStorageKeys.portraitDirectMode, data);
     }
 
+    savePortraitModeInfo() {
+        const sessionInfo = StorageManager.get(localStorageKeys.session) as ISessionInfo;
+        const data: IPortraitMode = {
+            session: sessionInfo.session,
+            isPortraitMode: this.isPortraitMode,
+        };
+        StorageManager.set(localStorageKeys.portraitMode, data);
+    }
+
     saveReturnUrl() {
         const { returnUrl } = this.urlInfo;
         returnUrl && StorageManager.set(localStorageKeys.returnUrl, returnUrl);
@@ -153,6 +172,16 @@ export class AppStore {
             const sessionInfo = StorageManager.get(localStorageKeys.session) as ISessionInfo;
             if (sessionInfo.session === data.session) {
                 this.isPortraitDirectMode = data.isPortraitDirectMode;
+            }
+        }
+    }
+
+    loadPortraitMode() {
+        const data = StorageManager.get(localStorageKeys.portraitMode) as IPortraitMode;
+        if (data) {
+            const sessionInfo = StorageManager.get(localStorageKeys.session) as ISessionInfo;
+            if (sessionInfo.session === data.session) {
+                this.isPortraitMode = data.isPortraitMode;
             }
         }
     }

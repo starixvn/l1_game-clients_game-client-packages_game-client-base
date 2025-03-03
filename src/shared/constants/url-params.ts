@@ -14,4 +14,5 @@ export const URLParams = {
     gameIdsSupportBoostedOddsForInstantSite: "gameIdsSupportBoostedOddsForInstantSite",
     operator: "op",
     supportedGamesId: "supportedGamesId",
+    isPortraitMode: "isPortrait",
 };

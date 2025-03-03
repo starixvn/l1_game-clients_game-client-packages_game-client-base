@@ -2,6 +2,7 @@ import { inject, injectable } from "inversify";
 import { makeAutoObservable } from "mobx";
 import { Socket, io } from "socket.io-client/dist/socket.io.js";
 import { io as ioMsgPack } from "socket.io-client/dist/socket.io.msgpack.min.js";
+import { AppStore } from "../../app/app-store";
 import { AuthStore, ISessionInfo } from "../../auth";
 import { SiteConfigs } from "../../configs/site-configs";
 import { GameClientEmitMessage, Mediator } from "../../shared";
@@ -30,13 +31,14 @@ export interface ISocketOption {
 
 @injectable()
 export class ConnectionStore {
-    readonly DEFAULT_CONNECTION_TIMEOUT = 1000;
+    readonly DEFAULT_MOBILE_DIRECT_TIMEOUT_MS = 1000;
 
     constructor(
         @inject(Mediator) protected readonly mediator: Mediator,
         @inject(GameSetting) protected readonly gameSetting: GameSetting,
         @inject(SiteConfigs) protected readonly siteConfigs: SiteConfigs,
-        @inject(AuthStore) protected readonly authStore: AuthStore
+        @inject(AuthStore) protected readonly authStore: AuthStore,
+        @inject(AppStore) protected readonly appStore: AppStore
     ) {
         makeAutoObservable(this);
     }
@@ -74,12 +76,13 @@ export class ConnectionStore {
 
     initBaseListener() {
         if (this.connection) {
-            if (this.isMobileDirect()) {
+            if (this.isDirectModeOrPortrait()) {
+                console.log("isMobileDirect--");
                 this.mobileDirConnectionTimeout = setTimeout(() => {
                     if (!this.isConnected) {
                         this.onConnectFailed();
                     }
-                }, this.siteConfigs.wsConnectionTimeoutMs ?? this.DEFAULT_CONNECTION_TIMEOUT);
+                }, this.siteConfigs.mobileDirTimeoutMs ?? this.DEFAULT_MOBILE_DIRECT_TIMEOUT_MS);
 
                 this.connection.on(events.connect, () => {
                     clearTimeout(this.mobileDirConnectionTimeout);
@@ -180,6 +183,7 @@ export class ConnectionStore {
         this.signedIn = connected;
         this.connection.disconnect();
         error && this.logError(error);
+        this.appStore.isLoading = false;
     }
 
     handleDisconnectInstant(reason: string | unknown) {
@@ -216,8 +220,8 @@ export class ConnectionStore {
         return this.authStore.system === AppTypes.Instant;
     }
 
-    private isMobileDirect() {
-        return this.authStore.system === AppTypes.MobileDirect;
+    private isDirectModeOrPortrait() {
+        return this.authStore.system === AppTypes.MobileDirect || this.appStore.isPortraitMode;
     }
 
     send(eventName: string, data: any) {
@@ -234,6 +238,6 @@ export class ConnectionStore {
         this.isConnectFailed = false;
         this.signedIn = false;
         this.isDisconnect = false;
-        this.isMobileDirect() && clearTimeout(this?.mobileDirConnectionTimeout);
+        this.isDirectModeOrPortrait() && clearTimeout(this?.mobileDirConnectionTimeout);
     }
 }

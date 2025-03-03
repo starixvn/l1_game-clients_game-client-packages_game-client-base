@@ -1,14 +1,17 @@
 import { stub } from "jest-auto-stub";
 import { JoinGameHandler, JoinGameStore } from "../../../../src/game/join-game";
+import { AppStore } from "../../../../src/app/app-store";
 
 describe("JoinGameHandler", () => {
     let handler: JoinGameHandler;
     let joinGameStore: JoinGameStore;
+    let appStore: AppStore;
 
     beforeEach(() => {
         joinGameStore = stub<JoinGameStore>();
+        appStore = stub<AppStore>();
 
-        handler = new JoinGameHandler(joinGameStore);
+        handler = new JoinGameHandler(joinGameStore, appStore);
     });
 
     afterEach(() => {
