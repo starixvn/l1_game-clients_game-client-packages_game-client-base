@@ -50,8 +50,6 @@ export class ConnectionStore {
     signedIn = false;
     isDisconnect = false;
 
-    mobileDirConnectionTimeout: NodeJS.Timeout;
-
     initConnection(customizeOptions?: ISocketOption) {
         this.reset();
 
