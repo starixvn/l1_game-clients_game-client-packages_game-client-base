@@ -27,6 +27,7 @@ export interface ISocketOption {
     upgrade?: boolean;
     path?: string;
     extraHeaders?: object;
+    timeout?: number;
 }
 
 @injectable()
@@ -63,6 +64,11 @@ export class ConnectionStore {
             upgrade: false,
             forceNew: true,
         };
+
+        if (this.siteConfigs?.wsTimeout) {
+            optionsDefault.timeout = this.siteConfigs.wsTimeout;
+        }
+
         const options = { ...optionsDefault, ...customizeOptions };
 
         if (this.siteConfigs.enableMsgpackParserAllGames) {
@@ -76,22 +82,7 @@ export class ConnectionStore {
 
     initBaseListener() {
         if (this.connection) {
-            if (this.isDirectModeOrPortrait()) {
-                console.log("isMobileDirect--");
-                this.mobileDirConnectionTimeout = setTimeout(() => {
-                    if (!this.isConnected) {
-                        this.onConnectFailed();
-                    }
-                }, this.siteConfigs.mobileDirTimeoutMs ?? this.DEFAULT_MOBILE_DIRECT_TIMEOUT_MS);
-
-                this.connection.on(events.connect, () => {
-                    clearTimeout(this.mobileDirConnectionTimeout);
-                    this.onConnected();
-                });
-            } else {
-                this.connection.on(events.connect, this.onConnected.bind(this));
-            }
-
+            this.connection.on(events.connect, this.onConnected.bind(this));
             this.connection.on(events.signedIn, this.onSignedIn.bind(this));
             this.connection.on(events.connectError, this.onConnectFailed.bind(this));
             this.connection.on(events.connectFailed, this.onConnectFailed.bind(this));
@@ -220,10 +211,6 @@ export class ConnectionStore {
         return this.authStore.system === AppTypes.Instant;
     }
 
-    private isDirectModeOrPortrait() {
-        return this.authStore.system === AppTypes.MobileDirect || this.appStore.isPortraitMode;
-    }
-
     send(eventName: string, data: any) {
         this.connection?.emit(eventName, data);
     }
@@ -238,6 +225,5 @@ export class ConnectionStore {
         this.isConnectFailed = false;
         this.signedIn = false;
         this.isDisconnect = false;
-        this.isDirectModeOrPortrait() && clearTimeout(this?.mobileDirConnectionTimeout);
     }
 }

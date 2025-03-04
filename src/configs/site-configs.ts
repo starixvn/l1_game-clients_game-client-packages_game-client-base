@@ -12,6 +12,7 @@ export class SiteConfigs {
         proxyPath: string;
         route: string;
     };
+    wsTimeout?: number;
     subDirectory?: string;
     isDev?: boolean;
     userServiceUrlDev?: string;
@@ -26,5 +27,4 @@ export class SiteConfigs {
     gameServiceSubDomain?: string;
     gatewaySubDomain?: string;
     clientSubDomain?: string;
-    mobileDirTimeoutMs?: number;
 }

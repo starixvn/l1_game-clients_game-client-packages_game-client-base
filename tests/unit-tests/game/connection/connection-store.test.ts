@@ -127,117 +127,52 @@ describe("ConnectionStore tests", () => {
             beforeEach(() => {
                 store.connection = {
                     on: jest.fn().mockImplementation((event, handler) => {
-                        // Store the handler for later use
                         store.connection[event] = handler;
                         return store.connection;
                     }),
                     onAny: jest.fn(),
                     emit: jest.fn(),
                 } as any;
-
-                // Add mock for setTimeout and clearTimeout
-                jest.useFakeTimers();
-                jest.spyOn(global, "clearTimeout");
             });
 
-            afterEach(() => {
-                jest.useRealTimers();
-                jest.clearAllMocks();
-            });
-
-            describe("when isDirectModeOrPortrait is false", () => {
-                beforeEach(() => {
-                    authStore.system = AppTypes.Club;
-                    appStore.isPortraitMode = false;
-                });
-
-                it("should init listeners onConnected", () => {
-                    // act
-                    store.initBaseListener();
-
-                    // assert
-                    expect(store.connection.on).toHaveBeenCalled();
-                    expect(store.connection.on.mock.calls[0][0]).toBe(events.connect);
-                    expect(store.connection.on.mock.calls[0][1].toString()).toBe(store.onConnected.bind(store).toString());
-                });
-            });
-
-            describe("when isDirectModeOrPortrait is true", () => {
-                beforeEach(() => {
-                    // Mock either MobileDirect or PortraitMode
-                    authStore.system = AppTypes.MobileDirect;
-                    // or
-                    // appStore.isPortraitMode = true;
-                });
-
-                it("should set timeout and handle connect with timeout clear", () => {
-                    // act
-                    store.initBaseListener();
-
-                    // Get the connect handler
-                    const connectHandler = store.connection.on.mock.calls.find((call) => call[0] === events.connect)[1];
-
-                    // Call the connect handler
-                    connectHandler();
-
-                    // assert
-                    expect(clearTimeout).toHaveBeenCalledWith(store.mobileDirConnectionTimeout);
-                });
-
-                it("should call onConnectFailed when timeout expires", () => {
-                    // arrange
-                    store.onConnectFailed = jest.fn();
-                    store.isConnected = false;
-
-                    // act
-                    store.initBaseListener();
-
-                    // Fast-forward timer
-                    jest.advanceTimersByTime(store.DEFAULT_MOBILE_DIRECT_TIMEOUT_MS);
-
-                    // assert
-                    expect(store.onConnectFailed).toHaveBeenCalled();
-                });
-
-                it("should not call onConnectFailed if already connected", () => {
-                    // arrange
-                    store.onConnectFailed = jest.fn();
-                    store.isConnected = true;
-
-                    // act
-                    store.initBaseListener();
-
-                    // Fast-forward timer
-                    jest.advanceTimersByTime(store.DEFAULT_MOBILE_DIRECT_TIMEOUT_MS);
-
-                    // assert
-                    expect(store.onConnectFailed).not.toHaveBeenCalled();
-                });
-            });
-
-            it("should init listeners onSignedIn", () => {
+            it("should init all required event listeners", () => {
                 // act
                 store.initBaseListener();
 
                 // assert
+                expect(store.connection.on).toHaveBeenCalledWith(events.connect, expect.any(Function));
                 expect(store.connection.on).toHaveBeenCalledWith(events.signedIn, expect.any(Function));
-            });
-
-            it("should init listeners for error events", () => {
-                // act
-                store.initBaseListener();
-
-                // assert
                 expect(store.connection.on).toHaveBeenCalledWith(events.connectError, expect.any(Function));
                 expect(store.connection.on).toHaveBeenCalledWith(events.connectFailed, expect.any(Function));
+                expect(store.connection.on).toHaveBeenCalledWith(events.disconnect, expect.any(Function));
             });
 
-            it("should init listeners for disconnect", () => {
+            it("should bind correct handlers to events", () => {
                 // act
                 store.initBaseListener();
 
                 // assert
-                expect(store.connection.on).toHaveBeenCalledWith(events.disconnect, expect.any(Function));
+                const calls = store.connection.on.mock.calls;
+                expect(calls.find((call) => call[0] === events.connect)[1].toString()).toBe(store.onConnected.bind(store).toString());
+                expect(calls.find((call) => call[0] === events.signedIn)[1].toString()).toBe(store.onSignedIn.bind(store).toString());
+                expect(calls.find((call) => call[0] === events.connectError)[1].toString()).toBe(
+                    store.onConnectFailed.bind(store).toString()
+                );
+                expect(calls.find((call) => call[0] === events.connectFailed)[1].toString()).toBe(
+                    store.onConnectFailed.bind(store).toString()
+                );
+                expect(calls.find((call) => call[0] === events.disconnect)[1].toString()).toBe(store.onDisconnected.bind(store).toString());
+            });
+        });
+
+        describe("when connection is null", () => {
+            beforeEach(() => {
+                store.connection = null;
+            });
+
+            it("should not throw error", () => {
+                // act & assert
+                expect(() => store.initBaseListener()).not.toThrow();
             });
         });
     });
@@ -513,44 +448,6 @@ describe("ConnectionStore tests", () => {
             expect(store.isConnected).toBeNull();
             expect(store.isConnectFailed).toBe(false);
             expect(store.signedIn).toBe(false);
-        });
-    });
-
-    describe("isDirectModeOrPortrait", () => {
-        it("should return true when system is MobileDirect", () => {
-            // Arrange
-            authStore.system = AppTypes.MobileDirect;
-            appStore.isPortraitMode = false;
-
-            // Act & Assert
-            expect(store["isDirectModeOrPortrait"]()).toBe(true);
-        });
-
-        it("should return true when isPortraitMode is true", () => {
-            // Arrange
-            authStore.system = AppTypes.Club;
-            appStore.isPortraitMode = true;
-
-            // Act & Assert
-            expect(store["isDirectModeOrPortrait"]()).toBe(true);
-        });
-
-        it("should return true when both MobileDirect and isPortraitMode are true", () => {
-            // Arrange
-            authStore.system = AppTypes.MobileDirect;
-            appStore.isPortraitMode = true;
-
-            // Act & Assert
-            expect(store["isDirectModeOrPortrait"]()).toBe(true);
-        });
-
-        it("should return false when neither MobileDirect nor isPortraitMode", () => {
-            // Arrange
-            authStore.system = AppTypes.Club;
-            appStore.isPortraitMode = false;
-
-            // Act & Assert
-            expect(store["isDirectModeOrPortrait"]()).toBe(false);
         });
     });
 });

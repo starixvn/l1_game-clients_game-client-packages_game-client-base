@@ -182,7 +182,6 @@ export namespace AuthHandlers {
                     this.appStore.loadReturnUrlAnd();
                     this.appStore.loadDirectMode();
                     this.appStore.loadPortraitDirectMode();
-                    this.appStore.loadPortraitMode();
                     this.appStore.loadApp();
                     await this.handleAuthorize();
                 }
@@ -225,10 +224,6 @@ export namespace AuthHandlers {
 
             if (this.appStore.isPortraitDirectMode) {
                 this.appStore.savePortraitDirectModeInfo();
-            }
-
-            if (this.appStore.isPortraitMode) {
-                this.appStore.savePortraitModeInfo();
             }
 
             this.appStore.saveReturnUrl();
