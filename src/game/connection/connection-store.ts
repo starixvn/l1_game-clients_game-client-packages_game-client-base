@@ -32,8 +32,6 @@ export interface ISocketOption {
 
 @injectable()
 export class ConnectionStore {
-    readonly DEFAULT_MOBILE_DIRECT_TIMEOUT_MS = 3000;
-
     constructor(
         @inject(Mediator) protected readonly mediator: Mediator,
         @inject(GameSetting) protected readonly gameSetting: GameSetting,
