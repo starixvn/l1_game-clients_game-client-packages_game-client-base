@@ -12,7 +12,7 @@ export class SiteConfigs {
         proxyPath: string;
         route: string;
     };
-    wsTimeout?: number;
+    websocketOptions?: any;
     subDirectory?: string;
     isDev?: boolean;
     userServiceUrlDev?: string;

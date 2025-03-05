@@ -61,10 +61,6 @@ export class ConnectionStore {
             forceNew: true,
         };
 
-        if (this.siteConfigs?.wsTimeout) {
-            optionsDefault.timeout = this.siteConfigs.wsTimeout;
-        }
-
         const options = { ...optionsDefault, ...customizeOptions };
 
         if (this.siteConfigs.enableMsgpackParserAllGames) {

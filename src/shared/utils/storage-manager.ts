@@ -133,5 +133,4 @@ export const localStorageKeys = {
     operator: "op",
     portraitDirectMode: "portrait-direct-mode",
     supportedGamesId: "supportedGamesId",
-    portraitMode: "portrait-mode",
 };
