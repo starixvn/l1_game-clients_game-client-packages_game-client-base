@@ -1,3 +1,14 @@
+## [1.58.1](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.58.0...v1.58.1) (2025-03-05)
+
+
+### Bug Fixes
+
+* add connectionTimeout on site-configs ([52c8332](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/52c83323b43779781ec6a65a4f6fcc705f9b65b1))
+* handle when open portrait mode ([18725eb](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/18725ebe95e1e9dda0e8587b5899a453bbc7ed47))
+* increase timeout when connect WS ([b144cc7](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/b144cc7af2154114bfc20a19b2bcee332b55ed07))
+* remove unused code ([94299a7](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/94299a73c8d949394d640fb6111b6e855242dc0d))
+* update connect store remove check direct or portrait mode ([1aad5c3](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/1aad5c322d5be2909f032b42766d9b7644049fca))
+
 # [1.58.0](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.57.4...v1.58.0) (2025-02-25)
 
 
