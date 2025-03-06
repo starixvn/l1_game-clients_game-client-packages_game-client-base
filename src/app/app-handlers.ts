@@ -24,12 +24,11 @@ export namespace AppHandlers {
                         BrowserDomUtils.replaceParentLocation(GameUtils.base64Decode(this.appStore.urlInfo.returnUrl));
                     } else {
                         if (this.appStore.isStandalone) {
-                            const session = this.getSessionInfo();
                             const lobbyId = 0;
                             const url = new URL(
-                                `${GameUtils.base64Decode(this.appStore.urlInfo.returnUrl)}/?session=${session}&gameId=${lobbyId}&cg=${
-                                    this.appStore.currencyGroup
-                                }`
+                                `${GameUtils.base64Decode(
+                                    this.appStore.urlInfo.returnUrl
+                                )}/?session=${this.getSessionInfo()}&gameId=${lobbyId}&cg=${this.appStore.currencyGroup}`
                             );
                             console.log("url back to lobby", url);
 
@@ -65,13 +64,9 @@ export namespace AppHandlers {
             };
         }
 
-        private getSessionInfo(): {
-            session: string;
-        } {
+        private getSessionInfo() {
             const sessionInfo = StorageManager.get(localStorageKeys.session) as ISessionInfo;
-            return {
-                session: GameUtils.base64Encode(JSON.stringify(sessionInfo)),
-            };
+            return GameUtils.base64Encode(JSON.stringify(sessionInfo));
         }
     }
 
