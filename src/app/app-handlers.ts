@@ -31,6 +31,7 @@ export namespace AppHandlers {
                                     this.appStore.currencyGroup
                                 }`
                             );
+                            console.log("url back to lobby", url);
 
                             window.location.replace(url);
                         } else {
