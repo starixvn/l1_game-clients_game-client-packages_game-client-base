@@ -2,6 +2,7 @@ import { inject, injectable } from "inversify";
 import { ISessionInfo } from "../auth";
 import { PlayerSelectionHandlers } from "../game/player-selections";
 import { IHandler } from "../shared";
+import { URLParams } from "../shared/constants/url-params";
 import { BrowserDomUtils, GameUtils, StorageManager, localStorageKeys, sentryLogger } from "../shared/utils";
 import { AppStore } from "./app-store";
 
@@ -22,8 +23,20 @@ export namespace AppHandlers {
                     if (this.appStore.isDirectMode) {
                         BrowserDomUtils.replaceParentLocation(GameUtils.base64Decode(this.appStore.urlInfo.returnUrl));
                     } else {
-                        const params = this.getParamAuthorize();
-                        BrowserDomUtils.postMessageToParent({ ...params, backLobby: true });
+                        if (this.appStore.isStandalone) {
+                            const session = this.getSessionInfo();
+                            const lobbyId = 0;
+                            const url = new URL(
+                                `${GameUtils.base64Decode(this.appStore.urlInfo.returnUrl)}/?session=${session}&gameId=${lobbyId}&cg=${
+                                    this.appStore.currencyGroup
+                                }`
+                            );
+
+                            window.location.replace(url);
+                        } else {
+                            const params = this.getParamAuthorize();
+                            BrowserDomUtils.postMessageToParent({ ...params, backLobby: true });
+                        }
                     }
                 } catch (err) {
                     sentryLogger.logError(err);
@@ -48,6 +61,15 @@ export namespace AppHandlers {
                 memberName: sessionInfo?.memberName,
                 language: sessionInfo?.language,
                 gameId,
+            };
+        }
+
+        private getSessionInfo(): {
+            session: string;
+        } {
+            const sessionInfo = StorageManager.get(localStorageKeys.session) as ISessionInfo;
+            return {
+                session: GameUtils.base64Encode(JSON.stringify(sessionInfo)),
             };
         }
     }

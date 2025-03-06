@@ -37,6 +37,8 @@ export class AppStore {
     isTouchedScreen = false;
     isClearStorage = false;
     isPortraitDirectMode = false;
+    isStandalone = true;
+    currencyGroup = "";
 
     constructor() {
         makeAutoObservable(this);
@@ -52,6 +54,8 @@ export class AppStore {
         const refData = urlParams.get(URLParams.ref);
         const returnUrl = urlParams.get(URLParams.returnUrl);
         const appType = urlParams.get(URLParams.appType);
+        const currencyGroup = urlParams.get(URLParams?.currencyGroup);
+        const isStandalone = urlParams.get(URLParams?.isStandalone);
 
         if (refData) {
             if (this.isOpenDirectly(refData) || this.isPlayForFunMode(refData)) {
@@ -86,6 +90,14 @@ export class AppStore {
         if (this.isOpenPortraitDirectly(appType)) {
             this.isPortraitDirectMode = true;
             this.isAutoCreateNickname = true;
+        }
+
+        if (isStandalone !== null) {
+            this.isStandalone = isStandalone !== "false";
+        }
+
+        if (currencyGroup) {
+            this.currencyGroup = currencyGroup;
         }
     }
 

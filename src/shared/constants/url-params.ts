@@ -14,4 +14,6 @@ export const URLParams = {
     gameIdsSupportBoostedOddsForInstantSite: "gameIdsSupportBoostedOddsForInstantSite",
     operator: "op",
     supportedGamesId: "supportedGamesId",
+    isStandalone: "isStandalone",
+    currencyGroup: "cg",
 };
