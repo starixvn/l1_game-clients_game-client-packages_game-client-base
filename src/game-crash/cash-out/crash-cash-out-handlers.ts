@@ -7,7 +7,6 @@ import { GameConfigStore } from "../../game/game-configs";
 import { RoundHistoryStore } from "../../game/round-histories/round-history-store";
 import { RoundTimeStore } from "../../game/rounds";
 import { GameServiceMessage, IMultipleHandlers } from "../../shared";
-import { AutoPlayHandler } from "../auto-play";
 import { BetInputStore } from "../bet-input/bet-input-store";
 import { ButtonState, GameCrashServiceMessage } from "../game-crash-messages";
 import { MultiplierStore } from "../multiplier/multiplier-store";
@@ -19,7 +18,7 @@ export class CrashCashOutHandlers implements IMultipleHandlers {
     private readonly halfCashOutRatio = 0.5;
     private readonly fullCashOutRatio = 1;
 
-    private readonly displayCashedOutDuration = 2700;
+    protected readonly displayCashedOutDuration = 2700;
 
     constructor(
         @inject(CrashCashOutStore) protected readonly cashOutStore: CrashCashOutStore,
@@ -29,7 +28,6 @@ export class CrashCashOutHandlers implements IMultipleHandlers {
         @inject(MultiplierStore) private readonly multiplierStore: MultiplierStore,
         @inject(PlayerActionStore) protected readonly playerActionStore: PlayerActionStore,
         @inject(PlayerActionHandlers) protected readonly playerActionHandlers: PlayerActionHandlers,
-        @inject(AutoPlayHandler) protected readonly autoPlayHandler: AutoPlayHandler,
         @inject(GameConfigStore) protected readonly gameConfigStore: GameConfigStore,
         @inject(BetInputStore) protected readonly betInputStore: BetInputStore,
         @inject(ConnectionHandlers.RetryGameHandler) protected readonly retryGameHandler: ConnectionHandlers.RetryGameHandler
@@ -51,7 +49,7 @@ export class CrashCashOutHandlers implements IMultipleHandlers {
         );
     }
 
-    private handleMultiplier() {
+    protected handleMultiplier() {
         const winAmount = this.calculateWinAmount();
 
         if (winAmount <= 0) {
@@ -86,7 +84,7 @@ export class CrashCashOutHandlers implements IMultipleHandlers {
         this.setHalfCashedOutValue(winAmount * this.halfCashOutRatio);
     }
 
-    private handleCashOutHalf(cashOut: GameCrashServiceMessage.CrashCashOut | undefined) {
+    protected handleCashOutHalf(cashOut: GameCrashServiceMessage.CrashCashOut | undefined) {
         this.retryGameHandler.clearInterval();
         this.handleHalfCashOutMessage(cashOut);
         this.cashOutStore.setCashOutNotice(cashOut);
@@ -99,7 +97,7 @@ export class CrashCashOutHandlers implements IMultipleHandlers {
         this.cashOutStore.ratio = this.halfCashOutRatio;
     }
 
-    private handleCashOutFull(cashOut: GameCrashServiceMessage.CrashCashOut | undefined) {
+    protected handleCashOutFull(cashOut: GameCrashServiceMessage.CrashCashOut | undefined) {
         this.retryGameHandler.clearInterval();
         this.handleCashOutMessage(cashOut);
         this.cashOutStore.setCashOutNotice(cashOut);
@@ -109,7 +107,7 @@ export class CrashCashOutHandlers implements IMultipleHandlers {
         }, this.displayCashedOutDuration);
     }
 
-    private handleCashOutMessage(cashOut: GameCrashServiceMessage.CrashCashOut | undefined) {
+    protected handleCashOutMessage(cashOut: GameCrashServiceMessage.CrashCashOut | undefined) {
         this.cashOutStore.cashOut = cashOut;
         this.setFullCashedOutValue(cashOut.cashOutWin);
         this.updateHalfCashOutValueByRatio(cashOut.cashOutWin);
@@ -129,7 +127,7 @@ export class CrashCashOutHandlers implements IMultipleHandlers {
         this.playerActionHandlers.changeButtonBetNextRound();
     }
 
-    private handleOwnBets(ownBets: GameCrashServiceMessage.CrashOwnBets) {
+    protected handleOwnBets(ownBets: GameCrashServiceMessage.CrashOwnBets) {
         if (!ownBets) {
             return;
         }
@@ -174,7 +172,7 @@ export class CrashCashOutHandlers implements IMultipleHandlers {
         }
     }
 
-    private resetCashOut() {
+    protected resetCashOut() {
         this.cashOutStore.fullCashOutValue = 0;
         this.cashOutStore.halfCashOutValue = 0;
 

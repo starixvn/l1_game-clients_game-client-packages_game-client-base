@@ -22,10 +22,10 @@ export class CrashBetHandler extends BetHandlerBase {
         @inject(NoticeStore) protected readonly noticeStore: NoticeStore,
         @inject(ConnectionHandlers.RetryGameHandler) protected readonly retryGameHandler: ConnectionHandlers.RetryGameHandler,
         @inject(GameSetting) protected readonly gameSetting: GameSetting,
-        @inject(RoundStore) private readonly roundStore: RoundStore,
-        @inject(AutoCashOutStore) private readonly autoCashOutStore: AutoCashOutStore,
-        @inject(BetInputStore) private readonly betInputStore: BetInputStore,
-        @inject(ProvablyFairStore) private readonly pfStore: ProvablyFairStore
+        @inject(RoundStore) protected readonly roundStore: RoundStore,
+        @inject(AutoCashOutStore) protected readonly autoCashOutStore: AutoCashOutStore,
+        @inject(BetInputStore) protected readonly betInputStore: BetInputStore,
+        @inject(ProvablyFairStore) protected readonly pfStore: ProvablyFairStore
     ) {
         super(connectionStore, betStore, mainPlayerStore, orientationStore, roundTimeStore, noticeStore, retryGameHandler, gameSetting);
     }
