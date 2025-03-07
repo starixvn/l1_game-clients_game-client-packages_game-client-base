@@ -79,7 +79,7 @@ export namespace AuthHandlers {
             if (this.needAutoGenerateNickname(response.authorized)) {
                 await this.autoGenerateName();
             } else {
-                if (!response.authorized && !response.user) {
+                if (!response.authorized && !response.user?.name) {
                     this.authStore.isShowSignName = true;
                 } else {
                     response.user && this.mainPlayerStore.setAuthorizeStore(response.user);
