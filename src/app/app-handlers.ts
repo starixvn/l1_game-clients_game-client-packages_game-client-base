@@ -65,8 +65,19 @@ export namespace AppHandlers {
         }
 
         private getSessionInfo() {
-            const sessionInfo = StorageManager.get(localStorageKeys.session) as ISessionInfo;
-            return GameUtils.base64Encode(JSON.stringify(sessionInfo));
+            const storedSession = StorageManager.get(localStorageKeys.session) as ISessionInfo;
+            const session = {
+                ss: storedSession?.session,
+                time: storedSession?.ssoTime,
+                language: storedSession?.language,
+                memberName: storedSession?.memberName,
+                username: storedSession?.username,
+                isAuthenticated: storedSession?.isAuthenticated,
+                system: storedSession?.system,
+                isUM: this.appStore.isUM,
+                umInfo: this.appStore.umInfo,
+            };
+            return GameUtils.base64Encode(JSON.stringify(session));
         }
     }
 
