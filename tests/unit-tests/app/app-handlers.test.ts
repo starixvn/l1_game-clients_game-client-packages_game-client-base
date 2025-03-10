@@ -1,23 +1,46 @@
 import { AppHandlers, AppStore } from "../../../src/app";
+import { GameSetting } from "../../../src/game/game-configs/game-setting";
 import { PlayerSelectionHandlers, PlayerSelectionStore } from "../../../src/game/player-selections";
 import { BrowserDomUtils, GameUtils, StorageManager } from "../../../src/shared/utils";
+import { stub } from "jest-auto-stub";
 
 jest.mock("../../../src/shared/utils");
 
 describe("AppHandlers", () => {
     describe("BackToLobby", () => {
         let appStore: AppStore;
+        let gameSetting: GameSetting;
         let handler: AppHandlers.BackToOperatorLobby;
+
         beforeEach(() => {
+            // arrange
             appStore = new AppStore();
-            handler = new AppHandlers.BackToOperatorLobby(appStore, new PlayerSelectionHandlers.ClearHandlers(new PlayerSelectionStore()));
+            gameSetting = stub<GameSetting>();
+            handler = new AppHandlers.BackToOperatorLobby(
+                appStore,
+                new PlayerSelectionHandlers.ClearHandlers(new PlayerSelectionStore()),
+                gameSetting
+            );
+            appStore.urlInfo = { returnUrl: "rurl" };
+            GameUtils.base64Decode = jest.fn().mockReturnValue("returnUrl");
+            BrowserDomUtils.replaceParentLocation = jest.fn();
         });
+
         describe("when app store has return url", () => {
+            const session = {
+                isAuthenticated: true,
+                session: "session",
+                memberName: "",
+                username: "",
+                ssoTime: new Date("2023-01-01"),
+                language: "en",
+            };
+
             beforeEach(() => {
-                appStore.urlInfo = { returnUrl: "rurl" };
-                GameUtils.base64Decode = jest.fn().mockReturnValue("returnUrl");
-                BrowserDomUtils.replaceParentLocation = jest.fn();
+                // arrange
+                StorageManager.get = jest.fn().mockReturnValueOnce(session);
             });
+
             describe("when is direct mode", () => {
                 it("should call BrowserDomUtils.replaceParentLocation", () => {
                     // arrange
@@ -32,32 +55,58 @@ describe("AppHandlers", () => {
             });
 
             describe("when is not direct mode", () => {
-                const session = {
-                    isAuthenticated: true,
-                    session: "session",
-                    memberName: "",
-                    username: "",
-                    ssoTime: new Date("2023-01-01"),
-                    language: "en",
-                };
-
                 beforeEach(() => {
+                    // arrange
                     appStore.isDirectMode = false;
-                    StorageManager.get = jest.fn().mockReturnValueOnce(session);
                 });
-                it("should call BrowserDomUtils.postMessageToParent", () => {
-                    // act
-                    handler.handle();
 
-                    // assert
-                    expect(BrowserDomUtils.postMessageToParent).toHaveBeenCalledWith({
-                        isAuthenticated: true,
-                        ss: "session",
-                        memberName: "",
-                        username: "",
-                        language: "en",
-                        time: 1672531200000,
-                        backLobby: true,
+                describe("when is standalone mode", () => {
+                    beforeEach(() => {
+                        // arrange
+                        appStore.isStandalone = true;
+                        appStore.currencyGroup = "EN";
+                        global.window = Object.create(window);
+                        Object.defineProperty(window, "location", {
+                            value: { replace: jest.fn() },
+                        });
+                    });
+
+                    it("should redirect to lobby with correct URL", () => {
+                        // arrange
+                        const expectedUrl = new URL("returnUrl/?session=session&gameId=0&cg=EN", "https://example.com");
+                        GameUtils.base64Decode = jest.fn().mockReturnValue("https://example.com/returnUrl");
+
+                        // act
+                        handler.handle();
+
+                        // assert
+                        expect(window.location.replace).toHaveBeenCalledWith(expectedUrl);
+                    });
+                });
+
+                describe("when is not standalone mode", () => {
+                    beforeEach(() => {
+                        // arrange
+                        appStore.isStandalone = false;
+                    });
+
+                    it("should call BrowserDomUtils.postMessageToParent with correct params", () => {
+                        // arrange
+                        const expectedParams = {
+                            isAuthenticated: true,
+                            ss: "session",
+                            memberName: "",
+                            username: "",
+                            language: "en",
+                            time: 1672531200000,
+                            backLobby: true,
+                        };
+
+                        // act
+                        handler.handle();
+
+                        // assert
+                        expect(BrowserDomUtils.postMessageToParent).toHaveBeenCalledWith(expectedParams);
                     });
                 });
             });
@@ -74,6 +123,7 @@ describe("AppHandlers", () => {
                 expect(appStore.isLoading).toBe(true);
             });
         });
+
         describe("when app store not has return url", () => {
             it("should not do anything", () => {
                 // arrange
@@ -98,6 +148,7 @@ describe("AppHandlers", () => {
         let appStore: AppStore;
 
         beforeEach(() => {
+            // arrange
             appStore = new AppStore();
             userGesturePage = new AppHandlers.UserGesturePage(appStore);
         });

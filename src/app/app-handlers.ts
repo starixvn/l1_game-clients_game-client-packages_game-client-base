@@ -2,9 +2,9 @@ import { inject, injectable } from "inversify";
 import { ISessionInfo } from "../auth";
 import { PlayerSelectionHandlers } from "../game/player-selections";
 import { IHandler } from "../shared";
-import { URLParams } from "../shared/constants/url-params";
 import { BrowserDomUtils, GameUtils, StorageManager, localStorageKeys, sentryLogger } from "../shared/utils";
 import { AppStore } from "./app-store";
+import { GameSetting } from "../game/game-configs";
 
 export namespace AppHandlers {
     @injectable()
@@ -12,46 +12,64 @@ export namespace AppHandlers {
         constructor(
             @inject(AppStore) private readonly appStore: AppStore,
             @inject(PlayerSelectionHandlers.ClearHandlers)
-            private readonly playerSelectionClearHandler: PlayerSelectionHandlers.ClearHandlers
+            private readonly playerSelectionClearHandler: PlayerSelectionHandlers.ClearHandlers,
+            @inject(GameSetting) private readonly gameSetting: GameSetting
         ) {}
 
         handle() {
             this.playerSelectionClearHandler.handle();
-            if (this.appStore.urlInfo?.returnUrl) {
-                try {
-                    this.appStore.isLoading = true;
-                    if (this.appStore.isDirectMode) {
-                        BrowserDomUtils.replaceParentLocation(GameUtils.base64Decode(this.appStore.urlInfo.returnUrl));
-                    } else {
-                        if (this.appStore.isStandalone) {
-                            const lobbyId = 0;
-                            const url = new URL(
-                                `${GameUtils.base64Decode(
-                                    this.appStore.urlInfo.returnUrl
-                                )}/?session=${this.getSessionInfo()}&gameId=${lobbyId}&cg=${this.appStore.currencyGroup}`
-                            );
-                            console.log("url back to lobby", url);
 
-                            window.location.replace(url);
-                        } else {
-                            const params = this.getParamAuthorize();
-                            BrowserDomUtils.postMessageToParent({ ...params, backLobby: true });
-                        }
-                    }
-                } catch (err) {
-                    sentryLogger.logError(err);
-                }
+            if (!this.appStore.urlInfo?.returnUrl) {
+                return;
             }
+
+            try {
+                this.appStore.isLoading = true;
+
+                if (this.appStore.isDirectMode) {
+                    this.handleDirectModeNavigation();
+                    return;
+                }
+
+                if (this.appStore.isStandalone) {
+                    this.handleStandaloneNavigation(this.gameSetting?.id ?? 0);
+                    return;
+                }
+
+                this.handleIframeNavigation();
+            } catch (err) {
+                sentryLogger.logError(err);
+                this.appStore.isLoading = false;
+            }
+        }
+
+        private handleDirectModeNavigation() {
+            const decodedUrl = GameUtils.base64Decode(this.appStore.urlInfo!.returnUrl);
+            BrowserDomUtils.replaceParentLocation(decodedUrl);
+        }
+
+        private handleStandaloneNavigation(gameId: number) {
+            const decodedUrl = GameUtils.base64Decode(this.appStore.urlInfo!.returnUrl);
+            const sessionInfo = this.getSessionInfo();
+
+            const url = new URL(`${decodedUrl}/?session=${sessionInfo}&gameId=${gameId}&cg=${this.appStore.currencyGroup}`);
+
+            window.location.replace(url);
+        }
+
+        private handleIframeNavigation() {
+            const params = this.getAuthorizationParams();
+            BrowserDomUtils.postMessageToParent({ ...params, backLobby: true });
         }
 
         handleOpenGame(gameId: number) {
             this.appStore.isLoading = true;
             this.playerSelectionClearHandler.handle();
-            const params = this.getParamAuthorize(gameId);
+            const params = this.getAuthorizationParams(gameId);
             BrowserDomUtils.postMessageToParent({ ...params, backLobby: true });
         }
 
-        private getParamAuthorize(gameId?: number) {
+        private getAuthorizationParams(gameId?: number) {
             const sessionInfo = StorageManager.get(localStorageKeys.session) as ISessionInfo;
             return {
                 ss: sessionInfo?.session,
