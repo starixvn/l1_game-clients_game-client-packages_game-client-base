@@ -4,6 +4,7 @@ import { PlayerSelectionHandlers } from "../game/player-selections";
 import { IHandler } from "../shared";
 import { BrowserDomUtils, GameUtils, StorageManager, localStorageKeys, sentryLogger } from "../shared/utils";
 import { AppStore } from "./app-store";
+import { GameSetting } from "../game/game-configs/game-setting";
 
 export namespace AppHandlers {
     @injectable()
@@ -11,7 +12,8 @@ export namespace AppHandlers {
         constructor(
             @inject(AppStore) private readonly appStore: AppStore,
             @inject(PlayerSelectionHandlers.ClearHandlers)
-            private readonly playerSelectionClearHandler: PlayerSelectionHandlers.ClearHandlers
+            private readonly playerSelectionClearHandler: PlayerSelectionHandlers.ClearHandlers,
+            @inject(GameSetting) private readonly gameSetting: GameSetting
         ) {}
 
         handle() {
@@ -43,7 +45,7 @@ export namespace AppHandlers {
             }
 
             if (this.appStore.isStandalone) {
-                this.handleStandaloneNavigation();
+                this.handleStandaloneNavigation(0, this.gameSetting?.lobbyId ?? 0);
                 return;
             }
 
@@ -65,13 +67,17 @@ export namespace AppHandlers {
             BrowserDomUtils.replaceParentLocation(decodedUrl);
         }
 
-        private handleStandaloneNavigation(gameId?: number) {
+        private handleStandaloneNavigation(gameId?: number, lobbyId?: number) {
             const decodedUrl = this.getDecodedReturnUrl();
             const sessionInfo = this.getSessionInfo();
             const url = new URL(`${decodedUrl}/?session=${sessionInfo}&cg=${this.appStore.currencyGroup}`);
 
-            if (gameId) {
+            if (gameId && gameId > 0) {
                 url.searchParams.append("gameId", gameId.toString());
+            }
+
+            if (lobbyId && lobbyId > 0) {
+                url.searchParams.append("lobbyId", lobbyId.toString());
             }
 
             window.location.replace(url);
