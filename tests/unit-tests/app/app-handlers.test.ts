@@ -1,26 +1,18 @@
 import { AppHandlers, AppStore } from "../../../src/app";
-import { GameSetting } from "../../../src/game/game-configs/game-setting";
 import { PlayerSelectionHandlers, PlayerSelectionStore } from "../../../src/game/player-selections";
 import { BrowserDomUtils, GameUtils, StorageManager } from "../../../src/shared/utils";
-import { stub } from "jest-auto-stub";
 
 jest.mock("../../../src/shared/utils");
 
 describe("AppHandlers", () => {
     describe("BackToLobby", () => {
         let appStore: AppStore;
-        let gameSetting: GameSetting;
         let handler: AppHandlers.BackToOperatorLobby;
 
         beforeEach(() => {
             // arrange
             appStore = new AppStore();
-            gameSetting = stub<GameSetting>();
-            handler = new AppHandlers.BackToOperatorLobby(
-                appStore,
-                new PlayerSelectionHandlers.ClearHandlers(new PlayerSelectionStore()),
-                gameSetting
-            );
+            handler = new AppHandlers.BackToOperatorLobby(appStore, new PlayerSelectionHandlers.ClearHandlers(new PlayerSelectionStore()));
             appStore.urlInfo = { returnUrl: "rurl" };
             GameUtils.base64Decode = jest.fn().mockReturnValue("returnUrl");
             BrowserDomUtils.replaceParentLocation = jest.fn();

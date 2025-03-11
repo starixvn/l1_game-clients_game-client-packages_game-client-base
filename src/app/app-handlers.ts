@@ -4,7 +4,6 @@ import { PlayerSelectionHandlers } from "../game/player-selections";
 import { IHandler } from "../shared";
 import { BrowserDomUtils, GameUtils, StorageManager, localStorageKeys, sentryLogger } from "../shared/utils";
 import { AppStore } from "./app-store";
-import { GameSetting } from "../game/game-configs";
 
 export namespace AppHandlers {
     @injectable()
@@ -12,8 +11,7 @@ export namespace AppHandlers {
         constructor(
             @inject(AppStore) private readonly appStore: AppStore,
             @inject(PlayerSelectionHandlers.ClearHandlers)
-            private readonly playerSelectionClearHandler: PlayerSelectionHandlers.ClearHandlers,
-            @inject(GameSetting) private readonly gameSetting: GameSetting
+            private readonly playerSelectionClearHandler: PlayerSelectionHandlers.ClearHandlers
         ) {}
 
         handle() {
@@ -32,7 +30,7 @@ export namespace AppHandlers {
                 }
 
                 if (this.appStore.isStandalone) {
-                    this.handleStandaloneNavigation(this.gameSetting?.id ?? 0);
+                    this.handleStandaloneNavigation();
                     return;
                 }
 
@@ -48,11 +46,11 @@ export namespace AppHandlers {
             BrowserDomUtils.replaceParentLocation(decodedUrl);
         }
 
-        private handleStandaloneNavigation(gameId: number) {
+        private handleStandaloneNavigation() {
             const decodedUrl = GameUtils.base64Decode(this.appStore.urlInfo!.returnUrl);
             const sessionInfo = this.getSessionInfo();
 
-            const url = new URL(`${decodedUrl}/?session=${sessionInfo}&gameId=${gameId}&cg=${this.appStore.currencyGroup}`);
+            const url = new URL(`${decodedUrl}/?session=${sessionInfo}&cg=${this.appStore.currencyGroup}`);
 
             window.location.replace(url);
         }
@@ -69,7 +67,7 @@ export namespace AppHandlers {
             BrowserDomUtils.postMessageToParent({ ...params, backLobby: true });
         }
 
-        private getAuthorizationParams(gameId?: number) {
+        private getBaseSessionInfo() {
             const sessionInfo = StorageManager.get(localStorageKeys.session) as ISessionInfo;
             return {
                 ss: sessionInfo?.session,
@@ -78,23 +76,26 @@ export namespace AppHandlers {
                 isAuthenticated: sessionInfo?.isAuthenticated,
                 memberName: sessionInfo?.memberName,
                 language: sessionInfo?.language,
+            };
+        }
+
+        private getAuthorizationParams(gameId?: number) {
+            const baseInfo = this.getBaseSessionInfo();
+            return {
+                ...baseInfo,
                 gameId,
             };
         }
 
         private getSessionInfo() {
-            const storedSession = StorageManager.get(localStorageKeys.session) as ISessionInfo;
+            const baseInfo = this.getBaseSessionInfo();
             const session = {
-                ss: storedSession?.session,
-                time: storedSession?.ssoTime,
-                language: storedSession?.language,
-                memberName: storedSession?.memberName,
-                username: storedSession?.username,
-                isAuthenticated: storedSession?.isAuthenticated,
-                system: storedSession?.system,
+                ...baseInfo,
+                system: (StorageManager.get(localStorageKeys.session) as ISessionInfo)?.system,
                 isUM: this.appStore.isUM,
                 umInfo: this.appStore.umInfo,
             };
+
             return GameUtils.base64Encode(JSON.stringify(session));
         }
     }
