@@ -23,34 +23,56 @@ export namespace AppHandlers {
 
             try {
                 this.appStore.isLoading = true;
-
-                if (this.appStore.isDirectMode) {
-                    this.handleDirectModeNavigation();
-                    return;
-                }
-
-                if (this.appStore.isStandalone) {
-                    this.handleStandaloneNavigation();
-                    return;
-                }
-
-                this.handleIframeNavigation();
+                this.navigateBasedOnMode();
             } catch (err) {
                 sentryLogger.logError(err);
                 this.appStore.isLoading = false;
             }
         }
 
+        handleOpenGame(gameId: number) {
+            this.appStore.isLoading = true;
+            this.playerSelectionClearHandler.handle();
+            this.navigateToGame(gameId);
+        }
+
+        private navigateBasedOnMode() {
+            if (this.appStore.isDirectMode) {
+                this.handleDirectModeNavigation();
+                return;
+            }
+
+            if (this.appStore.isStandalone) {
+                this.handleStandaloneNavigation();
+                return;
+            }
+
+            this.handleIframeNavigation();
+        }
+
+        private navigateToGame(gameId: number) {
+            if (this.appStore.isStandalone) {
+                this.handleStandaloneNavigation(gameId);
+                return;
+            }
+
+            const params = this.getAuthorizationParams(gameId);
+            BrowserDomUtils.postMessageToParent({ ...params, backLobby: true });
+        }
+
         private handleDirectModeNavigation() {
-            const decodedUrl = GameUtils.base64Decode(this.appStore.urlInfo!.returnUrl);
+            const decodedUrl = this.getDecodedReturnUrl();
             BrowserDomUtils.replaceParentLocation(decodedUrl);
         }
 
-        private handleStandaloneNavigation() {
-            const decodedUrl = GameUtils.base64Decode(this.appStore.urlInfo!.returnUrl);
+        private handleStandaloneNavigation(gameId?: number) {
+            const decodedUrl = this.getDecodedReturnUrl();
             const sessionInfo = this.getSessionInfo();
-
             const url = new URL(`${decodedUrl}/?session=${sessionInfo}&cg=${this.appStore.currencyGroup}`);
+
+            if (gameId) {
+                url.searchParams.append("gameId", gameId.toString());
+            }
 
             window.location.replace(url);
         }
@@ -60,11 +82,8 @@ export namespace AppHandlers {
             BrowserDomUtils.postMessageToParent({ ...params, backLobby: true });
         }
 
-        handleOpenGame(gameId: number) {
-            this.appStore.isLoading = true;
-            this.playerSelectionClearHandler.handle();
-            const params = this.getAuthorizationParams(gameId);
-            BrowserDomUtils.postMessageToParent({ ...params, backLobby: true });
+        private getDecodedReturnUrl(): string {
+            return GameUtils.base64Decode(this.appStore.urlInfo?.returnUrl);
         }
 
         private getBaseSessionInfo() {
