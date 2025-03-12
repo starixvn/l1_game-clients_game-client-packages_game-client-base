@@ -69,7 +69,8 @@ export namespace AppHandlers {
         private handleStandaloneNavigation(gameId?: number, gatewayId?: number) {
             const decodedUrl = this.getDecodedReturnUrl();
             const sessionInfo = this.getSessionInfo();
-            const url = new URL(`${decodedUrl}/?session=${sessionInfo}&cg=${this.appStore.currencyGroup}`);
+            const operator = StorageManager.get(localStorageKeys.operator);
+            const url = new URL(`${decodedUrl}/?session=${sessionInfo}&cg=${this.appStore.currencyGroup}&op=${operator}`);
 
             if (gameId && gameId > 0) {
                 url.searchParams.append("gameId", gameId.toString());
