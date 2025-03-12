@@ -9,6 +9,7 @@ import { BrowserDomUtils, StorageManager, localStorageKeys } from "../shared/uti
 interface IUrlInfo {
     returnUrl?: string;
     ref?: string;
+    gatewayId?: number;
 }
 
 interface IDirectMode {
@@ -98,6 +99,11 @@ export class AppStore {
 
         if (currencyGroup) {
             this.currencyGroup = currencyGroup;
+        }
+
+        const gatewayId = urlParams.get(URLParams?.gatewayId);
+        if (gatewayId && +gatewayId > 0) {
+            this.urlInfo.gatewayId = +gatewayId;
         }
     }
 

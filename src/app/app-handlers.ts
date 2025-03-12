@@ -4,7 +4,6 @@ import { PlayerSelectionHandlers } from "../game/player-selections";
 import { IHandler } from "../shared";
 import { BrowserDomUtils, GameUtils, StorageManager, localStorageKeys, sentryLogger } from "../shared/utils";
 import { AppStore } from "./app-store";
-import { GameSetting } from "../game/game-configs/game-setting";
 
 export namespace AppHandlers {
     @injectable()
@@ -12,8 +11,7 @@ export namespace AppHandlers {
         constructor(
             @inject(AppStore) private readonly appStore: AppStore,
             @inject(PlayerSelectionHandlers.ClearHandlers)
-            private readonly playerSelectionClearHandler: PlayerSelectionHandlers.ClearHandlers,
-            @inject(GameSetting) private readonly gameSetting: GameSetting
+            private readonly playerSelectionClearHandler: PlayerSelectionHandlers.ClearHandlers
         ) {}
 
         handle() {
@@ -45,7 +43,8 @@ export namespace AppHandlers {
             }
 
             if (this.appStore.isStandalone) {
-                this.handleStandaloneNavigation(0, this.gameSetting?.lobbyId ?? 0);
+                const gatewayId = this.appStore.urlInfo?.gatewayId ?? 0;
+                this.handleStandaloneNavigation(0, gatewayId);
                 return;
             }
 
@@ -67,7 +66,7 @@ export namespace AppHandlers {
             BrowserDomUtils.replaceParentLocation(decodedUrl);
         }
 
-        private handleStandaloneNavigation(gameId?: number, lobbyId?: number) {
+        private handleStandaloneNavigation(gameId?: number, gatewayId?: number) {
             const decodedUrl = this.getDecodedReturnUrl();
             const sessionInfo = this.getSessionInfo();
             const url = new URL(`${decodedUrl}/?session=${sessionInfo}&cg=${this.appStore.currencyGroup}`);
@@ -76,8 +75,8 @@ export namespace AppHandlers {
                 url.searchParams.append("gameId", gameId.toString());
             }
 
-            if (lobbyId && lobbyId > 0) {
-                url.searchParams.append("lobbyId", lobbyId.toString());
+            if (gatewayId && gatewayId > 0) {
+                url.searchParams.append("gatewayId", gatewayId.toString());
             }
 
             window.location.replace(url);
