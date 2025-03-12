@@ -37,7 +37,7 @@ export class AppStore {
     isTouchedScreen = false;
     isClearStorage = false;
     isPortraitDirectMode = false;
-    isStandalone = true;
+    isStandalone = false;
     currencyGroup = "";
 
     constructor() {
@@ -93,7 +93,7 @@ export class AppStore {
         }
 
         if (isStandalone !== null) {
-            this.isStandalone = isStandalone !== "false";
+            this.isStandalone = isStandalone === "true";
         }
 
         if (currencyGroup) {

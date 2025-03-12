@@ -179,6 +179,42 @@ describe("appStore tests", () => {
                 // assert
                 expect(store.isUserGesture).toBe(false);
             });
+
+            it("should set isStandalone when isStandalone is true in params", () => {
+                // arrange
+                const urlParams = new URLSearchParams("isStandalone=true");
+                const store = new AppStore();
+
+                // act
+                store.setURLStore(urlParams);
+
+                // assert
+                expect(store.isStandalone).toBe(true);
+            });
+
+            it("should set isStandalone when isStandalone is false in params", () => {
+                // arrange
+                const urlParams = new URLSearchParams("isStandalone=false");
+                const store = new AppStore();
+
+                // act
+                store.setURLStore(urlParams);
+
+                // assert
+                expect(store.isStandalone).toBe(false);
+            });
+
+            it("should keep isStandalone as false when isStandalone param is not present", () => {
+                // arrange
+                const urlParams = new URLSearchParams("ref=some_value");
+                const store = new AppStore();
+
+                // act
+                store.setURLStore(urlParams);
+
+                // assert
+                expect(store.isStandalone).toBe(false);
+            });
         });
     });
 
