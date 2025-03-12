@@ -22,6 +22,11 @@ export interface IPortraitDirectMode {
     session: string;
     isPortraitDirectMode: boolean;
 }
+export interface IStandaloneMode {
+    session: string;
+    isStandalone: boolean;
+    urlInfo: IUrlInfo;
+}
 
 @injectable()
 export class AppStore {
@@ -140,6 +145,21 @@ export class AppStore {
         StorageManager.set(localStorageKeys.portraitDirectMode, data);
     }
 
+    saveStandalone() {
+        if (!this.isStandalone) {
+            return;
+        }
+
+        const sessionInfo = StorageManager.get(localStorageKeys.session) as ISessionInfo;
+        const data: IStandaloneMode = {
+            session: sessionInfo.session,
+            isStandalone: this.isStandalone,
+            urlInfo: this.urlInfo,
+        };
+
+        StorageManager.set(localStorageKeys.standaloneMode, data);
+    }
+
     saveReturnUrl() {
         const { returnUrl } = this.urlInfo;
         returnUrl && StorageManager.set(localStorageKeys.returnUrl, returnUrl);
@@ -171,6 +191,17 @@ export class AppStore {
             const sessionInfo = StorageManager.get(localStorageKeys.session) as ISessionInfo;
             if (sessionInfo.session === data.session) {
                 this.isPortraitDirectMode = data.isPortraitDirectMode;
+            }
+        }
+    }
+
+    loadStandaloneMode() {
+        const data = StorageManager.get(localStorageKeys.standaloneMode) as IStandaloneMode;
+        if (data) {
+            const sessionInfo = StorageManager.get(localStorageKeys.session) as ISessionInfo;
+            if (sessionInfo.session === data.session) {
+                this.isStandalone = data.isStandalone;
+                this.urlInfo = data.urlInfo;
             }
         }
     }

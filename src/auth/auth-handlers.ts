@@ -182,6 +182,7 @@ export namespace AuthHandlers {
                     this.appStore.loadReturnUrlAnd();
                     this.appStore.loadDirectMode();
                     this.appStore.loadPortraitDirectMode();
+                    this.appStore.loadStandaloneMode();
                     this.appStore.loadApp();
                     await this.handleAuthorize();
                 }
@@ -228,6 +229,7 @@ export namespace AuthHandlers {
 
             this.appStore.saveReturnUrl();
             this.appStore.saveIsApp();
+            this.appStore.saveStandalone();
             if (urlParams) {
                 const playerSetting: UserSettingData = {
                     musicEnable: urlParams.has(URLParams.musicEnable) ? urlParams.get(URLParams.musicEnable) === "true" : true,
@@ -258,6 +260,7 @@ export namespace AuthHandlers {
             StorageManager.remove(localStorageKeys.returnUrl);
             StorageManager.remove(localStorageKeys.isApp);
             StorageManager.remove(localStorageKeys.portraitDirectMode);
+            StorageManager.remove(localStorageKeys.standaloneMode);
         }
 
         private async handleAuthorize(session?: string, username?: string) {

@@ -261,7 +261,8 @@ describe("AuthHandlers tests", () => {
                 });
                 it("should set authorize store in player when user is not null", async () => {
                     // arrange
-                    const response = { isUM: false, umInfo: null, isSuccessful: true, authorized: false, user: { UID: 1 } };
+                    const user = { UID: 1 };
+                    const response = { isUM: false, umInfo: null, isSuccessful: true, authorized: true, user };
                     // @ts-ignore
                     userService.authorize.mockReturnValueOnce(response);
                     const mainPlayerStore = new MainPlayerStore(noticeStore);
@@ -282,7 +283,7 @@ describe("AuthHandlers tests", () => {
                     await handler.handle({ session: "session", username: "username" });
 
                     // assert
-                    expect(mainPlayerStore.setAuthorizeStore).toHaveBeenCalledWith(response.user);
+                    expect(mainPlayerStore.setAuthorizeStore).toHaveBeenCalledWith(user);
                 });
 
                 it("should show sign-name when authorized equal false", async () => {
