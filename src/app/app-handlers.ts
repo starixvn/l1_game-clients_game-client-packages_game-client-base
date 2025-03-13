@@ -4,6 +4,7 @@ import { PlayerSelectionHandlers } from "../game/player-selections";
 import { IHandler } from "../shared";
 import { BrowserDomUtils, GameUtils, StorageManager, localStorageKeys, sentryLogger } from "../shared/utils";
 import { AppStore } from "./app-store";
+import { UserSettingData } from "../game/user-settings";
 
 export namespace AppHandlers {
     @injectable()
@@ -67,18 +68,27 @@ export namespace AppHandlers {
         }
 
         private handleStandaloneNavigation(gameId?: number, gatewayId?: number) {
-            const decodedUrl = this.getDecodedReturnUrl();
-            const sessionInfo = this.getSessionInfo();
+            const baseUrl = this.getDecodedReturnUrl();
+            const sessionParam = this.getSessionInfo();
             const operator = StorageManager.get(localStorageKeys.operator);
-            const url = new URL(`${decodedUrl}/?session=${sessionInfo}&cg=${this.appStore.currencyGroup}&op=${operator}`);
+            const userSettings = StorageManager.get(localStorageKeys.playerSetting) as UserSettingData;
 
-            if (gameId && gameId > 0) {
-                url.searchParams.append("gameId", gameId.toString());
-            }
+            const url = new URL(baseUrl);
 
-            if (gatewayId && gatewayId > 0) {
-                url.searchParams.append("gatewayId", gatewayId.toString());
-            }
+            const queryParams = {
+                session: sessionParam,
+                cg: this.appStore.currencyGroup,
+                op: operator,
+                music: userSettings?.musicEnable ?? false,
+                sfx: userSettings?.sfxEnable ?? false,
+                isTouchedScreen: this.appStore.isTouchedScreen,
+                ...(gameId && gameId > 0 && { gameId: gameId.toString() }),
+                ...(gatewayId && gatewayId > 0 && { gatewayId: gatewayId.toString() }),
+            };
+
+            Object.entries(queryParams).forEach(([key, value]) => {
+                url.searchParams.append(key, value.toString());
+            });
 
             window.location.replace(url);
         }

@@ -26,6 +26,7 @@ export interface IStandaloneMode {
     session: string;
     isStandalone: boolean;
     urlInfo: IUrlInfo;
+    isTouchedScreen: boolean;
 }
 
 @injectable()
@@ -155,6 +156,7 @@ export class AppStore {
             session: sessionInfo.session,
             isStandalone: this.isStandalone,
             urlInfo: this.urlInfo,
+            isTouchedScreen: this.isTouchedScreen,
         };
 
         StorageManager.set(localStorageKeys.standaloneMode, data);
@@ -202,6 +204,7 @@ export class AppStore {
             if (sessionInfo.session === data.session) {
                 this.isStandalone = data.isStandalone;
                 this.urlInfo = data.urlInfo;
+                this.isTouchedScreen = data.isTouchedScreen;
             }
         }
     }
