@@ -64,6 +64,11 @@ export namespace AppHandlers {
 
         private handleDirectModeNavigation() {
             const decodedUrl = this.getDecodedReturnUrl();
+            if (this.appStore.isStandalone) {
+                window.location.replace(decodedUrl);
+                return;
+            }
+
             BrowserDomUtils.replaceParentLocation(decodedUrl);
         }
 

@@ -81,4 +81,11 @@ export namespace UrlUtils {
 
         return buildUrl("http", path, configs, configs.clientSubDomain);
     }
+
+    export function buildGameConfiguration(configs: SiteConfigs) {
+        const subDirectory = configs?.subDirectory ? `/${configs?.subDirectory}` : "";
+        const path = `${subDirectory}/game/configurations/`;
+
+        return buildUrl("http", path, configs, configs.clientSubDomain);
+    }
 }

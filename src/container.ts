@@ -9,6 +9,7 @@ import * as Players from "./players";
 import type { AnyConstructor } from "./shared";
 import { FeatureLoader } from "./shared";
 import * as UnderMaintenance from "./under-maintenance";
+import * as GameConfiguration from "./game-configuration";
 
 export interface IContainerOptions {
     onContainerCreated?: (container: Container) => void;
@@ -33,7 +34,7 @@ function serializeOptions(input: IContainerOptions): IContainerOptions {
     return Object.assign(defaultOptions, input);
 }
 
-export const defaultFeatures = [Auth, Players, SiteConfigs, Game, Notification, UnderMaintenance, ChipSetting];
+export const defaultFeatures = [Auth, Players, SiteConfigs, Game, Notification, UnderMaintenance, ChipSetting, GameConfiguration];
 
 export function getContainer(options: IContainerOptions = {}) {
     const { onContainerCreated, disabledFeatures, globalContainer, enabledFeatures, features } = serializeOptions(options);

@@ -18,4 +18,4 @@ export * from "./shared/models/game-messages";
 export * from "./shared/utils";
 export * from "./shared/utils/localization-manager";
 export * as Undermaintenace from "./under-maintenance";
-
+export * as GameConfiguration from "./game-configuration";

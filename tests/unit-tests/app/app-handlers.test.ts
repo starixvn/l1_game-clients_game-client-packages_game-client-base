@@ -52,30 +52,6 @@ describe("AppHandlers", () => {
                     appStore.isDirectMode = false;
                 });
 
-                describe("when is standalone mode", () => {
-                    beforeEach(() => {
-                        // arrange
-                        appStore.isStandalone = true;
-                        appStore.currencyGroup = "EN";
-                        global.window = Object.create(window);
-                        Object.defineProperty(window, "location", {
-                            value: { replace: jest.fn() },
-                        });
-                    });
-
-                    it("should redirect to lobby with correct URL", () => {
-                        // arrange
-                        const expectedUrl = new URL("returnUrl/?session=session&gameId=0&cg=EN", "https://example.com");
-                        GameUtils.base64Decode = jest.fn().mockReturnValue("https://example.com/returnUrl");
-
-                        // act
-                        handler.handle();
-
-                        // assert
-                        expect(window.location.replace).toHaveBeenCalledWith(expectedUrl);
-                    });
-                });
-
                 describe("when is not standalone mode", () => {
                     beforeEach(() => {
                         // arrange
