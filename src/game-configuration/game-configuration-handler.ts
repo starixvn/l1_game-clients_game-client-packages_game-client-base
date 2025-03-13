@@ -21,9 +21,7 @@ export class GameConfigurationHandler implements IHandler<void> {
 
     async handle() {
         const response = await fetch(UrlUtils.buildGameConfiguration(this.siteConfigs));
-        console.log("get game configuration before parse json", response);
         const data = await response.json();
-        console.log("get game configuration after parse json", data);
         this.gameConfigurationStore.setGameConfiguration(data);
     }
 }
