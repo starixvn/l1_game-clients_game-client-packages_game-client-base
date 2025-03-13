@@ -80,20 +80,25 @@ export namespace AppHandlers {
 
             const url = new URL(baseUrl);
 
-            const queryParams = {
-                session: sessionParam,
+            const mainParams = {
                 cg: this.appStore.currencyGroup,
                 op: operator,
-                music: userSettings?.musicEnable ?? false,
-                sfx: userSettings?.sfxEnable ?? false,
-                isTouchedScreen: this.appStore.isTouchedScreen,
                 ...(gameId && gameId > 0 && { gameId: gameId.toString() }),
                 ...(gatewayId && gatewayId > 0 && { gatewayId: gatewayId.toString() }),
             };
 
-            Object.entries(queryParams).forEach(([key, value]) => {
+            const otherParams = {
+                ...sessionParam,
+                music: userSettings?.musicEnable ?? false,
+                sfx: userSettings?.sfxEnable ?? false,
+                isTouchedScreen: this.appStore.isTouchedScreen,
+            };
+
+            Object.entries(mainParams).forEach(([key, value]) => {
                 url.searchParams.append(key, value.toString());
             });
+
+            url.searchParams.append("params", GameUtils.base64Encode(JSON.stringify(otherParams)));
 
             window.location.replace(url);
         }
@@ -136,7 +141,7 @@ export namespace AppHandlers {
                 umInfo: this.appStore.umInfo,
             };
 
-            return GameUtils.base64Encode(JSON.stringify(session));
+            return session;
         }
     }
 
