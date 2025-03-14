@@ -2,6 +2,16 @@ import { GameUtils } from "../../../../src/shared/utils/game-utils";
 import { BrowserDomUtils } from "../../../../src/shared/utils/browser-dom-utils";
 
 jest.mock("../../../../src/shared/utils/browser-dom-utils");
+const mockNavigator = {
+    clipboard: {
+        writeText: jest.fn(),
+    },
+};
+
+Object.defineProperty(global, "navigator", {
+    value: mockNavigator,
+    writable: true,
+});
 
 describe("GameUtils", () => {
     describe("base64Decode", () => {
@@ -31,9 +41,22 @@ describe("GameUtils", () => {
     });
 
     describe("copyToClipboard", () => {
-        it("should call ", async () => {
+        it("should writeText to clipboard when navigator.clipboard is supported", async () => {
             // arrange
             const data = "Hello World";
+            mockNavigator.clipboard.writeText.mockImplementation(() => Promise.resolve());
+
+            // act
+            const actual = await GameUtils.copyToClipboard(data);
+
+            // assert
+            expect(actual).toBe(true);
+        });
+
+        it("should postMessageToParent when navigator.clipboard is not supported", async () => {
+            // arrange
+            const data = "Hello World";
+            mockNavigator.clipboard.writeText.mockRejectedValueOnce(new Error("Clipboard not supported"));
 
             // act
             await GameUtils.copyToClipboard(data);

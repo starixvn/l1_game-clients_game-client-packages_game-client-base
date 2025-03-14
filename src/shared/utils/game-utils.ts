@@ -19,7 +19,13 @@ export class GameUtils {
         return GameUtils.base64.encode(data);
     }
 
-    public static async copyToClipboard(data: string) {
-        BrowserDomUtils.postMessageToParent({ copyToClipboard: data });
+    public static async copyToClipboard(data: string): Promise<boolean> {
+        try {
+            await navigator.clipboard.writeText(data);
+            return true;
+        } catch (e) {
+            BrowserDomUtils.postMessageToParent({ copyToClipboard: data });
+        }
+        return false;
     }
 }
