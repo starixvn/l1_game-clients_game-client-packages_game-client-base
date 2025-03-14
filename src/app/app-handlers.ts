@@ -83,6 +83,7 @@ export namespace AppHandlers {
             const mainParams = {
                 cg: this.appStore.currencyGroup,
                 op: operator,
+                lang: sessionParam?.language,
                 ...(gameId && gameId > 0 && { gameId: gameId.toString() }),
                 ...(gatewayId && gatewayId > 0 && { gatewayId: gatewayId.toString() }),
             };
