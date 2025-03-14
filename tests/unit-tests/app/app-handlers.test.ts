@@ -265,6 +265,128 @@ describe("AppHandlers", () => {
                 expect((handler as any).handleIframeNavigation).not.toHaveBeenCalled();
             });
         });
+
+        describe("redirectWithEncodedParams", () => {
+            it("should redirect to URL with base64 encoded params", () => {
+                // Save original window.location
+                const originalLocation = window.location;
+                const locationReplaceMock = jest.fn();
+
+                // Mock window.location
+                Object.defineProperty(window, "location", {
+                    configurable: true,
+                    value: { ...originalLocation, replace: locationReplaceMock },
+                });
+
+                // Mock GameUtils.base64Encode
+                const originalBase64Encode = GameUtils.base64Encode;
+                GameUtils.base64Encode = jest.fn().mockReturnValue("encodedParamsString");
+
+                try {
+                    // Arrange
+                    const baseUrl = "https://example.com";
+                    const params = {
+                        gameId: "123",
+                        lang: "en",
+                        cg: "USD",
+                        isUserGesture: true,
+                        undefinedParam: undefined,
+                    };
+
+                    // Act
+                    (handler as any).redirectWithEncodedParams(baseUrl, params);
+
+                    // Assert
+                    expect(locationReplaceMock).toHaveBeenCalledWith("https://example.com?params=encodedParamsString");
+
+                    // Verify that URLSearchParams was used correctly
+                    expect(GameUtils.base64Encode).toHaveBeenCalled();
+                    const base64EncodeCall = (GameUtils.base64Encode as jest.Mock).mock.calls[0][0];
+                    expect(base64EncodeCall).toContain("gameId=123");
+                    expect(base64EncodeCall).toContain("lang=en");
+                    expect(base64EncodeCall).toContain("cg=USD");
+                    expect(base64EncodeCall).toContain("isUserGesture=true");
+                    expect(base64EncodeCall).not.toContain("undefinedParam");
+                } finally {
+                    // Restore original implementation
+                    Object.defineProperty(window, "location", {
+                        configurable: true,
+                        value: originalLocation,
+                    });
+                    GameUtils.base64Encode = originalBase64Encode;
+                }
+            });
+        });
+
+        describe("redirectWithUrlParams", () => {
+            it("should redirect to URL with main params in URL and other params base64 encoded", () => {
+                // Save original window.location
+                const originalLocation = window.location;
+                const locationReplaceMock = jest.fn();
+
+                // Mock window.location
+                Object.defineProperty(window, "location", {
+                    configurable: true,
+                    value: { ...originalLocation, replace: locationReplaceMock },
+                });
+
+                // Mock URL and URLSearchParams
+                const appendMock = jest.fn();
+                const mockUrl = {
+                    searchParams: {
+                        append: appendMock,
+                    },
+                };
+                const originalURL = global.URL;
+                global.URL = jest.fn().mockImplementation(() => mockUrl) as any;
+
+                // Mock GameUtils.base64Encode
+                const originalBase64Encode = GameUtils.base64Encode;
+                GameUtils.base64Encode = jest.fn().mockReturnValue("encodedOtherParams");
+
+                try {
+                    // Arrange
+                    const baseUrl = "https://example.com";
+                    const mainParams = {
+                        gameId: "123",
+                        lang: "en",
+                        cg: "USD",
+                    };
+                    const otherParams = {
+                        musicEnable: true,
+                        sfxEnable: false,
+                        isUserGesture: true,
+                    };
+
+                    // Act
+                    (handler as any).redirectWithUrlParams(baseUrl, mainParams, otherParams);
+
+                    // Assert
+                    // Check URL constructor was called with baseUrl
+                    expect(global.URL).toHaveBeenCalledWith(baseUrl);
+
+                    // Check main params were appended to URL
+                    expect(appendMock).toHaveBeenCalledWith("gameId", "123");
+                    expect(appendMock).toHaveBeenCalledWith("lang", "en");
+                    expect(appendMock).toHaveBeenCalledWith("cg", "USD");
+
+                    // Check other params were encoded and appended
+                    expect(GameUtils.base64Encode).toHaveBeenCalledWith(JSON.stringify(otherParams));
+                    expect(appendMock).toHaveBeenCalledWith("params", "encodedOtherParams");
+
+                    // Check window.location.replace was called
+                    expect(locationReplaceMock).toHaveBeenCalled();
+                } finally {
+                    // Restore original implementations
+                    Object.defineProperty(window, "location", {
+                        configurable: true,
+                        value: originalLocation,
+                    });
+                    GameUtils.base64Encode = originalBase64Encode;
+                    global.URL = originalURL;
+                }
+            });
+        });
     });
 
     describe("UserGesturePage", () => {

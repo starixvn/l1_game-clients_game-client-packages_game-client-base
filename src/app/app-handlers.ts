@@ -24,6 +24,7 @@ export interface OtherParams {
     cg?: string;
     gatewayId?: string;
     op?: string;
+    [key: string]: unknown;
 }
 
 export namespace AppHandlers {
@@ -96,19 +97,19 @@ export namespace AppHandlers {
 
         private handleStandaloneNavigation(gameId?: number, gatewayId?: number) {
             const baseUrl = this.getUpdatedBaseUrl(gameId);
-
-            const operator = StorageManager.get(localStorageKeys.operator);
+            const operator = StorageManager.get(localStorageKeys.operator)?.toString();
             const userSettings = StorageManager.get(localStorageKeys.playerSetting) as UserSettingData;
-
-            const url = new URL(baseUrl);
-
-            const mainParams = this.buildMainParams(gameId, gatewayId, operator.toString());
+            const mainParams = this.buildMainParams(gameId, gatewayId, operator);
             const otherParams = this.buildOtherParams(userSettings, gameId);
 
-            Object.entries(mainParams).forEach(([key, value]) => url.searchParams.append(key, value.toString()));
-            url.searchParams.append("params", GameUtils.base64Encode(JSON.stringify(otherParams)));
+            const gameConfig = gameId ? this.getGameConfig(gameId) : undefined;
+            const isMicrosite = gameConfig?.isMicrosite ?? false;
 
-            window.location.replace(url);
+            if (isMicrosite) {
+                this.redirectWithEncodedParams(baseUrl, { ...mainParams, ...otherParams });
+            } else {
+                this.redirectWithUrlParams(baseUrl, mainParams, otherParams);
+            }
         }
 
         private buildMainParams(gameId?: number, gatewayId?: number, operator?: string) {
@@ -116,29 +117,29 @@ export namespace AppHandlers {
                 cg: this.appStore.currencyGroup,
                 op: operator,
                 lang: this.getSessionInfo()?.language,
-                ...(gameId && gameId > 0 && { gameId: gameId.toString() }),
-                ...(gatewayId && gatewayId > 0 && { gatewayId: gatewayId.toString() }),
+                ...(gameId && { gameId: gameId.toString() }),
+                ...(gatewayId && { gatewayId: gatewayId.toString() }),
             };
         }
 
         private buildOtherParams(userSettings: UserSettingData, gameId?: number) {
-            const sessionInfo = this.getSessionInfo();
             const otherParams: OtherParams = {
-                ...sessionInfo,
+                ...this.getSessionInfo(),
                 musicEnable: userSettings?.musicEnable ?? false,
                 sfxEnable: userSettings?.sfxEnable ?? false,
                 isUserGesture: this.appStore?.isTouchedScreen,
             };
 
-            if (gameId > 0) {
-                const gameConfig = this.gameConfigurationStore.gameConfiguration.find((config) => config?.id === gameId);
-                if (gameConfig && gameConfig?.isMicrosite) {
-                    otherParams.isStandalone = "true";
-                    otherParams.cg = this.appStore?.currencyGroup;
-                    otherParams.op = StorageManager.get(localStorageKeys.operator)?.toString() ?? "";
+            if (gameId && gameId > 0) {
+                const gameConfig = this.getGameConfig(gameId);
+                if (gameConfig?.isMicrosite) {
+                    Object.assign(otherParams, {
+                        isStandalone: "true",
+                        cg: this.appStore?.currencyGroup,
+                        op: StorageManager.get(localStorageKeys.operator)?.toString() ?? "",
+                    });
                 }
-
-                if (gameConfig && gameConfig?.gateway) {
+                if (gameConfig?.gateway) {
                     otherParams.gatewayId = gameConfig.gateway.id?.toString() ?? "0";
                 }
             }
@@ -147,17 +148,11 @@ export namespace AppHandlers {
         }
 
         private getUpdatedBaseUrl(gameId?: number): string {
-            let baseUrl = String(this.getDecodedReturnUrl());
-
-            if (!gameId || !this.gameConfigurationStore?.gameConfiguration) {
-                return baseUrl;
-            }
-
-            const gameConfig = this.gameConfigurationStore.gameConfiguration.find((config) => config?.id === gameId);
-            if (gameConfig && gameConfig?.isMicrosite) {
+            let baseUrl = this.getDecodedReturnUrl();
+            const gameConfig = gameId ? this.getGameConfig(gameId) : undefined;
+            if (gameConfig?.isMicrosite) {
                 baseUrl = baseUrl.endsWith("/") ? `${baseUrl}site-${gameId}/` : `${baseUrl}/site-${gameId}/`;
             }
-
             return baseUrl;
         }
 
@@ -183,23 +178,35 @@ export namespace AppHandlers {
         }
 
         private getAuthorizationParams(gameId?: number) {
-            const baseInfo = this.getBaseSessionInfo();
-            return {
-                ...baseInfo,
-                gameId,
-            };
+            return { ...this.getBaseSessionInfo(), gameId };
         }
 
         private getSessionInfo() {
-            const baseInfo = this.getBaseSessionInfo();
             const session = {
-                ...baseInfo,
+                ...this.getBaseSessionInfo(),
                 system: (StorageManager.get(localStorageKeys.session) as ISessionInfo)?.system,
                 isUM: this.appStore.isUM,
                 umInfo: this.appStore.umInfo,
             };
 
             return session;
+        }
+
+        private getGameConfig(gameId: number) {
+            return this.gameConfigurationStore.gameConfiguration.find((config) => config?.id === gameId);
+        }
+
+        private redirectWithEncodedParams(baseUrl: string, params: Record<string, unknown>) {
+            const searchParams = new URLSearchParams();
+            Object.entries(params).forEach(([key, value]) => value !== undefined && searchParams.append(key, value.toString()));
+            window.location.replace(`${baseUrl}?params=${GameUtils.base64Encode(searchParams.toString())}`);
+        }
+
+        private redirectWithUrlParams(baseUrl: string, mainParams: Record<string, unknown>, otherParams: Record<string, unknown>) {
+            const url = new URL(baseUrl);
+            Object.entries(mainParams).forEach(([key, value]) => url.searchParams.append(key, value.toString()));
+            url.searchParams.append("params", GameUtils.base64Encode(JSON.stringify(otherParams)));
+            window.location.replace(url);
         }
     }
 
