@@ -123,8 +123,9 @@ export namespace AppHandlers {
         }
 
         private buildOtherParams(userSettings: UserSettingData, gameId?: number) {
+            const sessionInfo = this.getSessionInfo();
             const otherParams: OtherParams = {
-                ...this.getSessionInfo(),
+                ...sessionInfo,
                 musicEnable: userSettings?.musicEnable ?? false,
                 sfxEnable: userSettings?.sfxEnable ?? false,
                 isUserGesture: this.appStore?.isTouchedScreen,
@@ -133,12 +134,14 @@ export namespace AppHandlers {
             if (gameId && gameId > 0) {
                 const gameConfig = this.getGameConfig(gameId);
                 if (gameConfig?.isMicrosite) {
+                    otherParams.isStandalone = "true";
                     Object.assign(otherParams, {
                         isStandalone: "true",
-                        cg: this.appStore?.currencyGroup,
-                        op: StorageManager.get(localStorageKeys.operator)?.toString() ?? "",
+                        appType: this.getAppType(),
+                        uname: sessionInfo?.username,
                     });
                 }
+
                 if (gameConfig?.gateway) {
                     otherParams.gatewayId = gameConfig.gateway.id?.toString() ?? "0";
                 }
@@ -184,7 +187,7 @@ export namespace AppHandlers {
         private getSessionInfo() {
             const session = {
                 ...this.getBaseSessionInfo(),
-                system: (StorageManager.get(localStorageKeys.session) as ISessionInfo)?.system,
+                system: this.getAppType(),
                 isUM: this.appStore.isUM,
                 umInfo: this.appStore.umInfo,
             };
@@ -199,14 +202,21 @@ export namespace AppHandlers {
         private redirectWithEncodedParams(baseUrl: string, params: Record<string, unknown>) {
             const searchParams = new URLSearchParams();
             Object.entries(params).forEach(([key, value]) => value !== undefined && searchParams.append(key, value.toString()));
+
             window.location.replace(`${baseUrl}?params=${GameUtils.base64Encode(searchParams.toString())}`);
         }
 
         private redirectWithUrlParams(baseUrl: string, mainParams: Record<string, unknown>, otherParams: Record<string, unknown>) {
             const url = new URL(baseUrl);
+
             Object.entries(mainParams).forEach(([key, value]) => url.searchParams.append(key, value.toString()));
             url.searchParams.append("params", GameUtils.base64Encode(JSON.stringify(otherParams)));
+
             window.location.replace(url);
+        }
+
+        private getAppType() {
+            return (StorageManager.get(localStorageKeys.session) as ISessionInfo)?.system;
         }
     }
 
