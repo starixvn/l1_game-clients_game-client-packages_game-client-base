@@ -126,49 +126,143 @@ describe("AppHandlers", () => {
                 ]);
             });
             it("should return original baseUrl when gameId is not provided", () => {
+                // arrange
                 const baseUrl = "https://example.com/lobby";
                 jest.spyOn(handler as any, "getDecodedReturnUrl").mockReturnValue(baseUrl);
 
+                // act
                 const result = (handler as any).getUpdatedBaseUrl();
 
+                // assert
                 expect(result).toBe(baseUrl);
             });
 
             it("should return original baseUrl when gameConfiguration is not available", () => {
+                // arrange
                 const baseUrl = "https://example.com/lobby";
                 jest.spyOn(handler as any, "getDecodedReturnUrl").mockReturnValue(baseUrl);
                 gameConfigurationStore.setGameConfiguration([]);
 
+                // act
                 const result = (handler as any).getUpdatedBaseUrl(123);
 
+                // assert
                 expect(result).toBe(baseUrl);
             });
 
             it("should return original baseUrl when game is not a microsite", () => {
+                // arrange
                 const baseUrl = "https://example.com/lobby";
                 jest.spyOn(handler as any, "getDecodedReturnUrl").mockReturnValue(baseUrl);
 
+                // act
                 const result = (handler as any).getUpdatedBaseUrl(456);
 
+                // assert
                 expect(result).toBe(baseUrl);
             });
 
             it("should append site-gameId/ to baseUrl without trailing slash when game is a microsite", () => {
+                // arrange
                 const baseUrl = "https://example.com/lobby";
                 jest.spyOn(handler as any, "getDecodedReturnUrl").mockReturnValue(baseUrl);
 
+                // act
                 const result = (handler as any).getUpdatedBaseUrl(123);
 
+                // assert
                 expect(result).toBe("https://example.com/lobby/site-123/");
             });
 
             it("should append site-gameId/ to baseUrl with trailing slash when game is a microsite", () => {
+                // arrange
                 const baseUrl = "https://example.com/lobby/";
                 jest.spyOn(handler as any, "getDecodedReturnUrl").mockReturnValue(baseUrl);
 
+                // act
                 const result = (handler as any).getUpdatedBaseUrl(123);
 
+                // assert
                 expect(result).toBe("https://example.com/lobby/site-123/");
+            });
+        });
+
+        describe("navigateBasedOnMode", () => {
+            beforeEach(() => {
+                // mock all
+                (handler as any).handleDirectModeNavigation = jest.fn();
+                (handler as any).handleStandaloneNavigation = jest.fn();
+                (handler as any).handleIframeNavigation = jest.fn();
+            });
+
+            it("should call handleDirectModeNavigation when isDirectMode is true", () => {
+                // arrange
+                appStore.isDirectMode = true;
+                appStore.isStandalone = false;
+
+                // act
+                (handler as any).navigateBasedOnMode();
+
+                // assert
+                expect((handler as any).handleDirectModeNavigation).toHaveBeenCalled();
+                expect((handler as any).handleStandaloneNavigation).not.toHaveBeenCalled();
+                expect((handler as any).handleIframeNavigation).not.toHaveBeenCalled();
+            });
+
+            it("should call handleStandaloneNavigation when isStandalone is true and isDirectMode is false", () => {
+                // arrange
+                appStore.isDirectMode = false;
+                appStore.isStandalone = true;
+                appStore.urlInfo = { gatewayId: 123 };
+
+                // act
+                (handler as any).navigateBasedOnMode();
+
+                // assert
+                expect((handler as any).handleDirectModeNavigation).not.toHaveBeenCalled();
+                expect((handler as any).handleStandaloneNavigation).toHaveBeenCalledWith(0, 123);
+                expect((handler as any).handleIframeNavigation).not.toHaveBeenCalled();
+            });
+
+            it("should use default gatewayId 0 when urlInfo.gatewayId is not provided", () => {
+                // arrange
+                appStore.isDirectMode = false;
+                appStore.isStandalone = true;
+                appStore.urlInfo = {};
+
+                // act
+                (handler as any).navigateBasedOnMode();
+
+                // assert
+                expect((handler as any).handleStandaloneNavigation).toHaveBeenCalledWith(0, 0);
+            });
+
+            it("should call handleIframeNavigation when both isDirectMode and isStandalone are false", () => {
+                // arrange
+                appStore.isDirectMode = false;
+                appStore.isStandalone = false;
+
+                // act
+                (handler as any).navigateBasedOnMode();
+
+                // assert
+                expect((handler as any).handleDirectModeNavigation).not.toHaveBeenCalled();
+                expect((handler as any).handleStandaloneNavigation).not.toHaveBeenCalled();
+                expect((handler as any).handleIframeNavigation).toHaveBeenCalled();
+            });
+
+            it("should prioritize isDirectMode over isStandalone when both are true", () => {
+                // arrange
+                appStore.isDirectMode = true;
+                appStore.isStandalone = true;
+
+                // act
+                (handler as any).navigateBasedOnMode();
+
+                // assert
+                expect((handler as any).handleDirectModeNavigation).toHaveBeenCalled();
+                expect((handler as any).handleStandaloneNavigation).not.toHaveBeenCalled();
+                expect((handler as any).handleIframeNavigation).not.toHaveBeenCalled();
             });
         });
     });
