@@ -5,6 +5,7 @@ import { IHandler } from "../shared";
 import { BrowserDomUtils, GameUtils, StorageManager, localStorageKeys, sentryLogger } from "../shared/utils";
 import { AppStore } from "./app-store";
 import { UserSettingData } from "../game/user-settings";
+import { GameConfigurationStore } from "../game-configuration/game-configuration-store";
 
 export namespace AppHandlers {
     @injectable()
@@ -12,7 +13,9 @@ export namespace AppHandlers {
         constructor(
             @inject(AppStore) private readonly appStore: AppStore,
             @inject(PlayerSelectionHandlers.ClearHandlers)
-            private readonly playerSelectionClearHandler: PlayerSelectionHandlers.ClearHandlers
+            private readonly playerSelectionClearHandler: PlayerSelectionHandlers.ClearHandlers,
+            @inject(GameConfigurationStore)
+            private readonly gameConfigurationStore: GameConfigurationStore
         ) {}
 
         handle() {
@@ -73,7 +76,7 @@ export namespace AppHandlers {
         }
 
         private handleStandaloneNavigation(gameId?: number, gatewayId?: number) {
-            const baseUrl = this.getDecodedReturnUrl();
+            const baseUrl = this.getUpdatedBaseUrl(gameId);
             const sessionParam = this.getSessionInfo();
             const operator = StorageManager.get(localStorageKeys.operator);
             const userSettings = StorageManager.get(localStorageKeys.playerSetting) as UserSettingData;
@@ -104,13 +107,28 @@ export namespace AppHandlers {
             window.location.replace(url);
         }
 
+        private getUpdatedBaseUrl(gameId?: number): string {
+            let baseUrl = String(this.getDecodedReturnUrl());
+
+            if (!gameId || !this.gameConfigurationStore?.gameConfiguration) {
+                return baseUrl;
+            }
+
+            const gameConfig = this.gameConfigurationStore.gameConfiguration.find((config) => config?.id === gameId);
+            if (gameConfig && gameConfig?.isMicrosite) {
+                baseUrl = baseUrl.endsWith("/") ? `${baseUrl}site-${gameId}/` : `${baseUrl}/site-${gameId}/`;
+            }
+
+            return baseUrl;
+        }
+
         private handleIframeNavigation() {
             const params = this.getAuthorizationParams();
             BrowserDomUtils.postMessageToParent({ ...params, backLobby: true });
         }
 
         private getDecodedReturnUrl(): string {
-            return GameUtils.base64Decode(this.appStore.urlInfo?.returnUrl);
+            return GameUtils.base64Decode(this.appStore.urlInfo?.returnUrl ?? "");
         }
 
         private getBaseSessionInfo() {
