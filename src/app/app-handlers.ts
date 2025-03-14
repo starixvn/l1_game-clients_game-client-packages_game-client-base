@@ -7,6 +7,25 @@ import { AppStore } from "./app-store";
 import { UserSettingData } from "../game/user-settings";
 import { GameConfigurationStore } from "../game-configuration/game-configuration-store";
 
+export interface OtherParams {
+    musicEnable: boolean;
+    sfxEnable: boolean;
+    isUserGesture: boolean;
+    system?: number;
+    isUM?: boolean;
+    umInfo?: any;
+    ss?: string;
+    time?: number;
+    username?: string;
+    isAuthenticated?: boolean;
+    memberName?: string;
+    language?: string;
+    isStandalone?: string;
+    cg?: string;
+    gatewayId?: string;
+    op?: string;
+}
+
 export namespace AppHandlers {
     @injectable()
     export class BackToOperatorLobby implements IHandler<void> {
@@ -77,34 +96,54 @@ export namespace AppHandlers {
 
         private handleStandaloneNavigation(gameId?: number, gatewayId?: number) {
             const baseUrl = this.getUpdatedBaseUrl(gameId);
-            const sessionParam = this.getSessionInfo();
+
             const operator = StorageManager.get(localStorageKeys.operator);
             const userSettings = StorageManager.get(localStorageKeys.playerSetting) as UserSettingData;
 
             const url = new URL(baseUrl);
 
-            const mainParams = {
-                cg: this.appStore.currencyGroup,
-                op: operator,
-                lang: sessionParam?.language,
-                ...(gameId && gameId > 0 && { gameId: gameId.toString() }),
-                ...(gatewayId && gatewayId > 0 && { gatewayId: gatewayId.toString() }),
-            };
+            const mainParams = this.buildMainParams(gameId, gatewayId, operator.toString());
+            const otherParams = this.buildOtherParams(userSettings, gameId);
 
-            const otherParams = {
-                ...sessionParam,
-                music: userSettings?.musicEnable ?? false,
-                sfx: userSettings?.sfxEnable ?? false,
-                isTouchedScreen: this.appStore.isTouchedScreen,
-            };
-
-            Object.entries(mainParams).forEach(([key, value]) => {
-                url.searchParams.append(key, value.toString());
-            });
-
+            Object.entries(mainParams).forEach(([key, value]) => url.searchParams.append(key, value.toString()));
             url.searchParams.append("params", GameUtils.base64Encode(JSON.stringify(otherParams)));
 
             window.location.replace(url);
+        }
+
+        private buildMainParams(gameId?: number, gatewayId?: number, operator?: string) {
+            return {
+                cg: this.appStore.currencyGroup,
+                op: operator,
+                lang: this.getSessionInfo()?.language,
+                ...(gameId && gameId > 0 && { gameId: gameId.toString() }),
+                ...(gatewayId && gatewayId > 0 && { gatewayId: gatewayId.toString() }),
+            };
+        }
+
+        private buildOtherParams(userSettings: UserSettingData, gameId?: number) {
+            const sessionInfo = this.getSessionInfo();
+            const otherParams: OtherParams = {
+                ...sessionInfo,
+                musicEnable: userSettings?.musicEnable ?? false,
+                sfxEnable: userSettings?.sfxEnable ?? false,
+                isUserGesture: this.appStore?.isTouchedScreen,
+            };
+
+            if (gameId > 0) {
+                const gameConfig = this.gameConfigurationStore.gameConfiguration.find((config) => config?.id === gameId);
+                if (gameConfig && gameConfig?.isMicrosite) {
+                    otherParams.isStandalone = "true";
+                    otherParams.cg = this.appStore?.currencyGroup;
+                    otherParams.op = StorageManager.get(localStorageKeys.operator)?.toString() ?? "";
+                }
+
+                if (gameConfig && gameConfig?.gateway) {
+                    otherParams.gatewayId = gameConfig.gateway.id?.toString() ?? "0";
+                }
+            }
+
+            return otherParams;
         }
 
         private getUpdatedBaseUrl(gameId?: number): string {
