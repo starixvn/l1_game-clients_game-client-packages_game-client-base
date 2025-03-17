@@ -199,9 +199,13 @@ export namespace AppHandlers {
             return this.gameConfigurationStore.gameConfiguration.find((config) => config?.id === gameId);
         }
 
-        private redirectWithEncodedParams(baseUrl: string, params: Record<string, unknown>) {
+        private redirectWithEncodedParams(baseUrl: string, params: Record<string, any>) {
             const searchParams = new URLSearchParams();
-            Object.entries(params).forEach(([key, value]) => value !== undefined && searchParams.append(key, value.toString()));
+            Object.keys(params).forEach((key) => {
+                if (params[key] !== undefined && params[key] !== null) {
+                    searchParams.append(key, params[key]);
+                }
+            });
 
             window.location.replace(`${baseUrl}?params=${GameUtils.base64Encode(searchParams.toString())}`);
         }
