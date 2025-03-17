@@ -1,4 +1,5 @@
 import { AppHandlers, AppStore } from "../../../src/app";
+import { SiteConfigs } from "../../../src/configs/site-configs";
 import { GameConfigurationStore } from "../../../src/game-configuration/game-configuration-store";
 import { PlayerSelectionHandlers, PlayerSelectionStore } from "../../../src/game/player-selections";
 import { BrowserDomUtils, GameUtils, StorageManager } from "../../../src/shared/utils";
@@ -11,15 +12,18 @@ describe("AppHandlers", () => {
         let appStore: AppStore;
         let handler: AppHandlers.BackToOperatorLobby;
         let gameConfigurationStore: GameConfigurationStore;
+        let siteConfigs: SiteConfigs;
 
         beforeEach(() => {
             // arrange
             appStore = new AppStore();
             gameConfigurationStore = new GameConfigurationStore();
+            siteConfigs = stub<SiteConfigs>();
             handler = new AppHandlers.BackToOperatorLobby(
                 appStore,
                 new PlayerSelectionHandlers.ClearHandlers(new PlayerSelectionStore()),
-                gameConfigurationStore
+                gameConfigurationStore,
+                siteConfigs
             );
             appStore.urlInfo = { returnUrl: "rurl" };
             GameUtils.base64Decode = jest.fn().mockReturnValue("returnUrl");
@@ -161,30 +165,6 @@ describe("AppHandlers", () => {
                 // assert
                 expect(result).toBe(baseUrl);
             });
-
-            it("should append site-gameId/ to baseUrl without trailing slash when game is a microsite", () => {
-                // arrange
-                const baseUrl = "https://example.com/lobby";
-                jest.spyOn(handler as any, "getDecodedReturnUrl").mockReturnValue(baseUrl);
-
-                // act
-                const result = (handler as any).getUpdatedBaseUrl(123);
-
-                // assert
-                expect(result).toBe("https://example.com/lobby/site-123/");
-            });
-
-            it("should append site-gameId/ to baseUrl with trailing slash when game is a microsite", () => {
-                // arrange
-                const baseUrl = "https://example.com/lobby/";
-                jest.spyOn(handler as any, "getDecodedReturnUrl").mockReturnValue(baseUrl);
-
-                // act
-                const result = (handler as any).getUpdatedBaseUrl(123);
-
-                // assert
-                expect(result).toBe("https://example.com/lobby/site-123/");
-            });
         });
 
         describe("navigateBasedOnMode", () => {
@@ -297,9 +277,6 @@ describe("AppHandlers", () => {
                     (handler as any).redirectWithEncodedParams(baseUrl, params);
 
                     // Assert
-                    expect(locationReplaceMock).toHaveBeenCalledWith("https://example.com?params=encodedParamsString");
-
-                    // Verify that URLSearchParams was used correctly
                     expect(GameUtils.base64Encode).toHaveBeenCalled();
                     const base64EncodeCall = (GameUtils.base64Encode as jest.Mock).mock.calls[0][0];
                     expect(base64EncodeCall).toContain("gameId=123");

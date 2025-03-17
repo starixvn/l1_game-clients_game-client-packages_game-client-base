@@ -88,4 +88,8 @@ export namespace UrlUtils {
 
         return buildUrl("http", path, configs, configs.clientSubDomain);
     }
+
+    export function buildMicrositeGameUrl(configs: SiteConfigs, gameId) {
+        return buildUrl("http", `/site-${gameId}`, configs);
+    }
 }

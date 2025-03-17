@@ -236,4 +236,44 @@ describe("UrlUtils", () => {
             expect(actual).toBe("");
         });
     });
+
+    describe("buildMicrositeGameUrl", () => {
+        it("should build microsite game URL with correct game ID", () => {
+            // Arrange
+            const gameId = 123;
+            const expected = "http://unittest.com/site-123";
+
+            // Act
+            const url = UrlUtils.buildMicrositeGameUrl(siteConfigs, gameId);
+
+            // Assert
+            expect(url).toBe(expected);
+        });
+
+        it("should build microsite game URL with SSL if enabled", () => {
+            // Arrange
+            const gameId = 456;
+            const sslConfigs = { ...siteConfigs, ssl: true };
+            const expected = "https://unittest.com/site-456";
+
+            // Act
+            const url = UrlUtils.buildMicrositeGameUrl(sslConfigs, gameId);
+
+            // Assert
+            expect(url).toBe(expected);
+        });
+
+        it("should build microsite game URL with subdomain if provided", () => {
+            // Arrange
+            const gameId = 789;
+            const subdomainConfigs = { ...siteConfigs, subDomain: "games" };
+            const expected = "http://games.unittest.com/site-789";
+
+            // Act
+            const url = UrlUtils.buildMicrositeGameUrl(subdomainConfigs, gameId);
+
+            // Assert
+            expect(url).toBe(expected);
+        });
+    });
 });

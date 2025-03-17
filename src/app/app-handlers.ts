@@ -2,10 +2,11 @@ import { inject, injectable } from "inversify";
 import { ISessionInfo } from "../auth";
 import { PlayerSelectionHandlers } from "../game/player-selections";
 import { IHandler } from "../shared";
-import { BrowserDomUtils, GameUtils, StorageManager, localStorageKeys, sentryLogger } from "../shared/utils";
+import { BrowserDomUtils, GameUtils, StorageManager, UrlUtils, localStorageKeys, sentryLogger } from "../shared/utils";
 import { AppStore } from "./app-store";
 import { UserSettingData } from "../game/user-settings";
 import { GameConfigurationStore } from "../game-configuration/game-configuration-store";
+import { SiteConfigs } from "../configs";
 
 export interface OtherParams {
     musicEnable: boolean;
@@ -35,7 +36,8 @@ export namespace AppHandlers {
             @inject(PlayerSelectionHandlers.ClearHandlers)
             private readonly playerSelectionClearHandler: PlayerSelectionHandlers.ClearHandlers,
             @inject(GameConfigurationStore)
-            private readonly gameConfigurationStore: GameConfigurationStore
+            private readonly gameConfigurationStore: GameConfigurationStore,
+            @inject(SiteConfigs) private readonly siteConfigs: SiteConfigs
         ) {}
 
         handle() {
@@ -96,7 +98,7 @@ export namespace AppHandlers {
         }
 
         private handleStandaloneNavigation(gameId?: number, gatewayId?: number) {
-            const baseUrl = this.getUpdatedBaseUrl(gameId);
+            const baseUrl = this.getUpdatedBaseUrl();
             const operator = StorageManager.get(localStorageKeys.operator)?.toString();
             const userSettings = StorageManager.get(localStorageKeys.playerSetting) as UserSettingData;
             const mainParams = this.buildMainParams(gameId, gatewayId, operator);
@@ -106,7 +108,7 @@ export namespace AppHandlers {
             const isMicrosite = gameConfig?.isMicrosite ?? false;
 
             if (isMicrosite) {
-                this.redirectWithEncodedParams(baseUrl, { ...mainParams, ...otherParams });
+                this.redirectWithEncodedParams(gameId, { ...mainParams, ...otherParams });
             } else {
                 this.redirectWithUrlParams(baseUrl, mainParams, otherParams);
             }
@@ -150,13 +152,8 @@ export namespace AppHandlers {
             return otherParams;
         }
 
-        private getUpdatedBaseUrl(gameId?: number): string {
-            let baseUrl = this.getDecodedReturnUrl();
-            const gameConfig = gameId ? this.getGameConfig(gameId) : undefined;
-            if (gameConfig?.isMicrosite) {
-                baseUrl = baseUrl.endsWith("/") ? `${baseUrl}site-${gameId}/` : `${baseUrl}/site-${gameId}/`;
-            }
-            return baseUrl;
+        private getUpdatedBaseUrl(): string {
+            return this.getDecodedReturnUrl();
         }
 
         private handleIframeNavigation() {
@@ -199,15 +196,16 @@ export namespace AppHandlers {
             return this.gameConfigurationStore.gameConfiguration.find((config) => config?.id === gameId);
         }
 
-        private redirectWithEncodedParams(baseUrl: string, params: Record<string, any>) {
+        private redirectWithEncodedParams(gameId: number, params: Record<string, any>) {
             const searchParams = new URLSearchParams();
             Object.keys(params).forEach((key) => {
                 if (params[key] !== undefined && params[key] !== null) {
                     searchParams.append(key, params[key]);
                 }
             });
+            const baseUrl = UrlUtils.buildMicrositeGameUrl(this.siteConfigs, gameId);
 
-            window.location.replace(`${baseUrl}?params=${GameUtils.base64Encode(searchParams.toString())}`);
+            window.location.replace(`${baseUrl}/?params=${GameUtils.base64Encode(searchParams.toString())}`);
         }
 
         private redirectWithUrlParams(baseUrl: string, mainParams: Record<string, unknown>, otherParams: Record<string, unknown>) {
