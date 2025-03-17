@@ -27,6 +27,7 @@ export interface IStandaloneMode {
     isStandalone: boolean;
     urlInfo: IUrlInfo;
     isTouchedScreen: boolean;
+    currencyGroup: string;
 }
 
 @injectable()
@@ -157,6 +158,7 @@ export class AppStore {
             isStandalone: this.isStandalone,
             urlInfo: this.urlInfo,
             isTouchedScreen: this.isTouchedScreen,
+            currencyGroup: this.currencyGroup,
         };
 
         StorageManager.set(localStorageKeys.standaloneMode, data);
@@ -205,6 +207,7 @@ export class AppStore {
                 this.isStandalone = data.isStandalone;
                 this.urlInfo = data.urlInfo;
                 this.isTouchedScreen = data.isTouchedScreen;
+                this.currencyGroup = data.currencyGroup;
             }
         }
     }
