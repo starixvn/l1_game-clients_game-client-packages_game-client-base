@@ -112,7 +112,7 @@ export class ConnectionStore {
         for (const eventName of multipleKeyEvents) {
             const requiredKeys = eventName.split(",").map((key) => key.trim());
 
-            const hasAllKeys = requiredKeys.every((key) => !!data[key]);
+            const hasAllKeys = requiredKeys.every((key) => data[key] !== undefined);
             if (hasAllKeys) {
                 const eventData = requiredKeys.reduce((acc, key) => {
                     acc[key] = data[key];
