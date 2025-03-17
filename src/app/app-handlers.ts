@@ -7,6 +7,7 @@ import { AppStore } from "./app-store";
 import { UserSettingData } from "../game/user-settings";
 import { GameConfigurationStore } from "../game-configuration/game-configuration-store";
 import { SiteConfigs } from "../configs";
+import { URLParams } from "../shared/constants/url-params";
 
 export interface OtherParams {
     musicEnable: boolean;
@@ -136,11 +137,12 @@ export namespace AppHandlers {
             if (gameId && gameId > 0) {
                 const gameConfig = this.getGameConfig(gameId);
                 if (gameConfig?.isMicrosite) {
-                    otherParams.isStandalone = "true";
                     Object.assign(otherParams, {
-                        isStandalone: "true",
-                        appType: this.getAppType(),
-                        uname: sessionInfo?.username,
+                        [URLParams.isStandalone]: "true",
+                        [URLParams.appType]: this.getAppType(),
+                        [URLParams.username]: sessionInfo?.username,
+                        [URLParams.returnUrl]: this.appStore.urlInfo?.returnUrl,
+                        [URLParams.currencyGroup]: this.appStore.currencyGroup,
                     });
                 }
 
