@@ -3,6 +3,8 @@ export const URLParams = {
     params: "params",
     session: "ss",
     username: "uname",
+    isAuthenticated: "isAuthenticated",
+    memberName: "memberName",
     language: "lang",
     appType: "appType",
     returnUrl: "rurl",
@@ -17,4 +19,9 @@ export const URLParams = {
     isStandalone: "isStandalone",
     currencyGroup: "cg",
     gatewayId: "gatewayId",
+    time: "time",
+    system: "system",
+    isUM: "isUM",
+    umInfo: "umInfo",
+    gameId: "gameId",
 };

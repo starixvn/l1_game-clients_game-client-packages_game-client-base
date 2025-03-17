@@ -10,9 +10,9 @@ import { SiteConfigs } from "../configs";
 import { URLParams } from "../shared/constants/url-params";
 
 export interface OtherParams {
-    musicEnable: boolean;
-    sfxEnable: boolean;
-    isUserGesture: boolean;
+    musicEnable?: boolean;
+    sfxEnable?: boolean;
+    isUserGesture?: boolean;
     system?: number;
     isUM?: boolean;
     umInfo?: any;
@@ -117,11 +117,11 @@ export namespace AppHandlers {
 
         private buildMainParams(gameId?: number, gatewayId?: number, operator?: string) {
             return {
-                cg: this.appStore.currencyGroup,
-                op: operator,
-                lang: this.getSessionInfo()?.language,
-                ...(gameId && { gameId: gameId.toString() }),
-                ...(gatewayId && { gatewayId: gatewayId.toString() }),
+                [URLParams.currencyGroup]: this.appStore.currencyGroup,
+                [URLParams.operator]: operator,
+                [URLParams.language]: this.getSessionInfo()?.language,
+                ...(gameId && { [URLParams.gameId]: gameId.toString() }),
+                ...(gatewayId && { [URLParams.gatewayId]: gatewayId.toString() }),
             };
         }
 
@@ -129,9 +129,9 @@ export namespace AppHandlers {
             const sessionInfo = this.getSessionInfo();
             const otherParams: OtherParams = {
                 ...sessionInfo,
-                musicEnable: userSettings?.musicEnable ?? false,
-                sfxEnable: userSettings?.sfxEnable ?? false,
-                isUserGesture: this.appStore?.isTouchedScreen,
+                [URLParams.musicEnable]: userSettings?.musicEnable ?? false,
+                [URLParams.sfxEnable]: userSettings?.sfxEnable ?? false,
+                [URLParams.isUserGesture]: this.appStore?.isTouchedScreen,
             };
 
             if (gameId && gameId > 0) {
@@ -147,7 +147,7 @@ export namespace AppHandlers {
                 }
 
                 if (gameConfig?.gateway) {
-                    otherParams.gatewayId = gameConfig.gateway.id?.toString() ?? "0";
+                    otherParams[URLParams.gatewayId] = gameConfig.gateway.id?.toString() ?? "0";
                 }
             }
 
@@ -170,11 +170,11 @@ export namespace AppHandlers {
         private getBaseSessionInfo() {
             const sessionInfo = StorageManager.get(localStorageKeys.session) as ISessionInfo;
             return {
-                ss: sessionInfo?.session,
-                time: new Date(sessionInfo?.ssoTime).getTime(),
+                [URLParams.session]: sessionInfo?.session,
+                [URLParams.time]: new Date(sessionInfo?.ssoTime).getTime(),
                 username: sessionInfo?.username,
-                isAuthenticated: sessionInfo?.isAuthenticated,
-                memberName: sessionInfo?.memberName,
+                [URLParams.isAuthenticated]: sessionInfo?.isAuthenticated,
+                [URLParams.memberName]: sessionInfo?.memberName,
                 language: sessionInfo?.language,
             };
         }
@@ -186,9 +186,9 @@ export namespace AppHandlers {
         private getSessionInfo() {
             const session = {
                 ...this.getBaseSessionInfo(),
-                system: this.getAppType(),
-                isUM: this.appStore.isUM,
-                umInfo: this.appStore.umInfo,
+                [URLParams.system]: this.getAppType(),
+                [URLParams.isUM]: this.appStore.isUM,
+                [URLParams.umInfo]: this.appStore.umInfo,
             };
 
             return session;
