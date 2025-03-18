@@ -195,6 +195,7 @@ export namespace AppHandlers {
         }
 
         private getGameConfig(gameId: number) {
+            console.log("gameConfigurationStore.gameConfiguration", this.gameConfigurationStore.gameConfiguration);
             return this.gameConfigurationStore.gameConfiguration.find((config) => config?.id === gameId);
         }
 
