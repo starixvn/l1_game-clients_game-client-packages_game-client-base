@@ -133,6 +133,24 @@ export namespace AuthHandlers {
         ) {}
 
         async handle(urlParams: URLSearchParams) {
+            // Debug
+            console.log("=== URL Params Debug ===");
+            console.log("Raw urlParams:", urlParams.toString());
+
+            console.log("URL Params`:");
+            urlParams.forEach((value, key) => {
+                console.log(`${key}: ${value}`);
+            });
+
+            // Check params
+            console.log("Các params chính:");
+            console.log("token:", urlParams.get(URLParams?.token));
+            console.log("params:", urlParams.get(URLParams?.params));
+            console.log("appType:", urlParams.get(URLParams?.appType));
+            console.log("returnUrl:", urlParams.get(URLParams?.returnUrl));
+            console.log("operator:", urlParams.get(URLParams?.operator));
+            console.log("=====================");
+
             try {
                 if (!this.isValidSessionStorage(urlParams)) {
                     return;
@@ -264,7 +282,7 @@ export namespace AuthHandlers {
         }
 
         private async handleAuthorize(session?: string, username?: string) {
-            this.clearQueryStringOnUrl();
+            //this.clearQueryStringOnUrl();
             if (!session || !username) {
                 const sessionInfo = StorageManager.get(localStorageKeys.session) as ISessionInfo;
                 if (!sessionInfo) {
@@ -274,6 +292,7 @@ export namespace AuthHandlers {
                 session = sessionInfo.session;
                 username = sessionInfo.username;
             }
+            this.clearQueryStringOnUrl();
             await this.authorizeHandler.handle({ session, username });
         }
 
@@ -281,6 +300,7 @@ export namespace AuthHandlers {
             try {
                 BrowserDomUtils.postMessageToParent({ clearQueryStringOnUrl: true });
                 history.pushState(null, "", location.href.split("?")[0]);
+                console.log("clearQueryStringOnUrl---", window.location);
             } catch (ex) {
                 console.log(ex);
             }
