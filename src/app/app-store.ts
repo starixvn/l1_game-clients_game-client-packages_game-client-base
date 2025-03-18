@@ -100,7 +100,7 @@ export class AppStore {
             this.isAutoCreateNickname = true;
         }
 
-        if (isStandalone !== null) {
+        if (isStandalone) {
             this.isStandalone = isStandalone === "true";
         }
 
