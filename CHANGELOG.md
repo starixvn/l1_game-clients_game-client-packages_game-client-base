@@ -1,3 +1,40 @@
+## [1.58.2](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.58.1...v1.58.2) (2025-03-19)
+
+
+### Bug Fixes
+
+* add operation on params when return to Lobby ([d1d98a2](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/d1d98a29cca6bca2a48058cf7e9e205f27a0b9b3))
+* add param gameId when backing to lobby ([ca2db72](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/ca2db72e5c8c3f42f348e8b28000906800559026))
+* add params lobbyId when return to Lobby ([3775eea](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/3775eeaa2e41109d9c28426b6cec98bcdbfc997a))
+* add test game-configuration ([db85778](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/db857784494c7aa11f86c5b883d93f683b32ff6a))
+* check null when append params ([ac3a13c](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/ac3a13cea8bba178bc9c593c804d68919ae9a9fc))
+* copy text to clipboard by itself ([cffb650](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/cffb650cd1ddeb46c476f4e010f9e7322bc3a8d2))
+* debug ([78ec656](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/78ec6560982b7712dca6f8b3344071514f1935e4))
+* handle when open game standalone ([049e58d](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/049e58d42034c141ed25df04fa9ed1d533face69))
+* missing language on params ([0abe51f](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/0abe51fed745aec8f4e4a04290424efdbb0ea207))
+* remove return gameId ([cc4ed0f](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/cc4ed0feaf3bd040a6176a7e129a3cf3a0b51152))
+* return gatewayId when back to lobby ([344bb43](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/344bb43f768aabfbb2a8570403d69c1d53abcea5))
+* save currencyGroup on storage ([440f8e0](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/440f8e0f57bed8449c4ebac9367f6176a5c90495))
+* save storage info standalone mode ([b84c1af](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/b84c1af38fd536be78cfa481bc5f2a01421f10ef))
+* session send params wrong syntax ([e006129](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/e0061293bebb055c9039e81bd00d513e9e5b04c6))
+* show UI create nickname ([f7a445b](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/f7a445b767a7b5fed4bb24eb2db674dc1e83bca3))
+* update build micro-site url ([bec80db](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/bec80db6afe8663d46b3332c8aaa5a89f6b476c7))
+* update condition check standalone ([f19d7e2](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/f19d7e201cc6fd4ee00accbf31f74189cb5dde11))
+* update example cocos-3x ([ecc4c74](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/ecc4c7497c322c07b799e76997c9c290f4cfb89a))
+* update open game with gameId ([487e9ae](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/487e9aedb83933167198420162a9a230c7b1dd65))
+* update params ([d11fa9d](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/d11fa9db712c35fc7ee7bdfdedba7e0ea385d6ab))
+* update params ([f5c3aa1](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/f5c3aa1919ce281bdb6b5fc097a30a835fdf499a))
+* update params ([12a0279](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/12a0279b97bf3ff392ac92e29cf74b3a4dab620a))
+* update params when back to Lobby with have gameId ([31d743b](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/31d743b6dcc1bd6743c55be10a337fdf1bfc1b44))
+* update params when return lobby ([b32fc00](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/b32fc0040d0d175d7c29cb1f55b8d2e5fdeb8c32))
+* update return data into params ([7319ff2](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/7319ff2f89215ca82ebd42ba8cefab105c657a32))
+* update return URL when exist gameId ([6a65867](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/6a6586752effeb40566d2e3761b0ec1a6a3b2a4d))
+* update return URL when game microsite ([01259ab](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/01259ab27c857e57d51568d52c119b27c802b33d))
+* update test app-handlers ([7c05153](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/7c05153b659bd5032b3c61606aaafa321317bd4b))
+* update test on app-store ([9a41149](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/9a411492d8bb0acfb055ac67d791cd5e35431a3e))
+* update URLParams ([3959e64](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/3959e649c099fafae4c57d521b8eec497d135be0))
+* update when open direct mode and get game configuration ([4fb73a7](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/4fb73a75678bf6c022f9198a142e21f64940432e))
+
 ## [1.58.1](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.58.0...v1.58.1) (2025-03-05)
 
 
