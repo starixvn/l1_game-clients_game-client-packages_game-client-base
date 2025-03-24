@@ -1,13 +1,13 @@
 import { inject, injectable } from "inversify";
 import { ISessionInfo } from "../auth";
+import { SiteConfigs } from "../configs";
+import { GameConfigurationStore } from "../game-configuration/game-configuration-store";
 import { PlayerSelectionHandlers } from "../game/player-selections";
+import { UserSettingData } from "../game/user-settings";
 import { IHandler } from "../shared";
+import { URLParams } from "../shared/constants/url-params";
 import { BrowserDomUtils, GameUtils, StorageManager, UrlUtils, localStorageKeys, sentryLogger } from "../shared/utils";
 import { AppStore } from "./app-store";
-import { UserSettingData } from "../game/user-settings";
-import { GameConfigurationStore } from "../game-configuration/game-configuration-store";
-import { SiteConfigs } from "../configs";
-import { URLParams } from "../shared/constants/url-params";
 
 export interface OtherParams {
     musicEnable?: boolean;
@@ -122,6 +122,8 @@ export namespace AppHandlers {
                 [URLParams.language]: this.getSessionInfo()?.language,
                 ...(gameId && { [URLParams.gameId]: gameId.toString() }),
                 ...(gatewayId && { [URLParams.gatewayId]: gatewayId.toString() }),
+                ...(this.appStore?.urlInfo?.ref && { [URLParams.ref]: this.appStore?.urlInfo?.ref }),
+                ...(this.appStore?.urlInfo?.returnUrl && { [URLParams.returnUrl]: this.appStore?.urlInfo?.returnUrl }),
             };
         }
 
@@ -141,6 +143,7 @@ export namespace AppHandlers {
                         [URLParams.isStandalone]: "true",
                         [URLParams.appType]: this.getAppType(),
                         [URLParams.username]: sessionInfo?.username,
+                        [URLParams.ref]: this.appStore.urlInfo?.ref,
                         [URLParams.returnUrl]: this.appStore.urlInfo?.returnUrl,
                         [URLParams.currencyGroup]: this.appStore.currencyGroup,
                     });
