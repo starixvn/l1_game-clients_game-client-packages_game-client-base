@@ -75,21 +75,23 @@ export namespace UrlUtils {
         return subDirectory?.length > 0 ? `${subDirectory}/` : "";
     }
 
-    export function buildShareResource(configs: SiteConfigs) {
+    function getClientPath(configs: SiteConfigs, name: string) {
         const subDirectory = configs?.subDirectory ? `/${configs?.subDirectory}` : "";
-        const path = `${subDirectory}/shared-resources`;
+        return `${subDirectory}/${name}`;
+    }
 
+    export function buildShareResource(configs: SiteConfigs) {
+        const path = getClientPath(configs, "shared-resources");
         return buildUrl("http", path, configs, configs.clientSubDomain);
     }
 
     export function buildGameConfiguration(configs: SiteConfigs) {
-        const subDirectory = configs?.subDirectory ? `/${configs?.subDirectory}` : "";
-        const path = `${subDirectory}/game/configurations/`;
-
+        const path = getClientPath(configs, "game/configurations/");
         return buildUrl("http", path, configs, configs.clientSubDomain);
     }
 
     export function buildMicrositeGameUrl(configs: SiteConfigs, gameId) {
-        return buildUrl("http", `/site-${gameId}`, configs, configs.clientSubDomain);
+        const path = getClientPath(configs, `site-${gameId}`);
+        return buildUrl("http", path, configs, configs.clientSubDomain);
     }
 }
