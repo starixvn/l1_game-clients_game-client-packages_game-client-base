@@ -85,7 +85,7 @@ export class AppStore {
         }
 
         if (lobbyUrl) {
-            this.urlInfo.lobbyUrl;
+            this.urlInfo.lobbyUrl = lobbyUrl;
         }
 
         const parentUrl = urlParams.get(URLParams.parentUrl);
