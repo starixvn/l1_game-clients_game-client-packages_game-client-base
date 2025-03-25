@@ -125,7 +125,7 @@ export namespace AppHandlers {
                 ...(gameId && { [URLParams.gameId]: gameId.toString() }),
                 ...(this.appStore?.urlInfo?.ref && { [URLParams.ref]: this.appStore?.urlInfo?.ref }),
                 ...(this.appStore?.urlInfo?.returnUrl && { [URLParams.returnUrl]: this.appStore?.urlInfo?.returnUrl }),
-                ...(this.appStore?.urlInfo?.lobbyUrl && { [URLParams.returnUrl]: this.appStore?.urlInfo?.lobbyUrl }),
+                ...(this.appStore?.urlInfo?.lobbyUrl && { [URLParams.lobbyUrl]: this.appStore?.urlInfo?.lobbyUrl }),
             };
         }
 

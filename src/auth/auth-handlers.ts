@@ -163,10 +163,6 @@ export namespace AuthHandlers {
                 const token = urlParams.get(URLParams.token);
                 const system = +urlParams.get(URLParams.appType) || AppTypes.Club;
 
-                if (urlParams?.has(URLParams.returnUrl)) {
-                    this.appStore.setURLStore(urlParams);
-                }
-
                 if (urlParams?.has(URLParams.operator)) {
                     StorageManager.set(localStorageKeys.operator, urlParams.get(URLParams.operator));
                 }
