@@ -1,3 +1,10 @@
+## [1.59.1](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.59.0...v1.59.1) (2025-03-25)
+
+
+### Bug Fixes
+
+* build url for microsite game ([62af06c](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/62af06c54051a4be348fe6c438b5eaee5f181b18))
+
 # [1.59.0](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.58.2...v1.59.0) (2025-03-25)
 
 
