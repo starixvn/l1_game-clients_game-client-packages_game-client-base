@@ -24,7 +24,6 @@ export interface OtherParams {
     language?: string;
     isStandalone?: string;
     cg?: string;
-    gatewayId?: string;
     op?: string;
     [key: string]: unknown;
 }
@@ -70,8 +69,7 @@ export namespace AppHandlers {
             }
 
             if (this.appStore.isStandalone) {
-                const gatewayId = this.appStore.urlInfo?.gatewayId ?? 0;
-                this.handleStandaloneNavigation(0, gatewayId);
+                this.handleStandaloneNavigation(0);
                 return;
             }
 
@@ -98,10 +96,10 @@ export namespace AppHandlers {
             BrowserDomUtils.replaceParentLocation(decodedUrl);
         }
 
-        private handleStandaloneNavigation(gameId?: number, gatewayId?: number) {
+        private handleStandaloneNavigation(gameId?: number) {
             const operator = StorageManager.get(localStorageKeys.operator)?.toString();
             const userSettings = StorageManager.get(localStorageKeys.playerSetting) as UserSettingData;
-            const mainParams = this.buildMainParams(gameId, gatewayId, operator);
+            const mainParams = this.buildMainParams(gameId, operator);
             const otherParams = this.buildOtherParams(userSettings, gameId);
 
             if (gameId) {
@@ -119,13 +117,12 @@ export namespace AppHandlers {
             }
         }
 
-        private buildMainParams(gameId?: number, gatewayId?: number, operator?: string) {
+        private buildMainParams(gameId?: number, operator?: string) {
             return {
                 [URLParams.currencyGroup]: this.appStore.currencyGroup,
                 [URLParams.operator]: operator,
                 [URLParams.language]: this.getSessionInfo()?.language,
                 ...(gameId && { [URLParams.gameId]: gameId.toString() }),
-                ...(gatewayId && { [URLParams.gatewayId]: gatewayId.toString() }),
                 ...(this.appStore?.urlInfo?.ref && { [URLParams.ref]: this.appStore?.urlInfo?.ref }),
                 ...(this.appStore?.urlInfo?.returnUrl && { [URLParams.returnUrl]: this.appStore?.urlInfo?.returnUrl }),
                 ...(this.appStore?.urlInfo?.lobbyUrl && { [URLParams.returnUrl]: this.appStore?.urlInfo?.lobbyUrl }),
@@ -153,10 +150,6 @@ export namespace AppHandlers {
                         [URLParams.lobbyUrl]: this.appStore.urlInfo?.lobbyUrl,
                         [URLParams.currencyGroup]: this.appStore.currencyGroup,
                     });
-                }
-
-                if (gameConfig?.gateway) {
-                    otherParams[URLParams.gatewayId] = gameConfig.gateway.id?.toString() ?? "0";
                 }
             }
 

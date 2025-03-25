@@ -19,7 +19,6 @@ export const URLParams = {
     supportedGamesId: "supportedGamesId",
     isStandalone: "isStandalone",
     currencyGroup: "cg",
-    gatewayId: "gatewayId",
     time: "time",
     system: "system",
     isUM: "isUM",

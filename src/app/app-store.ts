@@ -113,11 +113,6 @@ export class AppStore {
         if (currencyGroup) {
             this.currencyGroup = currencyGroup;
         }
-
-        const gatewayId = urlParams.get(URLParams?.gatewayId);
-        if (gatewayId && +gatewayId > 0) {
-            this.urlInfo.gatewayId = +gatewayId;
-        }
     }
 
     private isPlayForFunMode(refData: string) {
