@@ -8,6 +8,7 @@ export const URLParams = {
     language: "lang",
     appType: "appType",
     returnUrl: "rurl",
+    lobbyUrl: "lurl",
     ref: "ref",
     musicEnable: "musicEnable",
     sfxEnable: "sfxEnable",

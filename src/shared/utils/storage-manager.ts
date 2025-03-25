@@ -122,6 +122,7 @@ export const localStorageKeys = {
     session: "ss",
     directMode: "direct-mode",
     returnUrl: "rurl",
+    lobbyUrl: "lurl",
     playerSetting: "player-setting",
     playerIngameSelections: "player-selections",
     ruleReBet: "ruleRB",

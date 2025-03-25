@@ -179,7 +179,7 @@ export namespace AuthHandlers {
                     this.handleAuthorizeFromMainClient(urlParams);
                 } else {
                     this.authStore.setAuthStoreFromStorage(StorageManager.get(localStorageKeys.session) as ISessionInfo);
-                    this.appStore.loadReturnUrlAnd();
+                    this.appStore.loadUrls();
                     this.appStore.loadDirectMode();
                     this.appStore.loadPortraitDirectMode();
                     this.appStore.loadStandaloneMode();
@@ -227,7 +227,7 @@ export namespace AuthHandlers {
                 this.appStore.savePortraitDirectModeInfo();
             }
 
-            this.appStore.saveReturnUrl();
+            this.appStore.saveUrls();
             this.appStore.saveIsApp();
             this.appStore.saveStandalone();
             if (urlParams) {
@@ -258,6 +258,7 @@ export namespace AuthHandlers {
             StorageManager.remove(localStorageKeys.session);
             StorageManager.remove(localStorageKeys.directMode);
             StorageManager.remove(localStorageKeys.returnUrl);
+            StorageManager.remove(localStorageKeys.lobbyUrl);
             StorageManager.remove(localStorageKeys.isApp);
             StorageManager.remove(localStorageKeys.portraitDirectMode);
             StorageManager.remove(localStorageKeys.standaloneMode);

@@ -7,6 +7,7 @@ import { URLParams } from "../shared/constants/url-params";
 import { BrowserDomUtils, StorageManager, localStorageKeys } from "../shared/utils";
 
 interface IUrlInfo {
+    lobbyUrl?: string;
     returnUrl?: string;
     ref?: string;
     gatewayId?: number;
@@ -61,6 +62,7 @@ export class AppStore {
     setURLStore(urlParams: URLSearchParams) {
         const refData = urlParams.get(URLParams.ref);
         const returnUrl = urlParams.get(URLParams.returnUrl);
+        const lobbyUrl = urlParams.get(URLParams.lobbyUrl);
         const appType = urlParams.get(URLParams.appType);
         const currencyGroup = urlParams.get(URLParams?.currencyGroup);
         const isStandalone = urlParams.get(URLParams?.isStandalone);
@@ -80,6 +82,10 @@ export class AppStore {
 
         if (returnUrl) {
             this.urlInfo.returnUrl = returnUrl;
+        }
+
+        if (lobbyUrl) {
+            this.urlInfo.lobbyUrl;
         }
 
         const parentUrl = urlParams.get(URLParams.parentUrl);
@@ -164,9 +170,10 @@ export class AppStore {
         StorageManager.set(localStorageKeys.standaloneMode, data);
     }
 
-    saveReturnUrl() {
-        const { returnUrl } = this.urlInfo;
+    saveUrls() {
+        const { returnUrl, lobbyUrl } = this.urlInfo;
         returnUrl && StorageManager.set(localStorageKeys.returnUrl, returnUrl);
+        lobbyUrl && StorageManager.set(localStorageKeys.lobbyUrl, lobbyUrl);
     }
 
     saveIsApp() {
@@ -212,8 +219,9 @@ export class AppStore {
         }
     }
 
-    loadReturnUrlAnd() {
+    loadUrls() {
         this.urlInfo.returnUrl = StorageManager.get(localStorageKeys.returnUrl)?.toString();
+        this.urlInfo.lobbyUrl = StorageManager.get(localStorageKeys.lobbyUrl)?.toString();
     }
 
     setTimeOut() {

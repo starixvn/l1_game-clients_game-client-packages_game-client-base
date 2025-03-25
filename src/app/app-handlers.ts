@@ -99,19 +99,23 @@ export namespace AppHandlers {
         }
 
         private handleStandaloneNavigation(gameId?: number, gatewayId?: number) {
-            const baseUrl = this.getUpdatedBaseUrl();
             const operator = StorageManager.get(localStorageKeys.operator)?.toString();
             const userSettings = StorageManager.get(localStorageKeys.playerSetting) as UserSettingData;
             const mainParams = this.buildMainParams(gameId, gatewayId, operator);
             const otherParams = this.buildOtherParams(userSettings, gameId);
 
-            const gameConfig = gameId ? this.getGameConfig(gameId) : undefined;
-            const isMicrosite = gameConfig?.isMicrosite ?? false;
-
-            if (isMicrosite) {
-                this.redirectWithEncodedParams(gameId, { ...mainParams, ...otherParams });
+            if (gameId) {
+                const gameConfig = this.getGameConfig(gameId);
+                const isMicrosite = gameConfig?.isMicrosite ?? false;
+                if (isMicrosite) {
+                    this.redirectWithEncodedParams(gameId, { ...mainParams, ...otherParams });
+                } else {
+                    const lobbyUrl = this.getDecodedLobbyLobbyUrl();
+                    this.redirectWithUrlParams(lobbyUrl, mainParams, otherParams);
+                }
             } else {
-                this.redirectWithUrlParams(baseUrl, mainParams, otherParams);
+                const returnUrl = this.getDecodedReturnUrl();
+                this.redirectWithUrlParams(returnUrl, mainParams, otherParams);
             }
         }
 
@@ -124,6 +128,7 @@ export namespace AppHandlers {
                 ...(gatewayId && { [URLParams.gatewayId]: gatewayId.toString() }),
                 ...(this.appStore?.urlInfo?.ref && { [URLParams.ref]: this.appStore?.urlInfo?.ref }),
                 ...(this.appStore?.urlInfo?.returnUrl && { [URLParams.returnUrl]: this.appStore?.urlInfo?.returnUrl }),
+                ...(this.appStore?.urlInfo?.lobbyUrl && { [URLParams.returnUrl]: this.appStore?.urlInfo?.lobbyUrl }),
             };
         }
 
@@ -145,6 +150,7 @@ export namespace AppHandlers {
                         [URLParams.username]: sessionInfo?.username,
                         [URLParams.ref]: this.appStore.urlInfo?.ref,
                         [URLParams.returnUrl]: this.appStore.urlInfo?.returnUrl,
+                        [URLParams.lobbyUrl]: this.appStore.urlInfo?.lobbyUrl,
                         [URLParams.currencyGroup]: this.appStore.currencyGroup,
                     });
                 }
@@ -157,10 +163,6 @@ export namespace AppHandlers {
             return otherParams;
         }
 
-        private getUpdatedBaseUrl(): string {
-            return this.getDecodedReturnUrl();
-        }
-
         private handleIframeNavigation() {
             const params = this.getAuthorizationParams();
             BrowserDomUtils.postMessageToParent({ ...params, backLobby: true });
@@ -168,6 +170,10 @@ export namespace AppHandlers {
 
         private getDecodedReturnUrl(): string {
             return GameUtils.base64Decode(this.appStore.urlInfo?.returnUrl ?? "");
+        }
+
+        private getDecodedLobbyLobbyUrl(): string {
+            return GameUtils.base64Decode(this.appStore.urlInfo?.lobbyUrl ?? "");
         }
 
         private getBaseSessionInfo() {
