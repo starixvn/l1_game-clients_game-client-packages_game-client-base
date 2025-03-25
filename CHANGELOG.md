@@ -1,3 +1,10 @@
+## [1.59.2](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.59.1...v1.59.2) (2025-03-25)
+
+
+### Bug Fixes
+
+* wrong sub directory ([7d99c09](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/7d99c09f6722eea761a29cb498137750d3432bfc))
+
 ## [1.59.1](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.59.0...v1.59.1) (2025-03-25)
 
 
