@@ -1,3 +1,16 @@
+# [1.59.0](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.58.2...v1.59.0) (2025-03-25)
+
+
+### Bug Fixes
+
+* missing return url info ([1d19f81](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/1d19f810a8f50505c36534da94629ad6a603bd16))
+* wrong key ([5c51390](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/5c513904417c2ca90a3d469b3fb575f5d656dc05))
+
+
+### Features
+
+* add lobby url ([2630d92](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/2630d9238da7a5840253f2fd6fef60330a41fb8c))
+
 ## [1.58.2](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.58.1...v1.58.2) (2025-03-19)
 
 
