@@ -1,9 +1,9 @@
+import { stub } from "jest-auto-stub";
 import { AppHandlers, AppStore } from "../../../src/app";
 import { SiteConfigs } from "../../../src/configs/site-configs";
 import { GameConfigurationStore } from "../../../src/game-configuration/game-configuration-store";
 import { PlayerSelectionHandlers, PlayerSelectionStore } from "../../../src/game/player-selections";
 import { BrowserDomUtils, GameUtils, StorageManager } from "../../../src/shared/utils";
-import { stub } from "jest-auto-stub";
 
 jest.mock("../../../src/shared/utils");
 
@@ -193,7 +193,6 @@ describe("AppHandlers", () => {
                 // arrange
                 appStore.isDirectMode = false;
                 appStore.isStandalone = true;
-                appStore.urlInfo = { gatewayId: 123 };
 
                 // act
                 (handler as any).navigateBasedOnMode();
@@ -202,19 +201,6 @@ describe("AppHandlers", () => {
                 expect((handler as any).handleDirectModeNavigation).not.toHaveBeenCalled();
                 expect((handler as any).handleStandaloneNavigation).toHaveBeenCalledWith(0, 123);
                 expect((handler as any).handleIframeNavigation).not.toHaveBeenCalled();
-            });
-
-            it("should use default gatewayId 0 when urlInfo.gatewayId is not provided", () => {
-                // arrange
-                appStore.isDirectMode = false;
-                appStore.isStandalone = true;
-                appStore.urlInfo = {};
-
-                // act
-                (handler as any).navigateBasedOnMode();
-
-                // assert
-                expect((handler as any).handleStandaloneNavigation).toHaveBeenCalledWith(0, 0);
             });
 
             it("should call handleIframeNavigation when both isDirectMode and isStandalone are false", () => {

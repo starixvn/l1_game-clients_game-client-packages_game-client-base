@@ -10,7 +10,6 @@ interface IUrlInfo {
     lobbyUrl?: string;
     returnUrl?: string;
     ref?: string;
-    gatewayId?: number;
 }
 
 interface IDirectMode {
