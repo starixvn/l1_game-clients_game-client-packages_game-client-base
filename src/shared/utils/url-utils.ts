@@ -90,6 +90,6 @@ export namespace UrlUtils {
     }
 
     export function buildMicrositeGameUrl(configs: SiteConfigs, gameId) {
-        return buildUrl("http", `/site-${gameId}`, configs);
+        return buildUrl("http", `/site-${gameId}`, configs, configs.clientSubDomain);
     }
 }
