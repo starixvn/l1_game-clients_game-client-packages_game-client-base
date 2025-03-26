@@ -1,3 +1,10 @@
+## [1.59.3](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.59.2...v1.59.3) (2025-03-26)
+
+
+### Bug Fixes
+
+* multiple key falsy value ([caded79](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/caded79e35a910ba279cb2fea192aac2586ebe9d))
+
 ## [1.59.2](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.59.1...v1.59.2) (2025-03-25)
 
 
