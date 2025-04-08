@@ -69,7 +69,7 @@ export class RoundStore {
             lastRoundId = this.roundHistoryStore.histories[0].roundId;
         }
 
-        const isTime0BeforeFinish = this.roundTimeStore.roundTime === 0 && !this.settlementStore.currentFinish;
+        const isTime0BeforeFinish = this.roundTimeStore.roundTime <= 0 && !this.settlementStore.currentFinish;
         if (
             this.roundTimeStore.roundState === ROUND_STATE.STARTING_ROUND ||
             this.roundTimeStore.roundState === ROUND_STATE.PLACING_BET ||
