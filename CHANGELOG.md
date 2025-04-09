@@ -1,3 +1,10 @@
+## [1.59.4](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.59.3...v1.59.4) (2025-04-09)
+
+
+### Bug Fixes
+
+* round Id time 0 ([d40cbe3](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/d40cbe35dd56fd777a50f0807286468aed72f065))
+
 ## [1.59.3](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.59.2...v1.59.3) (2025-03-26)
 
 
