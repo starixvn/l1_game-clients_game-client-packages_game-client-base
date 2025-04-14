@@ -27,4 +27,8 @@ export class SiteConfigs {
     gameServiceSubDomain?: string;
     gatewaySubDomain?: string;
     clientSubDomain?: string;
+    trialWebSocket?: {
+        url: string;
+        path: string;
+    };
 }

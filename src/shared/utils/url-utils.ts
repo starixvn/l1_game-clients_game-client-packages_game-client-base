@@ -41,6 +41,11 @@ export namespace UrlUtils {
         return buildUrl(protocol, gamePath, configs, configs.gameServiceSubDomain);
     };
 
+    export const buildTrialServerUrl = (protocol = "http", path = "/", gameId = 0, configs: SiteConfigs) => {
+        const pathStr = `/trial/${path}`;
+        return buildUrl(protocol, pathStr, configs, configs.gameServiceSubDomain);
+    };
+
     export const getPath = (gameId: number, path: string) => {
         path = path.toLowerCase();
         let pathStr = "";

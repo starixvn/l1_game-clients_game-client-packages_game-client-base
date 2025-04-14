@@ -25,6 +25,10 @@ export class GameConfigHandlers implements IMultipleHandlers {
         this.disabledGameStore.isResetRoundTime = false;
     }
 
+    setInitializedGameConfigs(initialized: boolean) {
+        this.gameConfigStore.initialized = initialized;
+    }
+
     eventHandleList = [
         {
             name: GameServiceMessage.GameConfigs.eventName,
