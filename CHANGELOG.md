@@ -1,3 +1,10 @@
+## [1.59.5](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.59.4...v1.59.5) (2025-04-25)
+
+
+### Bug Fixes
+
+* change reaction method to protected ([b5bce79](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/b5bce798ed4d40500b8a7725bb895454f5d4d5ed))
+
 ## [1.59.4](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.59.3...v1.59.4) (2025-04-09)
 
 
