@@ -13,10 +13,10 @@ import { CrashBetListStore, ICrashBetList } from "./crash-bet-list-store";
 @injectable()
 export class CrashBetListHandlers implements IMultipleHandlers {
     constructor(
-        @inject(MainPlayerStore) private readonly mainPlayerStore: MainPlayerStore,
-        @inject(CrashCashOutStore) private readonly crashCashOutStore: CrashCashOutStore,
-        @inject(RoundTimeStore) private readonly roundTimeStore: RoundTimeStore,
-        @inject(BetStore) private readonly betStore: BetStore,
+        @inject(MainPlayerStore) protected readonly mainPlayerStore: MainPlayerStore,
+        @inject(CrashCashOutStore) protected readonly crashCashOutStore: CrashCashOutStore,
+        @inject(RoundTimeStore) protected readonly roundTimeStore: RoundTimeStore,
+        @inject(BetStore) protected readonly betStore: BetStore,
         @inject(CrashBetListStore) protected readonly betListStore: CrashBetListStore
     ) {
         reaction(() => this.roundTimeStore.isStartRound, this.reactionStartRound.bind(this));
@@ -25,7 +25,7 @@ export class CrashBetListHandlers implements IMultipleHandlers {
         reaction(() => this.crashCashOutStore.cashOut, this.reactionCashOut.bind(this));
     }
 
-    private reactionStartRound(isStartRound: boolean) {
+    protected reactionStartRound(isStartRound: boolean) {
         if (!isStartRound) {
             return;
         }
@@ -33,7 +33,7 @@ export class CrashBetListHandlers implements IMultipleHandlers {
         this.resetLeaderBoard();
     }
 
-    private reactionLastReceivedBet(lastReceivedBet: ILastReceivedBet) {
+    protected reactionLastReceivedBet(lastReceivedBet: ILastReceivedBet) {
         if (!lastReceivedBet || lastReceivedBet.value <= 0) {
             return;
         }
@@ -45,7 +45,7 @@ export class CrashBetListHandlers implements IMultipleHandlers {
         this.betListStore.mainPlayer = player;
     }
 
-    private reactionHalfCashOut(halfCashOut: GameCrashServiceMessage.CrashCashOut) {
+    protected reactionHalfCashOut(halfCashOut: GameCrashServiceMessage.CrashCashOut) {
         if (!halfCashOut) {
             return;
         }
@@ -54,7 +54,7 @@ export class CrashBetListHandlers implements IMultipleHandlers {
         this.betListStore.mainPlayer = player;
     }
 
-    private reactionCashOut(cashOut: GameCrashServiceMessage.CrashCashOut) {
+    protected reactionCashOut(cashOut: GameCrashServiceMessage.CrashCashOut) {
         if (!cashOut) {
             return;
         }
