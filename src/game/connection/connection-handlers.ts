@@ -2,7 +2,9 @@ import { inject, injectable } from "inversify";
 import { GameClientEmitMessage, IHandler } from "../../shared";
 import { GameConfigStore } from "../game-configs/game-config-store";
 import { RoundRunningHandlers } from "../rounds";
-import { ConnectionStore, ISocketOption } from "./connection-store";
+import { ConnectionStore } from "./connection-store";
+
+import { ISocketOption } from "./connection-store-base";
 import { ConnectionTrialStore } from "./connection-trial-store";
 
 export namespace ConnectionHandlers {
@@ -18,7 +20,7 @@ export namespace ConnectionHandlers {
         }
 
         handleTrial(customizeOptions?: ISocketOption) {
-            this.trialStore.initTrialConnection(customizeOptions);
+            this.trialStore.initConnection(customizeOptions);
         }
     }
 
