@@ -157,6 +157,11 @@ export namespace AuthHandlers {
         }
 
         private async handleAuthorizeWithURLParams(urlParams: URLSearchParams) {
+            const entriesArray = Array.from(urlParams.entries());
+            const isReload = entriesArray.length === 0;
+            if (!isReload) {
+                this.appStore.isClearStorage = true;
+            }
             if (urlParams?.has(URLParams.token)) {
                 this.playerSelectionClearHandler.handle();
                 this.appStore.setURLStore(urlParams);
