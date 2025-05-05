@@ -1,4 +1,5 @@
 import { injectable } from "inversify";
+import { action, observable } from "mobx";
 import { Socket, io } from "socket.io-client/dist/socket.io.js";
 import { io as ioMsgPack } from "socket.io-client/dist/socket.io.msgpack.min.js";
 import { AppStore } from "../../app/app-store";
@@ -29,6 +30,37 @@ export interface ISocketOption {
     timeout?: number;
 }
 
+export const ConnectionStoreProps = {
+    connection: observable,
+    isConnected: observable,
+    isConnectFailed: observable,
+    signedIn: observable,
+    isDisconnect: observable,
+    initConnection: action,
+    onDisconnected: action,
+    send: action,
+    closeSocket: action,
+    createSocketUri: action,
+    initBaseListener: action,
+    onConnected: action,
+    onHandleData: action,
+    emitMultipleKeyEvents: action,
+    signIn: action,
+    onSignedIn: action,
+    onConnectFailed: action,
+    handleDisconnectionReason: action,
+    handleConnectionStatus: action,
+    handleDisconnectInstant: action,
+    shouldPostDisconnectMessage: action,
+    isServerDisconnect: action,
+    isTransportClose: action,
+    postDisconnectMessage: action,
+    shouldLogDisconnection: action,
+    logError: action,
+    isInstant: action,
+    reset: action,
+};
+
 @injectable()
 export abstract class ConnectionStoreBase {
     protected readonly mediator: Mediator;
@@ -43,6 +75,7 @@ export abstract class ConnectionStoreBase {
     signedIn = false;
     isDisconnect = false;
 
+    ///public method
     initConnection(customizeOptions?: ISocketOption) {
         this.reset();
 
@@ -67,11 +100,26 @@ export abstract class ConnectionStoreBase {
         this.initBaseListener();
     }
 
+    onDisconnected(reason = "") {
+        this.handleDisconnectionReason(reason);
+        this.isInstant() && this.handleDisconnectInstant(reason);
+        this.handleConnectionStatus(false);
+    }
+
+    send(eventName: string, data: any) {
+        this.connection?.emit(eventName, data);
+    }
+
+    closeSocket() {
+        this.connection?.disconnect();
+    }
+    ///public method end ---------------------------------------
+
     protected createSocketUri(gameId: number) {
         return UrlUtils.buildServerUrl("http", `${this.siteConfigs.websocket.proxyPath}`, gameId, this.siteConfigs);
     }
 
-    initBaseListener() {
+    protected initBaseListener() {
         if (this.connection) {
             this.connection.on(events.connect, this.onConnected.bind(this));
             this.connection.on(events.signedIn, this.onSignedIn.bind(this));
@@ -81,14 +129,14 @@ export abstract class ConnectionStoreBase {
         }
     }
 
-    onConnected() {
+    protected onConnected() {
         this.isConnected = true;
         this.isConnectFailed = false;
         this.connection.onAny(this.onHandleData.bind(this));
         this.signIn();
     }
 
-    onHandleData(event: string, data: any) {
+    protected onHandleData(event: string, data: any) {
         if (event?.toLocaleLowerCase() === this.gameSetting?.name.toLocaleLowerCase() || event?.toLocaleLowerCase() === "message") {
             Object.entries(data).forEach((entry) => {
                 const [key, value] = entry;
@@ -101,7 +149,7 @@ export abstract class ConnectionStoreBase {
         this.emitMultipleKeyEvents(data);
     }
 
-    emitMultipleKeyEvents(data: any) {
+    protected emitMultipleKeyEvents(data: any) {
         if (!data || Object.keys(data).length < 2) {
             return;
         }
@@ -123,7 +171,7 @@ export abstract class ConnectionStoreBase {
         }
     }
 
-    signIn() {
+    protected signIn() {
         const payload = new GameClientEmitMessage.Signin();
         const sessionInfo = StorageManager.get(localStorageKeys.session) as ISessionInfo;
         payload.ss = sessionInfo?.session;
@@ -133,23 +181,17 @@ export abstract class ConnectionStoreBase {
         this.send(GameClientEmitMessage.Signin.eventName, payload);
     }
 
-    onSignedIn() {
+    protected onSignedIn() {
         this.signedIn = true;
     }
 
-    onConnectFailed(error?: Error) {
+    protected onConnectFailed(error?: Error) {
         this.isConnectFailed = true;
         this.isInstant() && this.postDisconnectMessage();
         this.handleConnectionStatus(false, error);
     }
 
-    onDisconnected(reason = "") {
-        this.handleDisconnectionReason(reason);
-        this.isInstant() && this.handleDisconnectInstant(reason);
-        this.handleConnectionStatus(false);
-    }
-
-    handleDisconnectionReason(reason = "") {
+    protected handleDisconnectionReason(reason = "") {
         if (this.isServerDisconnect(reason)) {
             this.isDisconnect = true;
             return;
@@ -160,7 +202,7 @@ export abstract class ConnectionStoreBase {
         }
     }
 
-    handleConnectionStatus(connected: boolean, error?: Error) {
+    protected handleConnectionStatus(connected: boolean, error?: Error) {
         this.isConnected = connected;
         this.signedIn = connected;
         this.connection.disconnect();
@@ -168,7 +210,7 @@ export abstract class ConnectionStoreBase {
         this.appStore.isLoading = false;
     }
 
-    handleDisconnectInstant(reason: string | unknown) {
+    protected handleDisconnectInstant(reason: string | unknown) {
         if (this.shouldPostDisconnectMessage(reason)) {
             this.postDisconnectMessage();
         }
@@ -202,15 +244,7 @@ export abstract class ConnectionStoreBase {
         return this.authStore.system === AppTypes.Instant;
     }
 
-    send(eventName: string, data: any) {
-        this.connection?.emit(eventName, data);
-    }
-
-    closeSocket() {
-        this.connection?.disconnect();
-    }
-
-    reset() {
+    protected reset() {
         this.connection = null;
         this.isConnected = null;
         this.isConnectFailed = false;
