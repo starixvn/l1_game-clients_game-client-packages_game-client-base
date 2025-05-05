@@ -37,6 +37,10 @@ export namespace ConnectionHandlers {
             if (this.gameConfigStore.initialized) {
                 return;
             }
+            this.requestInGame();
+        }
+
+        requestInGame() {
             this.roundRunning.stopRunner();
             this.connectionStore.send(GameClientEmitMessage.inGame, null);
         }
