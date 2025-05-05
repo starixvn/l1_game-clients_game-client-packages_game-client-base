@@ -24,7 +24,6 @@ export class ConnectionStore extends ConnectionStoreBase {
         @inject(AuthStore) protected readonly authStore: AuthStore,
         @inject(AppStore) protected readonly appStore: AppStore
     ) {
-        super();
         makeAutoObservable(this);
     }
 }

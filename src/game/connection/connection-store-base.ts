@@ -30,7 +30,7 @@ export interface ISocketOption {
 }
 
 @injectable()
-export class ConnectionStoreBase {
+export abstract class ConnectionStoreBase {
     protected readonly mediator: Mediator;
     protected readonly gameSetting: GameSetting;
     protected readonly siteConfigs: SiteConfigs;
