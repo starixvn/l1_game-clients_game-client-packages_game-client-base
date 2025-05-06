@@ -313,7 +313,9 @@ export namespace AuthHandlers {
                 this.handleError(response);
             } else {
                 this.authStore.setAuthStoreFromStorage(sessionInfo);
-                StorageManager.set(localStorageKeys.session, this.authStore.getSessionInfo());
+                const session = this.authStore.getSessionInfo();
+                StorageManager.set(localStorageKeys.session, session);
+                BrowserDomUtils.postMessageToParent({ syncSession: session });
                 this.mainPlayerStore.setBalance(response.balance, response.scoins, response.availSpins);
             }
         }
