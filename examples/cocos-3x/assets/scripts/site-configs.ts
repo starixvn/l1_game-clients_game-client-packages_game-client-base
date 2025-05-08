@@ -48,7 +48,6 @@ const defaultConfig: gc.Configs.SiteConfigs = {
         route: "sedie",
     },
     SGConnectSubDomain: "l1-connectsite3",
-    mainObserverNamespace: "SeDie",
     tolgeeUrl:
         "https://tolgee.sabagame.com/v2/projects/5/translations?ak=tgpak_gvpw45brha2xg3btoztxeytunvudc5dbn5twqodtonztc&size=1000&filterNamespace=Common,DragonTigerFight&languages=",
     boostedOddsDelayTimeByMinutes: 2,

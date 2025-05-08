@@ -19,7 +19,6 @@ export class SiteConfigs {
     SGConnectSubDomain?: string;
     notificationServiceUrlDev?: string;
     gameGuideUrlDev?: string;
-    mainObserverNamespace: string;
     tolgeeUrl?: string;
     backgroundNoTranslate?: boolean;
     boostedOddsDelayTimeByMinutes?: number;
