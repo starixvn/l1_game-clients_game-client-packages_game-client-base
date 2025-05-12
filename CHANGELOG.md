@@ -1,3 +1,13 @@
+# [1.60.0](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.59.5...v1.60.0) (2025-05-12)
+
+
+### Features
+
+* add trial mode connection ([f3bd991](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/f3bd9916c79756b456f561b6dceb1c34f8207c64))
+* clear storage when NOT reload game ([eddb143](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/eddb143aca6c68a02054c097a1b3923b99b8c420))
+* remove    mainObserverNamespace ([828b85f](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/828b85f2f83b6fc102bcad84afd937793de4ca8a))
+* syncSession when recheck in ([67c5f1c](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/67c5f1c739e655b84d271c454b34dc5df1b3b8dd))
+
 ## [1.59.5](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.59.4...v1.59.5) (2025-04-25)
 
 
