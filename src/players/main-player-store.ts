@@ -35,6 +35,7 @@ export class MainPlayerStore {
     disableJackpotGames = false;
     offerGames?: { gameId: number }[] = null;
     browserUserAgent = "";
+    multiplier = 1;
 
     setAuthorizeStore(user: GameServiceMessage.User) {
         this.UID = user.UID;
@@ -47,6 +48,7 @@ export class MainPlayerStore {
         this.displayPlayerCurrency = user.isDisplayPlayerCurrency;
         this.disableJackpotGames = user.disableJackpotGames;
         this.rate = user.rate;
+        this.multiplier = user.multiplier;
     }
 
     setBalance(balance: number, scoin: number, availSpins: number) {

@@ -67,6 +67,7 @@ export namespace GameServiceMessage {
         UID: number;
         avatarId: number;
         currency: string;
+        multiplier: number;
         joinedOn: string;
         red: number;
         scoins?: number;

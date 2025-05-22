@@ -16,6 +16,7 @@ export class MainPlayerHandlers implements IMultipleHandlers {
         profile?.name && (this.store.name = profile.name);
         profile?.avatarId && (this.store.avatarId = profile.avatarId);
         profile?.rate && (this.store.rate = profile.rate);
+        profile?.multiplier && (this.store.multiplier = profile.multiplier);
         this.store.setBalance(profile?.red, profile?.scoins, 0);
     }
 
