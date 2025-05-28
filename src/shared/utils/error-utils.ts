@@ -84,17 +84,19 @@ export namespace ErrorUtils {
         SB1925: "bet_amount_of_any_choice_incorrect",
         SB1926: "message_invalid_bet_choice",
         SB1927: "one_choice_allowed",
-        SB1928: "invalid_payline",
+        SB1928: "message_invalid_payline",
         SB1929: "invalid_free_spin",
         SB1930: "invalid_stake_level",
-        SB1931: "invalid_bonus",
-        SB1932: "invalid_bonus",
+        SB1931: "message_invalid_bonus",
+        SB1932: "message_opened_bonus",
         SB1933: "game_excluded",
         SB1934: "not_enough_spin",
         SB1935: "invalid_bet",
         SB1939: "message_hedge_bet",
         SB1940: "message_invalid_cashout",
         SB1941: "message_invalid_value_cashout",
+        SB1942: "message_invalid_jackpot",
+        SB1943: "message_opened_jackpot",
     };
 
     const CommonErrorList = [
