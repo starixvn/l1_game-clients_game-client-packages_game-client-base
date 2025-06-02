@@ -30,7 +30,10 @@ export namespace DateTimeUtils {
     };
 
     export const getString12HourByTime = (time: string) => {
-        const time1 = moment(new Date(time)).format("hh:mm:ss A");
         return moment(new Date(time)).format("hh:mm:ss A");
+    };
+
+    export const convertDurationToClockTime = (duration: number, formatTime: string) => {
+        return moment.utc(duration * 1000).format(formatTime);
     };
 }
