@@ -1,3 +1,15 @@
+# [1.61.0](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.60.0...v1.61.0) (2025-06-02)
+
+
+### Bug Fixes
+
+* update error code ([aacd71f](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/aacd71f92c39b0b00fcd0695463ecff8ae3662c0))
+
+
+### Features
+
+* add multiplier rate value ([449b392](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/449b39275a8f70ffb726a6460828820572dc44c9))
+
 # [1.60.0](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.59.5...v1.60.0) (2025-05-12)
 
 
