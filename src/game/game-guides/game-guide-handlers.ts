@@ -23,7 +23,17 @@ export namespace GameGuideHandlers {
             @inject(GameGuideStore) private readonly guideStore: GameGuideStore
         ) {}
 
-        handle({ theme, specialDirection, scrollToId }: { theme: string; specialDirection: string; scrollToId: string }) {
+        handle({
+            theme,
+            specialDirection,
+            scrollToId,
+            options,
+        }: {
+            theme: string;
+            specialDirection: string;
+            scrollToId: string;
+            options?: { [key: string]: any };
+        }) {
             const domain = UrlUtils.buildGameGuideUrl(this.siteConfigs);
             const params = {
                 gId: this.gameSetting.id,
@@ -36,6 +46,7 @@ export namespace GameGuideHandlers {
                 maxBet: this.roundStore.maxBet,
                 scrollToId: scrollToId,
                 displayName: Translator.gameTranslate("game_name"),
+                ...options,
             };
             const queryString = Object.keys(params)
                 .map((key) => `${key}=${params[key]}`)
