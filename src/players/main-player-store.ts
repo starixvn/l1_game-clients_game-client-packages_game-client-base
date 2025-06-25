@@ -29,6 +29,8 @@ export class MainPlayerStore {
     rate = 1;
     scoin = 0;
     currency = "";
+    currencyCode = "";
+    currencyGroup = "";
     availSpins?: number = 0;
     fractionalOddsFormat = false;
     displayPlayerCurrency = true;
@@ -43,6 +45,8 @@ export class MainPlayerStore {
         this.avatarId = user.avatarId;
         this.setBalance(user.red, user.scoins, user.availSpins);
         this.currency = user.currency;
+        this.currencyCode = user.currencyCode;
+        this.currencyGroup = user.currencyGroup;
         this.offerGames = user.offerGames;
         this.fractionalOddsFormat = user.fractionalOddsFormat;
         this.displayPlayerCurrency = user.isDisplayPlayerCurrency;
