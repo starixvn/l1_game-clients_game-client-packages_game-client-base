@@ -6,33 +6,22 @@ include:
     ref: master
     file: "npm/publish-npm.gitlab-ci.yml"
 
-variables:
-  GIT_SUBMODULE_STRATEGY: recursive
-  GIT_STRATEGY: clone
-  COCOS_VERSION: "3.8.0"
-  NODEJS_INTEGRATION_TEST_IMAGE_VERSION: "hub.lumigame.com/docker-hub/library/node:18.1-alpine"
-  COCOS_PROJECT_DIR: examples/cocos-3x
-
-.build_cocos_creator_script: &build_cocos_creator_script
-  stage: build-cocos-web
-  script:
-    - echo "====== Build Cocos Web Mobile ======"
-    - |
-      if [[ -d "./build/web-mobile" ]]; then
-        echo "Using cache with key $CI_COMMIT_SHA"
-        exit 0
-      fi
-    - npm install
-    - npm run build
-    - npm install --prefix examples/cocos-3x
-    - /Applications/CocosCreator/Creator/$COCOS_VERSION/CocosCreator.app/Contents/MacOS/CocosCreator --project ./examples/cocos-3x --build "platform=web-mobile;debug=false;webOrientation=landscape;md5Cache=true;replaceSplashScreen=true"
+unit_test_js:
+  stage: test
+  image: $NODEJS_IMAGE
   tags:
-    - cocos-new
-  artifacts:
-    when: always
-    paths:
-      - ./examples/cocos-3x/build/web-mobile
-    expire_in: 1 day
+    - ci
+  before_script:
+    - if [ "$NPM_LUMI_HOST" != "" ]; then
+        npm set registry $NPM_LUMI_HOST;
+      fi
+    - npm install -g jest@29.5.0
+    - echo $SRC_PATH
+    - cd "$SRC_PATH"
+    - npm install
+  script:
+    - npm run test-coverage
+  allow_failure: false
   cache:
     - key:
         files:
@@ -40,76 +29,11 @@ variables:
           - package-lock.json
       paths:
         - node_modules
-    - key: $CI_COMMIT_SHORT_SHA
-      paths:
-        - build
-
-.base_build_cocos:
-  <<: *build_cocos_creator_script
-  allow_failure: true
-
-integration_test:
-  stage: test
-  tags:
-    - docker
-  image: "$NODEJS_INTEGRATION_TEST_IMAGE_VERSION"
-  before_script:
-    - npm set registry http://npm.lumigame.com
-    - npm install
-  script:
-    - npm run integration-test
-  allow_failure: false
   artifacts:
     when: always
     paths:
-      - "./coverage"
-    reports:
-      junit:
-        - junit.xml
+      - ./**/lcov.info
     expire_in: 1 day
-  rules:
-    - - if: "$CI_COMMIT_TAG =~ /^deploy-/"
-        when: never
-      - if: "$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS"
-        when: never
-    - - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      - if: "$CI_COMMIT_BRANCH"
-
-unit_test_js:
-  allow_failure: false
-
-cocos_unit_test_js:
-  stage: test
-  image: "$NODEJS_IMAGE"
-  tags:
-    - docker
-  before_script:
-    - npm set registry http://npm.lumigame.com
-    - yarn global add jest@29.5.0
-    - npm install
-  script:
-    - npm run build
-    - cd ./examples/cocos-3x
-    - npm install
-    - npm run test
-  allow_failure: false
-  cache:
-    - key:
-        files:
-          - package.json
-          - yarn.lock
-      paths:
-        - node_modules
-  extends: ".unit_test_js"
-  rules:
-    - - if: "$CI_COMMIT_TAG =~ /^deploy-/"
-        when: never
-      - if: "$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS"
-        when: never
-    - if: $ENABLE_TEST_JS != "true"
-      when: never
-    - - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      - if: "$CI_COMMIT_BRANCH"
 
 publish_npm:
   stage: deploy
@@ -123,167 +47,3 @@ publish_npm:
     - npm run reg
     - npm run build
     - npx semantic-release
-
-cocos_integration_tests:
-  stage: test
-  allow_failure: true
-  before_script:
-    - cd $COCOS_PROJECT_DIR
-    - $SERVICE_IMAGE="hub.lumigame.com/pentagon/game-clients/stub-service:LOCAL-latest"
-    - $CLIENT_IMAGE="hub.lumigame.com/pentagon/l1_game_client_base:$CI_COMMIT_SHORT_SHA"
-    - docker login -u $DOCKER_REG_LOCAL_USERNAME -p $DOCKER_REG_LOCAL_PASSWORD $DOCKER_REG_LOCAL_URL;
-    - docker pull $SERVICE_IMAGE
-    - docker pull $CLIENT_IMAGE
-    - docker rm -f -v client-$CI_COMMIT_SHORT_SHA service-$CI_COMMIT_SHORT_SHA
-    - |
-      $CLIENT_PORT=$CI_JOB_ID % 64551 + 1024
-      $CLIENT_CONFIGS = @"
-      window.envConfig = {
-        isDev: false,
-        systemType: "SC1",
-        ssl: false,
-        serverDomainMapper: {
-          localhost: "localhost:$($CLIENT_PORT + 1)",
-        },
-        subDomain: "",
-        env: "LOCAL",
-        subGuideDomain: "l1-guide",
-        enableMsgpackParserAllGames: false,
-        enableMsgpackParserOnNotification: false,
-        userServiceUrlDev: "http://localhost:$($CLIENT_PORT + 1)/",
-        proxyRoute: "",
-        wsPath: "sedie",
-      };
-      "@
-
-      $CLIENT_URL="http://localhost:$CLIENT_PORT/?token=x&lang=vi-VN"
-      echo $CLIENT_CONFIGS > c.js
-      cat c.js
-    - docker run -d -p "$($CLIENT_PORT + 0):80" -v .:/usr/share/nginx/html/c --name client-$CI_COMMIT_SHORT_SHA  $CLIENT_IMAGE
-    - docker run -d -p "$($CLIENT_PORT + 1):8080" -v "$(pwd)/tests/integration-tests/data:/builds/tests/integration-tests" --env NAMESPACES="/,/user/sedie" --name service-$CI_COMMIT_SHORT_SHA $SERVICE_IMAGE
-  script:
-    - $env:CLIENT_URL = $CLIENT_URL
-    - |
-      if (-not (Test-Path "node_modules")) {
-        npm install
-      }
-
-    - npm run test:integration
-  after_script:
-    - docker rm -f -v client-$CI_COMMIT_SHORT_SHA service-$CI_COMMIT_SHORT_SHA
-  tags:
-    - gpu-device
-  rules:
-    - - if: "$CI_COMMIT_TAG =~ /^deploy-/"
-        when: never
-      - if: "$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS"
-        when: never
-    - if: $ENABLE_TEST_JS != "true"
-      when: never
-    - - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      - if: "$CI_COMMIT_BRANCH"
-  needs:
-    - cocos_integration_docker_build
-  cache:
-    - key:
-        files:
-          - $COCOS_PROJECT_DIR/package.json
-          - $COCOS_PROJECT_DIR/package-lock.json
-      paths:
-        - $COCOS_PROJECT_DIR/node_modules
-
-cocos_integration_build:
-  stage: test
-  allow_failure: true
-  before_script:
-    - |
-      if (-not (Test-Path "node_modules")) {
-        npm install
-        npm run build
-      }
-
-  script:
-    - cd $COCOS_PROJECT_DIR
-    - |
-      if (-not (Test-Path "node_modules")) {
-        npm install
-      }
-    - CocosCreator --project . --build "platform=web-mobile;debug=false;webOrientation=landscape;md5Cache=true;replaceSplashScreen=true"
-  tags:
-    - cocos-3x
-  artifacts:
-    when: always
-    paths:
-      - $COCOS_PROJECT_DIR/build/web-mobile
-    expire_in: 1 day
-  rules:
-    - if: "$CI_COMMIT_TAG =~ /^deploy-/"
-      when: never
-    - if: "$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS"
-      when: never
-    - if: $ENABLE_TEST_JS != "true"
-      when: never
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: manual
-    - if: "$CI_COMMIT_BRANCH"
-      when: manual
-
-  cache:
-    - key:
-        files:
-          - package.json
-          - package-lock.json
-      paths:
-        - node_modules
-    - key:
-        files:
-          - $COCOS_PROJECT_DIR/package.json
-          - $COCOS_PROJECT_DIR/package-lock.json
-      paths:
-        - $COCOS_PROJECT_DIR/node_modules
-
-cocos_integration_docker_build:
-  image:
-    name: gcr.io/kaniko-project/executor:debug
-    entrypoint: [""]
-  allow_failure: true
-  tags:
-    - docker
-  stage: test
-  before_script:
-    - export CI_REGISTRY_IMAGE=$DOCKER_REG_LOCAL_URL/pentagon/l1_game_client_base:$CI_COMMIT_SHORT_SHA
-    - echo $CI_REGISTRY_IMAGE
-    - |
-      kaniko_config_file=/kaniko/.docker/config.json
-      if [[ ! -f "$kaniko_config_file" ]]; then
-      echo "No $kaniko_config_file found! Creating one now."
-      cat << END_CONFIGS >> $kaniko_config_file
-      {
-        "auths" : {
-          "${DOCKER_REG_LOCAL_URL}": {
-            "auth": "$(printf "%s:%s" "${DOCKER_REG_LOCAL_USERNAME}" "${DOCKER_REG_LOCAL_PASSWORD}" | base64 | tr -d '\n')"
-          }
-        }
-      }
-      END_CONFIGS
-      fi
-  script:
-    - /kaniko/executor
-      --context .
-      --dockerfile integration.dockerfile
-      --destination "$CI_REGISTRY_IMAGE"
-  after_script:
-    - |
-      kaniko_config_file=/kaniko/.docker/config.json
-      rm $kaniko_config_file
-  needs:
-    - cocos_integration_build
-  rules:
-    - - if: "$CI_COMMIT_TAG =~ /^deploy-/"
-        when: never
-      - if: "$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS"
-        when: never
-    - if: $ENABLE_TEST_JS != "true"
-      when: never
-    - - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      - if: "$CI_COMMIT_BRANCH"

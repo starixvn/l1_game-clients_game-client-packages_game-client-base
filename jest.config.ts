@@ -7,6 +7,7 @@ const testMatch = (process.env.TEST_PATHS || defaultTestPaths)
 const config: Config = {
     coverageDirectory: "coverage",
     collectCoverageFrom: ["src/**/*.ts"],
+    coveragePathIgnorePatterns: ["/examples/"],
     transform: {
         "^.+\\.tsx?$": "ts-jest",
     },
