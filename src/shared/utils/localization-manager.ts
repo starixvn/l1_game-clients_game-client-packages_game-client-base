@@ -137,6 +137,7 @@ export class TranslationManager {
             "id-ID": "id",
             "zh-CN": "zh_cn",
             "zh-TW": "zh_tw",
+            "ja-JP": "ja",
         };
 
         return languageMapping[languageCode] || this.defaultLanguageId;
