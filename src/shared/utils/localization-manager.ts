@@ -17,7 +17,7 @@ export class TranslationOptions {
     gameNamespaces?: string[];
 }
 
-const LANGUAGE_MAPPING = {
+const LOCALE_MAPPING = {
     "en-US": "en",
     "en-GB": "en",
     "es-ES": "es",
@@ -124,8 +124,8 @@ const LANGUAGE_MAPPING = {
     "dv-MV": "dv",
     "fo-FO": "fo",
     "is-IS": "is",
-    "lb-LU": "lb"
-  };
+    "lb-LU": "lb",
+};
 
 export class InterpolationOptions {
     [key: string]: string | number;
@@ -239,7 +239,7 @@ export class TranslationManager {
     }
 
     private toLanguageId(languageCode: string) {
-        const languageMapping = globalThis.languageMapping ?? LANGUAGE_MAPPING;
+        const languageMapping = globalThis.localeMapping ?? LOCALE_MAPPING;
 
         return languageMapping[languageCode] || this.defaultLanguageId;
     }
