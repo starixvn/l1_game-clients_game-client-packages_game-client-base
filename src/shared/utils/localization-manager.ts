@@ -239,7 +239,10 @@ export class TranslationManager {
     }
 
     private toLanguageId(languageCode: string) {
-        const languageMapping = globalThis.localeMapping ?? LOCALE_MAPPING;
+        const languageMapping = {
+            ...LOCALE_MAPPING,
+            ...globalThis.localeMapping,
+        };
 
         return languageMapping[languageCode] || this.defaultLanguageId;
     }
