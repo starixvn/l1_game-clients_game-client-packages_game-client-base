@@ -238,13 +238,13 @@ export class TranslationManager {
         return this._polygrot.t(key, options);
     }
 
-    private toLanguageId(languageCode: string) {
-        const languageMapping = {
+    private toLanguageId(localeCode: string) {
+        const localeMapping = {
             ...LOCALE_MAPPING,
             ...globalThis.localeMapping,
         };
 
-        return languageMapping[languageCode] || this.defaultLanguageId;
+        return localeMapping[localeCode] || this.defaultLanguageId;
     }
 
     public getLanguageId() {
