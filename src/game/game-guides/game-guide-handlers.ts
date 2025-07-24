@@ -1,11 +1,11 @@
 import { inject, injectable } from "inversify";
 
-import { AuthStore, ISessionInfo } from "../../auth/auth-store";
+import { AuthStore } from "../../auth/auth-store";
 import { SiteConfigs } from "../../configs";
 import { MainPlayerStore } from "../../players/main-player-store";
 import { IHandler } from "../../shared";
 import { AppTypes } from "../../shared/constants/app-type";
-import { StorageManager, Translator, UrlUtils, localStorageKeys } from "../../shared/utils";
+import { Translator, UrlUtils } from "../../shared/utils";
 import { GameConfigStore, GameSetting } from "../game-configs";
 import { RoundStore } from "../rounds/round-store";
 import { GameGuideStore } from "./game-guide-store";
@@ -56,18 +56,7 @@ export namespace GameGuideHandlers {
         }
 
         private getLanguage(): string {
-            const languages = {
-                "vi-VN": "vi",
-                "en-US": "en",
-                "en-UK": "en",
-                "th-TH": "th",
-                "id-ID": "id",
-                "zh-CN": "zh_cn",
-                "zh-TW": "zh_tw",
-            };
-            const session = StorageManager.get(localStorageKeys.session) as ISessionInfo;
-
-            return languages[session.language] || "en";
+            return Translator.currentLanguageId || Translator.defaultLanguageId;
         }
     }
 }

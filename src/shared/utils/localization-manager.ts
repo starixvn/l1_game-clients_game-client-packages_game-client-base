@@ -175,6 +175,7 @@ export class TranslationManager {
     public isReady: boolean;
     private _polygrot: Polyglot;
     private _tolgeeLoader: TolgeeLoader;
+    public currentLanguageId: string = null;
 
     public init(options: TranslationOptions) {
         this.options = options;
@@ -186,6 +187,7 @@ export class TranslationManager {
             options.onLoaded && options.onLoaded();
         }
         StorageManager.set(`current_language`, options.languageId);
+        this.currentLanguageId = options.languageId;
     }
 
     private loadTolgee(options: TranslationOptions) {
