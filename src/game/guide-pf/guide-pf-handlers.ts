@@ -1,7 +1,6 @@
 import { inject, injectable } from "inversify";
-import { ISessionInfo } from "../../auth/auth-store";
 import { SiteConfigs } from "../../configs/site-configs";
-import { StorageManager, Translator, localStorageKeys } from "../../shared/utils";
+import { Translator } from "../../shared/utils";
 import { UrlUtils } from "../../shared/utils/url-utils";
 import { GameSetting } from "../game-configs/game-setting";
 import { GuidePFStore } from "./guide-pf-store";
@@ -33,17 +32,6 @@ export class GuidePFHandlers {
         this.guidePFStore.url = "";
     }
     private getLanguage(): string {
-        const languages = {
-            "vi-VN": "vi",
-            "en-US": "en",
-            "en-UK": "en",
-            "th-TH": "th",
-            "id-ID": "id",
-            "zh-CN": "zh_cn",
-            "zh-TW": "zh_tw",
-        };
-        const session = StorageManager.get(localStorageKeys.session) as ISessionInfo;
-
-        return languages[session.language] || "en";
+        return Translator.currentLanguageId || Translator.defaultLanguageId;
     }
 }
