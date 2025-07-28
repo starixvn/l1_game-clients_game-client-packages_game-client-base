@@ -127,6 +127,15 @@ const LOCALE_MAPPING = {
     "lb-LU": "lb",
 };
 
+function getLocaleFromLanguageId(languageId: string): string | null {
+    for (const [locale, langId] of Object.entries(LOCALE_MAPPING)) {
+        if (langId === languageId) {
+            return locale;
+        }
+    }
+    return null;
+}
+
 export class InterpolationOptions {
     [key: string]: string | number;
 }
@@ -171,11 +180,14 @@ class TolgeeLoader {
 
 export class TranslationManager {
     public defaultLanguageId = "en";
+    public defaultLocale = "en-US";
     public options: TranslationOptions;
     public isReady: boolean;
     private _polygrot: Polyglot;
     private _tolgeeLoader: TolgeeLoader;
     public currentLanguageId: string = null;
+    public currentLocale: string = null;
+    public locale: string = null;
 
     public init(options: TranslationOptions) {
         this.options = options;
@@ -188,6 +200,7 @@ export class TranslationManager {
         }
         StorageManager.set(`current_language`, options.languageId);
         this.currentLanguageId = options.languageId;
+        this.currentLocale = getLocaleFromLanguageId(options?.languageId) ?? getLocaleFromLanguageId(this.defaultLanguageId);
     }
 
     private loadTolgee(options: TranslationOptions) {
