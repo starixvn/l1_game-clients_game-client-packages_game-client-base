@@ -19,6 +19,7 @@ export enum MusicState {
 export interface AudioData {
     id: string;
     action: AudioAction;
+    loop?: boolean;
 }
 
 @injectable()
