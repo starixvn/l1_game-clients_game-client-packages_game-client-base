@@ -30,4 +30,5 @@ export class SiteConfigs {
         url: string;
         path: string;
     };
+    subPromotionDomain?: string;
 }
