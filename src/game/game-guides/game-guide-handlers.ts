@@ -5,7 +5,7 @@ import { SiteConfigs } from "../../configs";
 import { MainPlayerStore } from "../../players/main-player-store";
 import { IHandler } from "../../shared";
 import { AppTypes } from "../../shared/constants/app-type";
-import { Translator, UrlUtils } from "../../shared/utils";
+import { localStorageKeys, StorageManager, Translator, UrlUtils } from "../../shared/utils";
 import { GameConfigStore, GameSetting } from "../game-configs";
 import { RoundStore } from "../rounds/round-store";
 import { GameGuideStore } from "./game-guide-store";
@@ -56,7 +56,7 @@ export namespace GameGuideHandlers {
         }
 
         private getLanguage(): string {
-            return Translator.currentLanguageId || Translator.defaultLanguageId;
+            return (StorageManager.get(localStorageKeys.currentLanguage) as string) || Translator.defaultLanguageId;
         }
     }
 }

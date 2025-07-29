@@ -135,4 +135,5 @@ export const localStorageKeys = {
     portraitDirectMode: "portrait-direct-mode",
     supportedGamesId: "supportedGamesId",
     standaloneMode: "standalone-mode",
+    currentLanguage: "current_language",
 };

@@ -1,6 +1,6 @@
 import { inject, injectable } from "inversify";
 import { SiteConfigs } from "../../configs/site-configs";
-import { Translator } from "../../shared/utils";
+import { localStorageKeys, StorageManager, Translator } from "../../shared/utils";
 import { UrlUtils } from "../../shared/utils/url-utils";
 import { GameSetting } from "../game-configs/game-setting";
 import { GuidePFStore } from "./guide-pf-store";
@@ -32,6 +32,6 @@ export class GuidePFHandlers {
         this.guidePFStore.url = "";
     }
     private getLanguage(): string {
-        return Translator.currentLanguageId || Translator.defaultLanguageId;
+        return (StorageManager.get(localStorageKeys.currentLanguage) as string) || Translator.defaultLanguageId;
     }
 }
