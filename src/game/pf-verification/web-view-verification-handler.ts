@@ -1,5 +1,4 @@
 import { inject, injectable } from "inversify";
-import { ISessionInfo } from "../../auth/auth-store";
 import { SiteConfigs } from "../../configs";
 import { IHandler } from "../../shared";
 import { StorageManager, Translator, UrlUtils, localStorageKeys } from "../../shared/utils";
@@ -38,18 +37,7 @@ export namespace WebViewPFVerificationHandlers {
         }
 
         private getLanguage(): string {
-            const languages = {
-                "vi-VN": "vi",
-                "en-US": "en",
-                "en-UK": "en",
-                "th-TH": "th",
-                "id-ID": "id",
-                "zh-CN": "zh_cn",
-                "zh-TW": "zh_tw",
-            };
-            const session = StorageManager.get(localStorageKeys.session) as ISessionInfo;
-
-            return languages[session.language] || "en";
+            return (StorageManager.get(localStorageKeys.currentLanguage) as string) || Translator.defaultLanguageId;
         }
     }
 }
