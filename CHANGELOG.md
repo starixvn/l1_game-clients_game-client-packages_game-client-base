@@ -1,3 +1,22 @@
+# [1.62.0](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.61.0...v1.62.0) (2025-07-30)
+
+
+### Bug Fixes
+
+* add mapping languages ([d59edb7](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/d59edb7f0df4493b49ca049769db9a4086be674c))
+* change mapping name ([2f898ae](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/2f898ae48309eed40feb58d3c6116c2379eb8b1d))
+* get locale  from storage ([a47d567](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/a47d5671205726bb05ad22aa49c931b398896fd0))
+* modify game guide url ([ed1e387](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/ed1e3871ce9127ff2fb18320b1fe5903b4f064e8))
+* rename locale ([bd70e07](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/bd70e07a6764feb68f85b7cadb5fefa508d248dc))
+* save current locale ([353af6d](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/353af6ddaad010165104b9de6bf8064db901fa16))
+* update url pf-guide ([8cf29bf](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/8cf29bfbf0b8627cdd734e1cbafd6207d12e6afe))
+* use adding instead replacing ([6eb34d6](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/6eb34d6555094d8214cd5cf1787dc8d032b4da73))
+
+
+### Features
+
+* add locale code for Japanese ([8aac22b](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/8aac22b7e3c0910199ade71a6155c63bba2f8584))
+
 # [1.61.0](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.60.0...v1.61.0) (2025-06-02)
 
 
