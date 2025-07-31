@@ -1,3 +1,10 @@
+## [1.63.1](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.63.0...v1.63.1) (2025-07-31)
+
+
+### Bug Fixes
+
+* update pf verification ([c535d27](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/c535d2713271100c2108a8b87e981b39d59bca59))
+
 # [1.63.0](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.62.0...v1.63.0) (2025-07-31)
 
 
