@@ -1,3 +1,10 @@
+# [1.63.0](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.62.0...v1.63.0) (2025-07-31)
+
+
+### Features
+
+* support loop sfx, stopable ([8951eeb](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/8951eebee139a5620a0b28aa59cd61587b439e47))
+
 # [1.62.0](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.61.0...v1.62.0) (2025-07-30)
 
 
