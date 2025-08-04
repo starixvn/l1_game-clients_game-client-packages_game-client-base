@@ -1,3 +1,16 @@
+# [1.64.0](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.63.1...v1.64.0) (2025-08-04)
+
+
+### Bug Fixes
+
+* update ignore check coverage examples ([3fc275c](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/3fc275c77a53fd1df0bd3ef7e0a5bc1925931168))
+
+
+### Features
+
+* add currencyCode and currencyGroup ([b6e64da](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/b6e64dab967d93cafdf5014b38f7ffe9ebdf73dc))
+* add options for guide url ([ecb34d0](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/ecb34d0d99dab04b896c018abdef4f90a16fe0da))
+
 ## [1.63.1](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.63.0...v1.63.1) (2025-07-31)
 
 
