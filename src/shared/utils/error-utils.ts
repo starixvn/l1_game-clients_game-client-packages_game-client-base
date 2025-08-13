@@ -97,6 +97,9 @@ export namespace ErrorUtils {
         SB1941: "message_invalid_value_cashout",
         SB1942: "message_invalid_jackpot",
         SB1943: "message_opened_jackpot",
+        SB3017: "errorOccurred",
+        SB3018: "errorOccurred",
+        SB3023: "Claim_expired_error_message"
     };
 
     const CommonErrorList = [
