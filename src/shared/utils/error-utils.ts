@@ -99,7 +99,7 @@ export namespace ErrorUtils {
         SB1943: "message_opened_jackpot",
         SB3017: "message_error_occurred",
         SB3018: "message_error_occurred",
-        SB3023: "Claim_expired_error_message"
+        SB3023: "message_error_claim_expired"
     };
 
     const CommonErrorList = [
