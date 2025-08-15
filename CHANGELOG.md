@@ -1,3 +1,17 @@
+# [1.65.0](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.64.0...v1.65.0) (2025-08-15)
+
+
+### Bug Fixes
+
+* correct key ([83dcd49](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/83dcd4954deed8c00f17e775323ef60ebafc322b))
+* update error code for free spin bonus promotion - Epic-GL3265 ([80f36a6](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/80f36a6e7bc08bc886c706538f827289647c1aec))
+* update message error code ([3a1d07c](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/3a1d07cdd90704bfda2436d9bfe784fff9585423))
+
+
+### Features
+
+* add site config for sub promotion domain ([74f5766](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/74f57668a89e9afdd4fa7b1c6f9a5e1d7003705e))
+
 # [1.64.0](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.63.1...v1.64.0) (2025-08-04)
 
 
