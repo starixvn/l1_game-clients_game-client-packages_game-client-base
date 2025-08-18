@@ -4,7 +4,11 @@ export class SiteConfigs {
     serverDomainMapper?: { [key: string]: string };
     subDomain: string;
     env: string;
-    sentryUrl?: string;
+    sentry: {
+        dsn:string;
+        browserUrl:string,
+        ignoreErrors?:string[]
+    }
     subGuideDomain: string;
     enableMsgpackParserAllGames: boolean;
     enableMsgpackParserOnNotification: boolean;
