@@ -1,4 +1,4 @@
-import { ignoreErrors } from "../constants/ignore-errors";
+import { ignoreErrors as constantIgnoreErrors } from "../constants/ignore-errors";
 
 declare global {
     interface Window {
@@ -10,7 +10,9 @@ export const sentryLogger = {
     sentryUrl: "",
     env: "",
     identifier: "",
+    ignoreErrors: [],
     loaded: false,
+
     isEnabled: () => {
         return sentryLogger.sentryUrl && document && document.head;
     },
@@ -20,14 +22,14 @@ export const sentryLogger = {
                 dsn: sentryLogger.sentryUrl,
                 environment: sentryLogger.env,
                 maxValueLength: 5000,
-                ignoreErrors,
+                ignoreErrors: sentryLogger.ignoreErrors,
             });
             window.Sentry.setTag("game-client", sentryLogger.identifier);
 
             sentryLogger.loaded = true;
         }
     },
-    start: (sentryUrl = "", env = "", identifier = "") => {
+    start: ({ sentryUrl = "", env = "", identifier = "", sentryBrowserUrl = "", ignoreErrors = [] }) => {
         try {
             if (!sentryUrl) {
                 return;
@@ -35,11 +37,12 @@ export const sentryLogger = {
             sentryLogger.sentryUrl = sentryUrl;
             sentryLogger.env = env;
             sentryLogger.identifier = identifier;
+            sentryLogger.ignoreErrors = ignoreErrors.length === 0 ? constantIgnoreErrors : ignoreErrors;
 
             const sentryScript = document?.createElement("script");
             if (sentryScript) {
                 sentryScript.setAttribute("id", "sentry-logger");
-                sentryScript.setAttribute("src", "https://browser.sentry-cdn.com/5.15.0/bundle.min.js");
+                sentryScript.setAttribute("src", sentryBrowserUrl);
                 sentryScript.setAttribute("integrity", "sha384-+ysfQckQvwCB5SppH41IScIz/Iynt2pePnJNMl+D7ZOzDJ+VYhQEuwB0pA60IDM0");
                 sentryScript.setAttribute("crossorigin", "anonymous");
                 sentryScript.onload = () => {
