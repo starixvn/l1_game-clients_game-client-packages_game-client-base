@@ -7,19 +7,19 @@ declare global {
 }
 
 export const sentryLogger = {
-    sentryUrl: "",
+    dsn: "",
     env: "",
     identifier: "",
     ignoreErrors: [],
     loaded: false,
 
     isEnabled: () => {
-        return sentryLogger.sentryUrl && document && document.head;
+        return sentryLogger.dsn && document && document.head;
     },
     loadScript: () => {
         if (window.Sentry && !sentryLogger.loaded) {
             window.Sentry.init({
-                dsn: sentryLogger.sentryUrl,
+                dsn: sentryLogger.dsn,
                 environment: sentryLogger.env,
                 maxValueLength: 5000,
                 ignoreErrors: sentryLogger.ignoreErrors,
@@ -29,12 +29,12 @@ export const sentryLogger = {
             sentryLogger.loaded = true;
         }
     },
-    start: ({ sentryUrl = "", env = "", identifier = "", sentryBrowserUrl = "", ignoreErrors = [] }) => {
+    start: ({ dsn = "", env = "", identifier = "", browserUrl = "", ignoreErrors = [] }) => {
         try {
-            if (!sentryUrl) {
+            if (!dsn) {
                 return;
             }
-            sentryLogger.sentryUrl = sentryUrl;
+            sentryLogger.dsn = dsn;
             sentryLogger.env = env;
             sentryLogger.identifier = identifier;
             sentryLogger.ignoreErrors = ignoreErrors.length === 0 ? constantIgnoreErrors : ignoreErrors;
@@ -42,7 +42,7 @@ export const sentryLogger = {
             const sentryScript = document?.createElement("script");
             if (sentryScript) {
                 sentryScript.setAttribute("id", "sentry-logger");
-                sentryScript.setAttribute("src", sentryBrowserUrl);
+                sentryScript.setAttribute("src", browserUrl);
                 sentryScript.setAttribute("integrity", "sha384-+ysfQckQvwCB5SppH41IScIz/Iynt2pePnJNMl+D7ZOzDJ+VYhQEuwB0pA60IDM0");
                 sentryScript.setAttribute("crossorigin", "anonymous");
                 sentryScript.onload = () => {
