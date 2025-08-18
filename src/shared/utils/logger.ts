@@ -29,7 +29,7 @@ export const sentryLogger = {
             sentryLogger.loaded = true;
         }
     },
-    start: ({ dsn = "", env = "", identifier = "", browserUrl = "", ignoreErrors = [] }) => {
+    start: ({ dsn = "", env = "", identifier = "", browserUrl = "", urlHash = "", ignoreErrors = [] }) => {
         try {
             if (!dsn) {
                 return;
@@ -43,7 +43,7 @@ export const sentryLogger = {
             if (sentryScript) {
                 sentryScript.setAttribute("id", "sentry-logger");
                 sentryScript.setAttribute("src", browserUrl);
-                sentryScript.setAttribute("integrity", "sha384-+ysfQckQvwCB5SppH41IScIz/Iynt2pePnJNMl+D7ZOzDJ+VYhQEuwB0pA60IDM0");
+                sentryScript.setAttribute("integrity", urlHash);
                 sentryScript.setAttribute("crossorigin", "anonymous");
                 sentryScript.onload = () => {
                     sentryLogger.loadScript();

@@ -7,6 +7,7 @@ export class SiteConfigs {
     sentry: {
         dsn:string;
         browserUrl:string,
+        urlHash:string,
         ignoreErrors?:string[]
     }
     subGuideDomain: string;
