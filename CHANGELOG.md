@@ -1,3 +1,11 @@
+# [1.66.0](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.65.0...v1.66.0) (2025-08-21)
+
+
+### Features
+
+* init sentry from config ([6dc9142](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/6dc9142454212b486cd379bd02b5110d2e085783))
+* update SiteConfig interface ([8e0cafd](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/8e0cafd77605f4b73a3f14912de3ad3bdea2494e))
+
 # [1.65.0](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.64.0...v1.65.0) (2025-08-15)
 
 
