@@ -68,7 +68,6 @@ describe("CrashCashOutHandlers", () => {
             multiplierStore,
             playerActionStore,
             playerActionHandlers,
-            autoPlayHandler,
             gameConfigStore,
             betInputStore,
             retryGameHandler

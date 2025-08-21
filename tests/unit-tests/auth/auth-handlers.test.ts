@@ -633,14 +633,6 @@ describe("AuthHandlers tests", () => {
                     expect(appStore.saveDirectModeInfo).toHaveBeenCalled();
                 });
 
-                it("should save return url in storage", async () => {
-                    // act
-                    await ssoHandler.handle(urlParams);
-
-                    // assert
-                    expect(appStore.saveReturnUrl).toHaveBeenCalled();
-                });
-
                 it("should save app in storage", async () => {
                     // act
                     await ssoHandler.handle(urlParams);
@@ -729,14 +721,6 @@ describe("AuthHandlers tests", () => {
                 expect(appStore.saveDirectModeInfo).toHaveBeenCalled();
             });
 
-            it("should save return url in storage", async () => {
-                // act
-                await ssoHandler.handle(urlParams);
-
-                // assert
-                expect(appStore.saveReturnUrl).toHaveBeenCalled();
-            });
-
             it("should save sound settings in storage", async () => {
                 // act
                 await ssoHandler.handle(urlParams);
@@ -779,17 +763,6 @@ describe("AuthHandlers tests", () => {
 
                 // assert
                 expect(authStore.setAuthStoreFromStorage).toHaveBeenCalledWith({ username: "name", language: "en" });
-            });
-            it("should load return url in storage", async () => {
-                // arrange
-                // @ts-ignore
-                StorageManager.get.mockReturnValueOnce(undefined).mockReturnValueOnce(undefined);
-
-                // act
-                await ssoHandler.handle(urlParams);
-
-                // assert
-                expect(appStore.loadReturnUrlAnd).toHaveBeenCalled();
             });
 
             it("should load direct mode info in storage", async () => {

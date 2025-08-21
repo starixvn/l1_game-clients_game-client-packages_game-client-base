@@ -30,7 +30,6 @@ describe("GameConfigHandlers test", () => {
             // assert
             expect(configStore.setGameConfigs).toHaveBeenCalledWith(gameConfig);
             expect(noticeStore.hideNotice).toHaveBeenCalled();
-            expect(disabledGameStore.setShowPopup).toHaveBeenCalled();
         });
 
         it("should set appStore isLoading = false", () => {

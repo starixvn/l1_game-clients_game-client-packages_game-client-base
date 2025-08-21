@@ -157,6 +157,12 @@ describe("UrlUtils", () => {
                 enableMsgpackParserOnNotification: false,
                 userServiceUrlDev: "http://localhost:3000/user",
                 notificationServiceUrlDev: "http://localhost:3008",
+                sentry: {
+                    dsn: "https://sentry.io/1234567890",
+                    browserUrl: "http://localhost:3000/sentry",
+                    urlHash: "sentry",
+                    ignoreErrors: [],
+                },
             };
             const result = UrlUtils.getProxyRoute(configs);
             expect(result).toBe("/socket.io");
@@ -183,6 +189,12 @@ describe("UrlUtils", () => {
                 enableMsgpackParserOnNotification: false,
                 userServiceUrlDev: "http://localhost:3000/user",
                 notificationServiceUrlDev: "http://localhost:3008",
+                sentry: {
+                    dsn: "https://sentry.io/1234567890",
+                    browserUrl: "http://localhost:3000/sentry",
+                    urlHash: "sentry",
+                    ignoreErrors: [],
+                },
             };
 
             const result = UrlUtils.getProxyRoute(configs);
@@ -210,6 +222,12 @@ describe("UrlUtils", () => {
                 enableMsgpackParserOnNotification: false,
                 userServiceUrlDev: "http://localhost:3000/user",
                 notificationServiceUrlDev: "http://localhost:3008",
+                sentry: {
+                    dsn: "https://sentry.io/1234567890",
+                    browserUrl: "http://localhost:3000/sentry",
+                    urlHash: "sentry",
+                    ignoreErrors: [],
+                },
             };
 
             const result = UrlUtils.getProxyRoute(configs);

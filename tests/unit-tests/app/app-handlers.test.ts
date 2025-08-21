@@ -122,51 +122,6 @@ describe("AppHandlers", () => {
             });
         });
 
-        describe("getUpdatedBaseUrl", () => {
-            beforeEach(() => {
-                gameConfigurationStore.setGameConfiguration([
-                    { id: 123, isMicrosite: true, name: "game1", key: "game1" },
-                    { id: 456, name: "game2", key: "game2" },
-                ]);
-            });
-            it("should return original baseUrl when gameId is not provided", () => {
-                // arrange
-                const baseUrl = "https://example.com/lobby";
-                jest.spyOn(handler as any, "getDecodedReturnUrl").mockReturnValue(baseUrl);
-
-                // act
-                const result = (handler as any).getUpdatedBaseUrl();
-
-                // assert
-                expect(result).toBe(baseUrl);
-            });
-
-            it("should return original baseUrl when gameConfiguration is not available", () => {
-                // arrange
-                const baseUrl = "https://example.com/lobby";
-                jest.spyOn(handler as any, "getDecodedReturnUrl").mockReturnValue(baseUrl);
-                gameConfigurationStore.setGameConfiguration([]);
-
-                // act
-                const result = (handler as any).getUpdatedBaseUrl(123);
-
-                // assert
-                expect(result).toBe(baseUrl);
-            });
-
-            it("should return original baseUrl when game is not a microsite", () => {
-                // arrange
-                const baseUrl = "https://example.com/lobby";
-                jest.spyOn(handler as any, "getDecodedReturnUrl").mockReturnValue(baseUrl);
-
-                // act
-                const result = (handler as any).getUpdatedBaseUrl(456);
-
-                // assert
-                expect(result).toBe(baseUrl);
-            });
-        });
-
         describe("navigateBasedOnMode", () => {
             beforeEach(() => {
                 // mock all
@@ -199,7 +154,7 @@ describe("AppHandlers", () => {
 
                 // assert
                 expect((handler as any).handleDirectModeNavigation).not.toHaveBeenCalled();
-                expect((handler as any).handleStandaloneNavigation).toHaveBeenCalledWith(0, 123);
+                expect((handler as any).handleStandaloneNavigation).toHaveBeenCalledWith(0);
                 expect((handler as any).handleIframeNavigation).not.toHaveBeenCalled();
             });
 

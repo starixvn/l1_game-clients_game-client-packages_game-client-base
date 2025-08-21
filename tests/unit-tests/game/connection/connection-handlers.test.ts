@@ -1,5 +1,5 @@
 import { stub } from "jest-auto-stub";
-import { ConnectionHandlers, ConnectionStore } from "../../../../src/game/connection";
+import { ConnectionHandlers, ConnectionStore, ConnectionTrialStore } from "../../../../src/game/connection";
 import { GameConfigStore } from "../../../../src/game/game-configs";
 import { RoundRunningHandlers } from "../../../../src/game/rounds";
 import { GameClientEmitMessage } from "../../../../src/shared";
@@ -22,7 +22,8 @@ describe("Connection Handlers tests", () => {
         it("should call initConnection", () => {
             // arrange
             const connectionStore = stub<ConnectionStore>();
-            const handler = new ConnectionHandlers.ConnectHandler(connectionStore);
+            const trialStore = stub<ConnectionTrialStore>();
+            const handler = new ConnectionHandlers.ConnectHandler(connectionStore, trialStore);
 
             // act
             handler.handle();
@@ -36,9 +37,10 @@ describe("Connection Handlers tests", () => {
         it("should call emit ingame when gameConfigStore initialized false", () => {
             // arrange
             const connectionStore = stub<ConnectionStore>();
+            const trialStore = stub<ConnectionTrialStore>();
             const roundRunning = stub<RoundRunningHandlers>();
             const gameConfigStore = stub<GameConfigStore>({ initialized: false });
-            const handler = new ConnectionHandlers.InGameHandler(connectionStore, roundRunning, gameConfigStore);
+            const handler = new ConnectionHandlers.InGameHandler(connectionStore, trialStore, roundRunning, gameConfigStore);
 
             // act
             handler.handle();
@@ -50,9 +52,10 @@ describe("Connection Handlers tests", () => {
         it("should not call emit ingame when gameConfigStore initialized true", () => {
             // arrange
             const connectionStore = stub<ConnectionStore>();
+            const trialStore = stub<ConnectionTrialStore>();
             const roundRunning = stub<RoundRunningHandlers>();
             const gameConfigStore = stub<GameConfigStore>({ initialized: true });
-            const handler = new ConnectionHandlers.InGameHandler(connectionStore, roundRunning, gameConfigStore);
+            const handler = new ConnectionHandlers.InGameHandler(connectionStore, trialStore, roundRunning, gameConfigStore);
 
             // act
             handler.handle();

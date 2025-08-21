@@ -240,20 +240,6 @@ describe("appStore tests", () => {
         });
     });
 
-    describe("saveReturnUrl", () => {
-        it("should set returnUrl into storage manager", () => {
-            // arrange
-            const store = new AppStore();
-            store.urlInfo = { returnUrl: "rurl" };
-
-            // act
-            store.saveReturnUrl();
-
-            // assert
-            expect(StorageManager.set).toHaveBeenCalledWith(localStorageKeys.returnUrl, "rurl");
-        });
-    });
-
     describe("loadDirectMode", () => {
         it("should set store when storage manager has data and session equal", () => {
             // arrange
@@ -305,21 +291,6 @@ describe("appStore tests", () => {
             // assert
             expect(store.isDirectMode).toBe(false);
             expect(store.urlInfo).toEqual({});
-        });
-    });
-
-    describe("loadReturnUrlAnd", () => {
-        it("should set returnUrl when storage manager has return url", () => {
-            // arrange
-            const store = new AppStore();
-            // @ts-ignore
-            StorageManager.get.mockReturnValueOnce("rurl");
-
-            // act
-            store.loadReturnUrlAnd();
-
-            // assert
-            expect(store.urlInfo.returnUrl).toEqual("rurl");
         });
     });
 
