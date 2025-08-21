@@ -1,8 +1,8 @@
 import { inject, injectable } from "inversify";
 import { GameServiceMessage, IMultipleHandlers } from "../../shared";
+import { DisabledGameStore } from "../disabled-game/disabled-game-store";
 import { RoundRunningHandlers } from "./round-running-handlers";
 import { RoundTimeStore } from "./round-time-store";
-import { DisabledGameStore } from "../disabled-game";
 
 @injectable()
 export class RoundTimeHandlers implements IMultipleHandlers {

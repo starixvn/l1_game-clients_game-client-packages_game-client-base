@@ -1,4 +1,4 @@
-import { BoostedOddsModel, PromotionModel } from "../../notification";
+import { BoostedOddsModel, PromotionModel } from "../../notification/boosted-odds/boosted-odds-store";
 
 export namespace GameClientEmitMessage {
     export class Signin {
@@ -273,8 +273,8 @@ export namespace GameServiceMessage {
     export type TResult =
         | number
         | {
-              [betChoice: string]: any;
-          };
+            [betChoice: string]: any;
+        };
 
     export type TSettlementResult = {
         [betChoice: string]: boolean;

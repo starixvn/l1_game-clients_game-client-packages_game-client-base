@@ -2,8 +2,8 @@ import { inject, injectable } from "inversify";
 
 import { reaction } from "mobx";
 import { BetStore } from "../../game/bets/bet-store";
-import { DisabledGameStore } from "../../game/disabled-game";
-import { ErrorStore } from "../../game/errors";
+import { DisabledGameStore } from "../../game/disabled-game/disabled-game-store";
+import { ErrorStore } from "../../game/errors/error-store";
 import { NoticeStore } from "../../game/notices/notice-store";
 import { RoundTimeStore } from "../../game/rounds/round-time-store";
 import { MainPlayerStore } from "../../players/main-player-store";

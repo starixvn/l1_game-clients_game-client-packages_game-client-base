@@ -5,10 +5,10 @@ export class SiteConfigs {
     subDomain: string;
     env: string;
     sentry: {
-        dsn:string;
-        browserUrl:string,
-        urlHash:string,
-        ignoreErrors?:string[]
+        dsn: string;
+        browserUrl: string,
+        urlHash: string,
+        ignoreErrors?: string[]
     }
     subGuideDomain: string;
     enableMsgpackParserAllGames: boolean;

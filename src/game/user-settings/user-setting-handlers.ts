@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify";
 import { BrowserDomUtils, StorageManager, localStorageKeys } from "../../shared/utils";
 import { AnalyticsManager, PFObjectName, TrackingAction, TrackingEvent } from "../../shared/utils/analytics-manager";
-import { AudioType } from "../audios";
+import { AudioType } from "../audios/audio-store";
 import { GameSetting } from "../game-configs";
 import { UserSettingData, UserSettingStore } from "./user-setting-store";
 

@@ -32,6 +32,12 @@ export const siteConfigs: SiteConfigs = {
         proxyPath: "sedie",
         route: "",
     },
+    sentry: {
+        dsn: "",
+        browserUrl: "",
+        urlHash: "",
+        ignoreErrors: [],
+    },
 };
 
 const containerOptions: IContainerOptions = {

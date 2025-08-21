@@ -9,7 +9,7 @@ export class ChipSettingHandler implements IHandler<void> {
         @inject(UserService) private readonly userService: UserService,
         @inject(ChipSettingStore) private readonly chipSettingStore: ChipSettingStore,
         @inject(AuthStore) private readonly authStore: AuthStore
-    ) {}
+    ) { }
 
     async handle() {
         const response = await this.userService.getChipSetting(this.authStore.session, this.authStore.username);

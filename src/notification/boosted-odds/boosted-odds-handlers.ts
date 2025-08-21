@@ -1,12 +1,12 @@
 import { inject, injectable } from "inversify";
-import { IHandler, NotificationServiceMessage } from "../../shared";
-import { BaseBoostedOddsModel, BoostedOddsModel, BoostedOddsStore, PromotionModel } from "./boosted-odds-store";
-import { MainPlayerStore } from "../../players/main-player-store";
-import { AppStore } from "../../app";
-import { SiteConfigs } from "../../configs";
+import { AppStore } from "../../app/app-store";
 import { AuthStore } from "../../auth";
+import { SiteConfigs } from "../../configs";
+import { MainPlayerStore } from "../../players/main-player-store";
+import { IHandler, NotificationServiceMessage } from "../../shared";
 import { AppTypes } from "../../shared/constants/app-type";
 import { StorageManager, localStorageKeys } from "../../shared/utils/storage-manager";
+import { BaseBoostedOddsModel, BoostedOddsModel, BoostedOddsStore, PromotionModel } from "./boosted-odds-store";
 
 export namespace BoostedOddsPromotionsHandlers {
     @injectable()

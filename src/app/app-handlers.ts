@@ -38,7 +38,7 @@ export namespace AppHandlers {
             @inject(GameConfigurationStore)
             private readonly gameConfigurationStore: GameConfigurationStore,
             @inject(SiteConfigs) private readonly siteConfigs: SiteConfigs
-        ) {}
+        ) { }
 
         handle() {
             this.playerSelectionClearHandler.handle();
@@ -228,7 +228,7 @@ export namespace AppHandlers {
 
     @injectable()
     export class UserGesturePage implements IHandler<boolean> {
-        constructor(@inject(AppStore) private readonly appStore: AppStore) {}
+        constructor(@inject(AppStore) private readonly appStore: AppStore) { }
 
         handle(isUserGesture: boolean) {
             this.appStore.isUserGesture = isUserGesture;
@@ -241,7 +241,7 @@ export namespace AppHandlers {
 
     @injectable()
     export class ClearStorage implements IHandler<boolean> {
-        constructor(@inject(AppStore) private readonly appStore: AppStore) {}
+        constructor(@inject(AppStore) private readonly appStore: AppStore) { }
 
         handle(isClearStorage: boolean) {
             this.appStore.isClearStorage = isClearStorage;

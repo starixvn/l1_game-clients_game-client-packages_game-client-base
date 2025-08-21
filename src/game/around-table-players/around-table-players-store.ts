@@ -17,7 +17,7 @@ export class AroundTablePlayersStore {
 
     aroundTablePlayer: GameServiceMessage.AroundTablePlayer = null;
     aroundTablePlayers: GameServiceMessage.AroundTablePlayers = {};
-    outGamePlayerId : GameServiceMessage.RemoveAroundTablePlayer = null;
+    outGamePlayerId: GameServiceMessage.RemoveAroundTablePlayer = null;
     maxBalanceDisplay = SystemConfigs.SG.maxBalanceDisplay;
 
     setAroundTablePlayers(players: GameServiceMessage.AroundTablePlayers) {

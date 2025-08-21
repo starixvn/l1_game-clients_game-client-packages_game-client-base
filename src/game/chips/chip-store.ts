@@ -5,7 +5,8 @@ import { MainPlayerStore } from "../../players";
 import { GameServiceMessage } from "../../shared/models/game-messages";
 import { NumberUtils } from "../../shared/utils";
 import { GameConfigStore } from "../game-configs";
-import { RoundStore, RoundTimeStore } from "../rounds";
+import { RoundStore } from "../rounds/round-store";
+import { RoundTimeStore } from "../rounds/round-time-store";
 
 export interface IChipGroup {
     [chipValue: string]: number;

@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
 import { makeAutoObservable } from "mobx";
 import { GameServiceMessage } from "../../shared";
-import { Notice } from "../notices";
+import { Notice } from "../notices/notice-store";
 @injectable()
 export class DisabledGameStore {
     disabled = false;
@@ -38,5 +38,4 @@ export class DisabledGameStore {
     set isResetRoundTime(isReset: boolean) {
         this._isResetRoundTime = isReset;
     }
-
 }

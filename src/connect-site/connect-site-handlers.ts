@@ -17,7 +17,7 @@ export namespace ConnectSiteHandlers {
         constructor(
             @inject(SiteConfigs) private readonly siteConfigs: SiteConfigs,
             @inject(AuthStore) private readonly authStore: AuthStore
-        ) {}
+        ) { }
 
         handle() {
             redirectToAppPage(this.siteConfigs, ConnectSitePath.sessionTimeout, this.authStore.language);
@@ -30,7 +30,7 @@ export namespace ConnectSiteHandlers {
             @inject(SiteConfigs) private readonly siteConfigs: SiteConfigs,
             @inject(AuthStore) private readonly authStore: AuthStore,
             @inject(AppStore) private readonly appStore: AppStore
-        ) {}
+        ) { }
 
         handle() {
             const otherQueryString = this.appStore.umInfo?.operatorId ? `operatorId=${this.appStore.umInfo?.operatorId}` : "";
@@ -43,7 +43,7 @@ export namespace ConnectSiteHandlers {
         constructor(
             @inject(SiteConfigs) private readonly siteConfigs: SiteConfigs,
             @inject(AuthStore) private readonly authStore: AuthStore
-        ) {}
+        ) { }
 
         handle() {
             redirectToAppPage(this.siteConfigs, ConnectSitePath.login, this.authStore.language);

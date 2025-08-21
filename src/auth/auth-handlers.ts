@@ -33,7 +33,7 @@ interface IAuthorizeResponse {
 export namespace AuthHandlers {
     @injectable()
     export class SignOut implements IHandler<void> {
-        constructor(@inject(AppStore) private readonly appStore: AppStore, @inject(AuthStore) private readonly authStore: AuthStore) {}
+        constructor(@inject(AppStore) private readonly appStore: AppStore, @inject(AuthStore) private readonly authStore: AuthStore) { }
         handle() {
             this.authStore.signOut();
             this.appStore.setTimeOut();
@@ -52,7 +52,7 @@ export namespace AuthHandlers {
             @inject(SignOut) private readonly signOutHandler: SignOut,
             @inject(NotificationHandlers.Connect)
             private readonly notificationHandlers: NotificationHandlers.Connect
-        ) {}
+        ) { }
 
         async handle({ session = "", username = "" }) {
             try {
@@ -113,7 +113,7 @@ export namespace AuthHandlers {
                 message: text,
                 title: Translator.commonTranslate("notice"),
                 type: NoticeType.Error,
-                onClose: () => {},
+                onClose: () => { },
                 showBtnConfirmButton: true,
                 noticeInfo: NoticeInfo.SignName,
             });
@@ -130,7 +130,7 @@ export namespace AuthHandlers {
             @inject(SignOut) private readonly signOutHandler: SignOut,
             @inject(PlayerSelectionHandlers.ClearHandlers)
             private readonly playerSelectionClearHandler: PlayerSelectionHandlers.ClearHandlers
-        ) {}
+        ) { }
 
         async handle(urlParams: URLSearchParams) {
             try {
@@ -296,7 +296,7 @@ export namespace AuthHandlers {
             @inject(MainPlayerStore) private readonly mainPlayerStore: MainPlayerStore,
             @inject(UserService) private readonly userService: UserService,
             @inject(SignOut) private readonly signOutHandler: SignOut
-        ) {}
+        ) { }
 
         async handle({ sessionInfo }) {
             const { session, username } = sessionInfo;
@@ -333,7 +333,7 @@ export namespace AuthHandlers {
     export class TriggerRecheckIn implements IHandler<void> {
         private reCheckInId: NodeJS.Timeout;
 
-        constructor(@inject(ReCheckIn) private readonly reCheckIn: ReCheckIn, @inject(SignOut) private readonly signOutHandler: SignOut) {}
+        constructor(@inject(ReCheckIn) private readonly reCheckIn: ReCheckIn, @inject(SignOut) private readonly signOutHandler: SignOut) { }
 
         async handle() {
             this.clearInterval();
@@ -369,7 +369,7 @@ export namespace AuthHandlers {
             @inject(AuthStore) private readonly authStore: AuthStore,
             @inject(MainPlayerStore) private readonly mainPlayerStore: MainPlayerStore,
             @inject(UserService) private readonly userService: UserService
-        ) {}
+        ) { }
 
         async handle() {
             const sessionInfo = StorageManager.get(localStorageKeys.session) as ISessionInfo;
@@ -387,7 +387,7 @@ export namespace AuthHandlers {
 
     @injectable()
     export class ClearRecheckInInterval implements IHandler<void> {
-        constructor(@inject(TriggerRecheckIn) private readonly triggerRecheckIn: TriggerRecheckIn) {}
+        constructor(@inject(TriggerRecheckIn) private readonly triggerRecheckIn: TriggerRecheckIn) { }
 
         handle() {
             this.triggerRecheckIn.clearInterval();

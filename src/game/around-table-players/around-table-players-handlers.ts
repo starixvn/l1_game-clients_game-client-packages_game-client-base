@@ -4,7 +4,7 @@ import { AroundTablePlayersStore } from "./around-table-players-store";
 
 @injectable()
 export class AroundTablePlayerHandlers implements IMultipleHandlers {
-    constructor(@inject(AroundTablePlayersStore) protected readonly aroundTablePlayersStore: AroundTablePlayersStore) {}
+    constructor(@inject(AroundTablePlayersStore) protected readonly aroundTablePlayersStore: AroundTablePlayersStore) { }
 
     handlePlayer(aroundTablePlayer: GameServiceMessage.AroundTablePlayer) {
         this.aroundTablePlayersStore.updateAroundTablePlayer(aroundTablePlayer);

@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify";
 import { io } from "socket.io-client/dist/socket.io.js";
 import { io as ioMsgPack } from "socket.io-client/dist/socket.io.msgpack.min.js";
-import { ISessionInfo } from "../auth";
+import { ISessionInfo } from "../auth/auth-store";
 import { SiteConfigs } from "../configs";
 import { NotificationServiceMessage } from "../shared";
 import { UrlUtils } from "../shared/utils";

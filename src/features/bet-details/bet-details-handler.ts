@@ -8,7 +8,7 @@ export class BetDetailsHandler implements IMultipleHandlers {
     constructor(
         @inject(BetDetailsStore) protected readonly betDetailsStore: BetDetailsStore,
         @inject(ConnectionStore) protected readonly connectionStore: ConnectionStore
-    ) {}
+    ) { }
 
     eventHandleList = [
         {

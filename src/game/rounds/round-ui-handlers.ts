@@ -1,11 +1,12 @@
 import { inject, injectable } from "inversify";
 import { reaction, when } from "mobx";
 import { IHandler } from "../../shared";
-import { ChipStore } from "../chips";
-import { SettlementStatusStore, SettlementStore } from "../settlements";
+import { ChipStore } from "../chips/chip-store";
+import { DisabledGameStore } from "../disabled-game/disabled-game-store";
+import { SettlementStatusStore } from "../settlements/settlement-status-store";
+import { SettlementStore } from "../settlements/settlement-store";
 import { RoundStore } from "./round-store";
 import { RoundTimeStore } from "./round-time-store";
-import { DisabledGameStore } from "../disabled-game";
 
 export namespace RoundUIHandlers {
     @injectable()
