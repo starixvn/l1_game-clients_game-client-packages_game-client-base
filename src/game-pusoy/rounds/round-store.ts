@@ -11,7 +11,7 @@ export type HandData = {
 @injectable()
 export class RoundStore {
     private _suitesMapper: { [key: string]: string } = {};
-    private _scoreConfig: any = {};
+    private readonly _scoreConfig: any = {};
     private _roundId = 0;
     public get roundId() {
         return this._roundId;

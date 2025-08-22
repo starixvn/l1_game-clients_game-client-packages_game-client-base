@@ -1,11 +1,11 @@
 import { inject, injectable } from "inversify";
-import { RoundStore, RoundTimeStore } from "../rounds";
+import { makeAutoObservable } from "mobx";
 import { MainPlayerStore } from "../../players";
-import { action, computed, makeAutoObservable } from "mobx";
+import { RoundStore, RoundTimeStore } from "../rounds";
 
 @injectable()
 export class ArrangementStore {
-    private _mainPlayerSubmitted: boolean = false;
+    private _mainPlayerSubmitted = false;
 
     constructor(
         @inject(RoundTimeStore) protected readonly roundTimeStore: RoundTimeStore,

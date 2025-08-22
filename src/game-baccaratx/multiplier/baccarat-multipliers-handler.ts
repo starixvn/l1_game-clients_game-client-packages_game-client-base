@@ -27,7 +27,7 @@ export class BaccaratMultipliersHandler implements IMultipleHandlers {
         );
     }
 
-    eventHandleList: IHandler<any, any>[] = [
+    eventHandleList: IHandler<any>[] = [
         {
             name: GameServiceMessage.Finish.eventName,
             handle: this.receivedFinish,

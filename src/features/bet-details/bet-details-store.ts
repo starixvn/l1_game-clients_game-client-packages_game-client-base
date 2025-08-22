@@ -7,5 +7,5 @@ export class BetDetailsStore {
         makeAutoObservable(this);
     }
 
-    betDetailsUrl: string = "";
+    betDetailsUrl = "";
 }
