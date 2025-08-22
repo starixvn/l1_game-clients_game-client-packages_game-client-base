@@ -108,13 +108,18 @@ describe("GameGuideHandlers test", () => {
             ({ system, language, specialDirection, expected }) => {
                 // arrange
                 authStore.system = system;
+
+                const languageId = language.includes("zh") ? language.toLocaleLowerCase().replace("-", "_") : language.slice(0, 2);
+
+                // @ts-ignore
+                handler.getLanguage = jest.fn().mockReturnValue(languageId);
                 (StorageManager.get as jest.Mock).mockReturnValueOnce({ session: "session", ssoTime: new Date("2023-01-01"), language });
 
                 // act
                 handler.handle({ theme: "blue", specialDirection, scrollToId: "md5" });
 
                 // assert
-                expect(guideStore.url).toBe(expected);
+                expect(guideStore.url).toEqual(expected);
             }
         );
     });

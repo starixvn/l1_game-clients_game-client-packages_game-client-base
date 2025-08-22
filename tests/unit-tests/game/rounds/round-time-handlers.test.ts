@@ -1,4 +1,5 @@
 import { stub } from "jest-auto-stub";
+import { DisabledGameStore } from "../../../../src/game/disabled-game/disabled-game-store";
 import { GameSetting } from "../../../../src/game/game-configs";
 import { RoundRunningHandlers } from "../../../../src/game/rounds";
 import { RoundTimeStore } from "../../../../src/game/rounds/round-time-store";
@@ -11,6 +12,7 @@ describe("RoundTimeHandlers", () => {
     let roundTimeHandler: RoundTimeHandlers;
     let gameSetting: GameSetting;
     let roundRunningHandlers: RoundRunningHandlers;
+    let disabledGameStore: DisabledGameStore;
 
     beforeEach(() => {
         gameSetting = new GameSetting();
@@ -18,7 +20,8 @@ describe("RoundTimeHandlers", () => {
         gameSetting.durations = gameSettings.durations;
         roundTimeStore = new RoundTimeStore(gameSetting);
         roundRunningHandlers = stub<RoundRunningHandlers>();
-        roundTimeHandler = new RoundTimeHandlers(roundTimeStore, roundRunningHandlers);
+        disabledGameStore = stub<DisabledGameStore>();
+        roundTimeHandler = new RoundTimeHandlers(roundTimeStore, roundRunningHandlers, disabledGameStore);
     });
 
     afterEach(() => {
@@ -30,6 +33,7 @@ describe("RoundTimeHandlers", () => {
             roundTimeStore.start = jest.fn();
             roundRunningHandlers.startRunner = jest.fn();
             roundRunningHandlers.stopRunner = jest.fn();
+            disabledGameStore.disabled = false;
 
             // Act
             roundTimeHandler.handleRemainingTime(5);

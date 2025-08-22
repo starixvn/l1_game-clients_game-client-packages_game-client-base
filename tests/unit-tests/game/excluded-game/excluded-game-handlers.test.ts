@@ -1,13 +1,11 @@
-import { AppHandlers } from "../../../../src/app";
-import { AppStore } from "../../../../src/app/app-store";
+import { stub } from "jest-auto-stub";
+import { AppHandlers } from "../../../../src/app/app-handlers";
 import { AuthStore } from "../../../../src/auth/auth-store";
 import { NoPermissionHandlers } from "../../../../src/game/excluded-game";
 import { NoticeStore } from "../../../../src/game/notices";
-import { PlayerSelectionHandlers, PlayerSelectionStore } from "../../../../src/game/player-selections";
 import { GameServiceMessage } from "../../../../src/shared";
 import { gameSettings } from "../../container.test";
 import { AppTypes } from "./../../../../src/shared/constants/app-type";
-
 jest.mock("../../../../src/shared/utils/localization-manager", () => {
     return {
         Translator: {
@@ -24,12 +22,9 @@ describe("ExcludedGameHandlers tests", () => {
 
     it("has name is equal notpermitted", () => {
         // arrange
-        noticeStore = new NoticeStore();
-        authStore = new AuthStore();
-        backToOperatorLobby = new AppHandlers.BackToOperatorLobby(
-            new AppStore(),
-            new PlayerSelectionHandlers.ClearHandlers(new PlayerSelectionStore())
-        );
+        noticeStore = stub<NoticeStore>();
+        authStore = stub<AuthStore>();
+        backToOperatorLobby = stub<AppHandlers.BackToOperatorLobby>();
 
         handler = new NoPermissionHandlers(noticeStore, gameSettings, backToOperatorLobby, authStore);
 
@@ -40,13 +35,10 @@ describe("ExcludedGameHandlers tests", () => {
     describe("handle", () => {
         test("should add notice", () => {
             // arrange
-            noticeStore = new NoticeStore();
-            authStore = new AuthStore();
+            noticeStore = stub<NoticeStore>();
+            authStore = stub<AuthStore>();
             authStore.system = AppTypes.Club;
-            backToOperatorLobby = new AppHandlers.BackToOperatorLobby(
-                new AppStore(),
-                new PlayerSelectionHandlers.ClearHandlers(new PlayerSelectionStore())
-            );
+            backToOperatorLobby = stub<AppHandlers.BackToOperatorLobby>();
             backToOperatorLobby.handle = jest.fn();
 
             handler = new NoPermissionHandlers(noticeStore, gameSettings, backToOperatorLobby, authStore);

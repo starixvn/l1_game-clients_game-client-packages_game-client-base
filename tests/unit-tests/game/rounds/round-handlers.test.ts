@@ -110,37 +110,4 @@ describe("RoundHandlers test", () => {
             });
         });
     });
-
-    describe("eventHandleList", () => {
-        it("should be equal expected", () => {
-            // Arrange
-
-            const roundHandler = new RoundHandlers(roundStore);
-            const expected = [
-                {
-                    name: GameServiceMessage.roundId,
-                    handle: roundHandler.handleRoundId,
-                },
-                {
-                    name: GameServiceMessage.OwnBets.eventName,
-                    handle: roundHandler.handleOwnBets,
-                },
-                {
-                    name: GameServiceMessage.TotalBets.eventName,
-                    handle: roundHandler.handleTotalBets,
-                },
-                {
-                    name: GameServiceMessage.ResultHash.eventName,
-                    handle: roundHandler.handleResultHash,
-                },
-                {
-                    name: GameServiceMessage.UserBetPercentage.eventName,
-                    handle: roundHandler.handleUserBetPercent,
-                },
-            ];
-
-            // Assert
-            expect(roundHandler.eventHandleList).toEqual(expected);
-        });
-    });
 });

@@ -1,11 +1,10 @@
-import { GameSetting } from "../../../../src/game/game-configs";
+import { DurationSetting, GameSetting } from "../../../../src/game/game-configs";
 import { ROUND_STATE, RoundTimeStore } from "../../../../src/game/rounds/round-time-store";
 
 describe("RoundTimeStore Unit Tests", () => {
     let roundTimeStore: RoundTimeStore;
     let gameSetting = new GameSetting();
-
-    const setting = {
+    const setting: DurationSetting = {
         wholeRound: 39,
         placingBet: 30,
         lockingBet: 5,
@@ -13,9 +12,8 @@ describe("RoundTimeStore Unit Tests", () => {
         startRound: 1,
     };
 
-    gameSetting.durations = setting;
-
     beforeEach(() => {
+        gameSetting.durations = setting;
         roundTimeStore = new RoundTimeStore(gameSetting);
     });
 
@@ -400,7 +398,7 @@ describe("RoundTimeStore Unit Tests", () => {
                 expect(roundTimeStore.roundState).toBe(ROUND_STATE.SHOW_ANIMATION_RESULT);
             });
 
-            for (let roundTime = setting.wholeRound + 2 - setting.generatingResult; roundTime <= setting.wholeRound; roundTime++) {
+            for (let roundTime = setting.wholeRound + 2 - (setting?.generatingResult ?? 0); roundTime <= setting.wholeRound; roundTime++) {
                 test(`set round state to SHOW_ANIMATION_RESULT if isShowAnimationResult is true (roundTime=${roundTime})`, () => {
                     // Arrange
                     roundTimeStore.roundTime = roundTime;
@@ -431,8 +429,8 @@ describe("RoundTimeStore Unit Tests", () => {
 
         describe("check round state is SHOW_RESULT ", () => {
             for (
-                let roundTime = setting.placingBet + setting.startRound + 1;
-                roundTime <= setting.wholeRound - setting.generatingResult + 1;
+                let roundTime = setting.placingBet + (setting?.startRound ?? 0) + 1;
+                roundTime <= setting.wholeRound - (setting?.generatingResult ?? 0) + 1;
                 roundTime++
             ) {
                 test(`set round state to SHOW_RESULT if isShowResult is true (roundTime=${roundTime})`, () => {
@@ -450,7 +448,7 @@ describe("RoundTimeStore Unit Tests", () => {
 
         test("set round state to STARTING_ROUND if isStartingRound is true", () => {
             // Arrange
-            roundTimeStore.roundTime = setting.placingBet + setting.startRound;
+            roundTimeStore.roundTime = setting.placingBet + (setting?.startRound ?? 0);
 
             // Act
             roundTimeStore.calculateRoundStatus();

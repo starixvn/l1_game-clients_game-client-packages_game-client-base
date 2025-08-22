@@ -6,7 +6,9 @@ import { Translator } from "../../../src/shared/utils";
 jest.mock("../../../src/shared/utils/localization-manager", () => {
     return {
         Translator: {
-            translate: jest.fn(), gameTranslate: jest.fn(), commonTranslate: jest.fn().mockImplementation((key, option) => key)
+            translate: jest.fn(),
+            gameTranslate: jest.fn(),
+            commonTranslate: jest.fn().mockImplementation((key, option) => key),
         },
     };
 });
@@ -37,6 +39,9 @@ describe("MainPlayerStore", () => {
             minBet: 1,
             maxBet: 3000,
             joinedOn: "join",
+            currencyCode: "USD",
+            currencyGroup: "USD",
+            multiplier: 1,
         };
 
         // Act

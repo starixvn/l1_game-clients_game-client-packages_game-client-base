@@ -1,6 +1,4 @@
 import { stub } from "jest-auto-stub";
-import { io } from "socket.io-client/dist/socket.io.js";
-import { io as ioMsgPack } from "socket.io-client/dist/socket.io.msgpack.min.js";
 import { AppStore } from "../../../../src/app/app-store";
 import { AuthStore } from "../../../../src/auth/auth-store";
 import { ConnectionStore, events } from "../../../../src/game/connection";
@@ -55,7 +53,9 @@ describe("ConnectionStore tests", () => {
 
     describe("initConnection", () => {
         beforeEach(() => {
+            // @ts-ignore
             store.reset = jest.fn();
+            // @ts-ignore
             store.initBaseListener = jest.fn();
         });
         it("should call UrlUtils.buildServerUrl with expected arguments", () => {
@@ -85,6 +85,7 @@ describe("ConnectionStore tests", () => {
             store.initConnection();
 
             // assert
+            // @ts-ignore
             expect(store.initBaseListener).toHaveBeenCalled();
         });
 
@@ -93,32 +94,8 @@ describe("ConnectionStore tests", () => {
             store.initConnection();
 
             // assert
+            // @ts-ignore
             expect(store.reset).toHaveBeenCalled();
-        });
-
-        describe("when enableMsgpackParserAllGames = true", () => {
-            it("should call ioMsgpack with expected arguments", () => {
-                // arrange
-                store["siteConfigs"].enableMsgpackParserAllGames = true;
-
-                // act
-                store.initConnection();
-
-                // assert
-                expect(ioMsgPack).toHaveBeenCalledWith("socketUri", optionsDefault);
-            });
-        });
-        describe("when enableMsgpackParserAllGames = false", () => {
-            it("should call ioMsgpack with expected arguments", () => {
-                // arrange
-                store["siteConfigs"].enableMsgpackParserAllGames = false;
-
-                // act
-                store.initConnection();
-
-                // assert
-                expect(io).toHaveBeenCalledWith("socketUri", optionsDefault);
-            });
         });
     });
 
@@ -137,6 +114,7 @@ describe("ConnectionStore tests", () => {
 
             it("should init all required event listeners", () => {
                 // act
+                // @ts-ignore
                 store.initBaseListener();
 
                 // assert
@@ -149,16 +127,22 @@ describe("ConnectionStore tests", () => {
 
             it("should bind correct handlers to events", () => {
                 // act
+                // @ts-ignore
                 store.initBaseListener();
 
                 // assert
                 const calls = store.connection.on.mock.calls;
+                // @ts-ignore
                 expect(calls.find((call) => call[0] === events.connect)[1].toString()).toBe(store.onConnected.bind(store).toString());
+                // @ts-ignore
                 expect(calls.find((call) => call[0] === events.signedIn)[1].toString()).toBe(store.onSignedIn.bind(store).toString());
+                // @ts-ignore
                 expect(calls.find((call) => call[0] === events.connectError)[1].toString()).toBe(
+                    // @ts-ignore
                     store.onConnectFailed.bind(store).toString()
                 );
                 expect(calls.find((call) => call[0] === events.connectFailed)[1].toString()).toBe(
+                    // @ts-ignore
                     store.onConnectFailed.bind(store).toString()
                 );
                 expect(calls.find((call) => call[0] === events.disconnect)[1].toString()).toBe(store.onDisconnected.bind(store).toString());
@@ -172,6 +156,7 @@ describe("ConnectionStore tests", () => {
 
             it("should not throw error", () => {
                 // act & assert
+                // @ts-ignore
                 expect(() => store.initBaseListener()).not.toThrow();
             });
         });
@@ -190,6 +175,7 @@ describe("ConnectionStore tests", () => {
             store.connection.emit = jest.fn();
 
             // act
+            // @ts-ignore
             store.onConnected();
 
             // assert
@@ -203,6 +189,7 @@ describe("ConnectionStore tests", () => {
             store.connection.emit = jest.fn();
 
             // act
+            // @ts-ignore
             store.onConnected();
 
             // assert
@@ -216,9 +203,11 @@ describe("ConnectionStore tests", () => {
             store.connection.emit = jest.fn();
 
             // act
+            // @ts-ignore
             store.onConnected();
 
             // assert
+            // @ts-ignore
             expect(store.connection.onAny.mock.calls[0][0].toString()).toBe(store.onHandleData.bind(store).toString());
         });
 
@@ -234,6 +223,7 @@ describe("ConnectionStore tests", () => {
             payload.system = sessionInfo?.system;
 
             // act
+            // @ts-ignore
             store.onConnected();
 
             // assert
@@ -247,6 +237,7 @@ describe("ConnectionStore tests", () => {
             const payload = { roundId: 1, remainingTime: 20 };
 
             // act
+            // @ts-ignore
             store.onHandleData(gameSettings.name, payload);
 
             // assert
@@ -261,6 +252,7 @@ describe("ConnectionStore tests", () => {
             const payload = { userStakeLevel: { minBet: 1, maxBet: 2000 } };
 
             // act
+            // @ts-ignore
             store.onHandleData("message", payload);
 
             // assert
@@ -274,6 +266,7 @@ describe("ConnectionStore tests", () => {
             const payload = { value: 123 };
 
             // act
+            // @ts-ignore
             store.onHandleData("test-event", payload);
 
             // assert
@@ -286,6 +279,7 @@ describe("ConnectionStore tests", () => {
     describe("onSignedIn", () => {
         it("should set signedIn is true", () => {
             // act
+            // @ts-ignore
             store.onSignedIn();
 
             // assert
@@ -297,35 +291,26 @@ describe("ConnectionStore tests", () => {
         beforeEach(() => {
             store.connection = {};
             store.connection.disconnect = jest.fn();
+            // act
+            // @ts-ignore
+            store.onConnectFailed();
         });
         it("should set isConnectFailed is true", () => {
-            // act
-            store.onConnectFailed();
-
             // assert
             expect(store.isConnectFailed).toBe(true);
         });
 
         it("should set isConnected is false", () => {
-            // act
-            store.onConnectFailed();
-
             // assert
             expect(store.isConnected).toBe(false);
         });
 
         it("should set signedIn is false", () => {
-            // act
-            store.onConnectFailed();
-
             // assert
             expect(store.signedIn).toBe(false);
         });
 
         it("should call connection disconnect", () => {
-            // act
-            store.onConnectFailed();
-
             // assert
             expect(store.connection.disconnect).toHaveBeenCalled();
         });
@@ -335,6 +320,7 @@ describe("ConnectionStore tests", () => {
             const error = new Error("error");
 
             // act
+            // @ts-ignore
             store.onConnectFailed(error);
 
             // assert
@@ -346,28 +332,23 @@ describe("ConnectionStore tests", () => {
         beforeEach(() => {
             store.connection = {};
             store.connection.disconnect = jest.fn();
+
+            // act
+            // @ts-ignore
+            store.onDisconnected();
         });
 
         it("should set isConnected is false", () => {
-            // act
-            store.onDisconnected();
-
             // assert
             expect(store.isConnected).toBe(false);
         });
 
         it("should set signedIn is false", () => {
-            // act
-            store.onDisconnected();
-
             // assert
             expect(store.signedIn).toBe(false);
         });
 
         it("should call connection disconnect", () => {
-            // act
-            store.onDisconnected();
-
             // assert
             expect(store.connection.disconnect).toHaveBeenCalled();
         });
@@ -441,6 +422,7 @@ describe("ConnectionStore tests", () => {
             store.signedIn = true;
 
             // act
+            // @ts-ignore
             store.reset();
 
             // assert

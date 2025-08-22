@@ -1,16 +1,16 @@
 import { inject, injectable } from "inversify";
 import { AppHandlers } from "../../app/app-handlers";
 import { AuthStore } from "../../auth";
-import { GameServiceMessage, IHandler, IMultipleHandlers } from "../../shared";
+import { GameServiceMessage, IMultipleHandlers } from "../../shared";
+import { DefaultLanguage, SupportedLanguages } from "../../shared/languages";
 import { Translator } from "../../shared/utils/localization-manager";
 import { ConnectionStore } from "../connection/connection-store";
 import { NoticeInfo, NoticeStore, NoticeType } from "../notices";
 import { RoundRunningHandlers } from "../rounds";
 import { RoundTimeStore } from "../rounds/round-time-store";
+import { SettlementStore } from "../settlements";
 import { AppTypes } from "./../../shared/constants/app-type";
 import { DisabledGameStore } from "./disabled-game-store";
-import { DefaultLanguage, SupportedLanguages } from "../../shared/languages";
-import { SettlementStore } from "../settlements";
 
 @injectable()
 export class DisableGameHandlers implements IMultipleHandlers {

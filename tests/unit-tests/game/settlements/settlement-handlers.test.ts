@@ -1,4 +1,5 @@
 import { stub } from "jest-auto-stub";
+import { NoticeStore } from "../../../../src/game/notices/notice-store";
 import { SettlementHandlers, SettlementStatusStore, SettlementStore } from "../../../../src/game/settlements";
 import { GameServiceMessage } from "../../../../src/shared";
 
@@ -6,11 +7,13 @@ describe("SettlementHandlers tests", () => {
     let settlementStore: SettlementStore;
     let statusStore: SettlementStatusStore;
     let settlementHandlers: SettlementHandlers;
+    let noticeStore: NoticeStore;
 
     beforeEach(() => {
         settlementStore = stub<SettlementStore>();
         statusStore = new SettlementStatusStore();
-        settlementHandlers = new SettlementHandlers(settlementStore, statusStore);
+        noticeStore = stub<NoticeStore>();
+        settlementHandlers = new SettlementHandlers(settlementStore, statusStore, noticeStore);
     });
 
     describe("handleFinish", () => {
