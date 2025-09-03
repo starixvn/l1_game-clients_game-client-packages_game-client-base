@@ -1,3 +1,10 @@
+## [1.66.1](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.66.0...v1.66.1) (2025-09-03)
+
+
+### Bug Fixes
+
+* format round number not correct ([d513a63](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/d513a637bf74eca3bea2ee7a89240e38d6c03c75))
+
 # [1.66.0](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.65.0...v1.66.0) (2025-08-21)
 
 
