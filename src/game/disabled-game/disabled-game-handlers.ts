@@ -8,7 +8,7 @@ import { ConnectionStore } from "../connection/connection-store";
 import { NoticeInfo, NoticeStore, NoticeType } from "../notices";
 import { RoundRunningHandlers } from "../rounds";
 import { RoundTimeStore } from "../rounds/round-time-store";
-import { SettlementStore } from "../settlements";
+import { SettlementStore } from "../settlements/settlement-store";
 import { AppTypes } from "./../../shared/constants/app-type";
 import { DisabledGameStore } from "./disabled-game-store";
 
