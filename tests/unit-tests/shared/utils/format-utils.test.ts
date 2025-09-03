@@ -23,6 +23,7 @@ describe("FormatUtils", () => {
             [0, 1, true, "0"],
             [50000, 0, true, "50,000"],
             [12345.6755555513123, 2, false, "12,345.68"],
+            [0.075, 2, false, "0.08"],
         ];
 
         test.each(testCases)('numberWithCommas(%p, %p, %p) returns "%p"', (number, toFixed, noZeroSuffix, expected) => {
