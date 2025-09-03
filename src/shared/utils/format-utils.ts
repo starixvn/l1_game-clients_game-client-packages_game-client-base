@@ -7,10 +7,13 @@ export namespace FormatUtils {
     export const numberWithCommas = (number: number, toFixed = 1, noZeroSuffix = true) => {
         if (number) {
             let trimZeroNumber: string;
+            const inputNumber = +number;
+            const multiplier = Math.pow(10, toFixed);
+            const roundedNumber = Math.round(inputNumber * multiplier) / multiplier;
             if (noZeroSuffix) {
-                trimZeroNumber = `${+(+number).toFixed(toFixed)}`;
+                trimZeroNumber = `${+(roundedNumber).toFixed(toFixed)}`;
             } else {
-                trimZeroNumber = (+number).toFixed(toFixed);
+                trimZeroNumber = (roundedNumber).toFixed(toFixed);
             }
             return trimZeroNumber.replace(formatCommasReg, ",");
         }
