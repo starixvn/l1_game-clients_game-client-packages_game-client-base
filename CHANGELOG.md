@@ -1,3 +1,10 @@
+## [1.66.2](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.66.1...v1.66.2) (2025-09-04)
+
+
+### Bug Fixes
+
+* change setting key by user currency group - Epic GL-4577 ([b155a3f](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/b155a3f6fe56cf35884f56077ff21b1c74638180))
+
 ## [1.66.1](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.66.0...v1.66.1) (2025-09-03)
 
 
