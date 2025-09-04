@@ -39,6 +39,10 @@ export class MainPlayerStore {
     browserUserAgent = "";
     multiplier = 1;
 
+    get readyUserInfo() {
+        return this.UID !== 0 && this.currencyGroup !== "";
+    }
+
     setAuthorizeStore(user: GameServiceMessage.User) {
         this.UID = user.UID;
         this.name = user.name;

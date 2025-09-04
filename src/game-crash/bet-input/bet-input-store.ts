@@ -2,8 +2,7 @@ import { inject, injectable } from "inversify";
 import { makeAutoObservable, when } from "mobx";
 
 import { GameConfigStore } from "../../game/game-configs/game-config-store";
-import { RoundStore } from "../../game/rounds";
-import { localStorageKeys, StorageManager } from "../../shared/utils/storage-manager";
+import { RoundStore } from "../../game/rounds/round-store";
 import { CrashCashOutStore } from "../cash-out/crash-cash-out-store";
 import { GameCrashServiceMessage, IGameCrashUserSettings } from "../game-crash-messages";
 
@@ -12,7 +11,7 @@ export class BetInputStore {
     constructor(
         @inject(RoundStore) private readonly roundStore: RoundStore,
         @inject(GameConfigStore) private readonly gameConfig: GameConfigStore,
-        @inject(CrashCashOutStore) private readonly cashOutStore: CrashCashOutStore
+        @inject(CrashCashOutStore) private readonly cashOutStore: CrashCashOutStore,
     ) {
         makeAutoObservable(this);
         this.handleBetAmountFromStorageAndOwnBets();
@@ -24,12 +23,7 @@ export class BetInputStore {
     isDisabledBetInput = false;
 
     private handleBetAmountFromStorageAndOwnBets() {
-        when(
-            () => this.gameConfig && this.gameConfig.minBet > 0,
-            () => {
-                this.initBetAmount();
-            }
-        );
+
         when(
             () => this.roundStore && this.roundStore.ownBets && Object.keys(this.roundStore.ownBets).length > 0,
             () => {
@@ -44,8 +38,7 @@ export class BetInputStore {
         }
     }
 
-    initBetAmount() {
-        const userSetting = StorageManager.get(localStorageKeys.gameUserSetting) as IGameCrashUserSettings;
+    initBetAmount(userSetting: IGameCrashUserSettings) {
         this.betAmount = userSetting?.betAmount ? userSetting.betAmount : this.roundStore.minBet;
     }
 

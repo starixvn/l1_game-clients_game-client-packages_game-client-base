@@ -1,7 +1,6 @@
 import { inject, injectable } from "inversify";
 import { reaction } from "mobx";
 import { AppStore } from "../../app/app-store";
-import { StorageManager, localStorageKeys } from "./../../shared/utils/storage-manager";
 import { GameUserSettingAction, GameUserSettingStore } from "./game-user-setting-store";
 @injectable()
 export class GameUserSettingHandler {
@@ -30,7 +29,6 @@ export class GameUserSettingHandler {
     }
 
     clearTempStorage() {
-        StorageManager.remove(localStorageKeys.gameUserSetting);
-        this.loadTempStorage();
+        this.userGameSettingStore.tempStorage = { action: GameUserSettingAction.Clear };
     }
 }

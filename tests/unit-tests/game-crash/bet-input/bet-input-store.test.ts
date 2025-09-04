@@ -1,6 +1,7 @@
 import { stub } from "jest-auto-stub";
 import { BetInputStore } from "../../../../src/game-crash/bet-input/bet-input-store";
 import { CrashCashOutStore } from "../../../../src/game-crash/cash-out/crash-cash-out-store";
+import { IGameCrashUserSettings } from "../../../../src/game-crash/game-crash-messages";
 import { GameConfigStore } from "../../../../src/game/game-configs/game-config-store";
 import { RoundStore } from "../../../../src/game/rounds/round-store";
 import { StorageManager } from "../../../../src/shared/utils/storage-manager";
@@ -79,7 +80,7 @@ describe("BetInputStore", () => {
             StorageManager.get = jest.fn(() => userSetting);
 
             //Act
-            betInputStore.initBetAmount();
+            betInputStore.initBetAmount(userSetting);
 
             //Assert
             expect(betInputStore.betAmount).toBe(10);
@@ -87,12 +88,14 @@ describe("BetInputStore", () => {
 
         it("when userSetting have not betAmount", () => {
             // Arrange
-            const userSetting = {};
+            const userSetting = stub<IGameCrashUserSettings>({
+                betAmount: undefined
+            });
             StorageManager.get = jest.fn().mockReturnValueOnce(userSetting);
             Object.defineProperty(roundStore, "minBet", { value: 5, configurable: true, writable: true });
 
             //Act
-            betInputStore.initBetAmount();
+            betInputStore.initBetAmount(userSetting);
 
             //Assert
             expect(betInputStore.betAmount).toEqual(5);

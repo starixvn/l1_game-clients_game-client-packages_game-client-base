@@ -5,6 +5,7 @@ import { GameUserSettingHandler } from "../../../../src/game/game-user-settings/
 import { GameUserSettingStore } from "../../../../src/game/game-user-settings/game-user-setting-store";
 import { RoundPFHandler } from "../../../../src/game/round-pf/round-pf-handler";
 import { RoundTimeStore } from "../../../../src/game/rounds/round-time-store";
+import { MainPlayerStore } from "../../../../src/players/main-player-store";
 
 describe("ProvablyFairHandler", () => {
     let provablyFairHandler: ProvablyFairHandler;
@@ -13,6 +14,7 @@ describe("ProvablyFairHandler", () => {
     let gameUserSettingStore: GameUserSettingStore;
     let gameUserSettingHandler: GameUserSettingHandler;
     let roundPFHandler: RoundPFHandler;
+    let mainPlayerStore: MainPlayerStore
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -21,12 +23,14 @@ describe("ProvablyFairHandler", () => {
         gameUserSettingStore = stub<GameUserSettingStore>();
         gameUserSettingHandler = stub<GameUserSettingHandler>();
         roundPFHandler = stub<RoundPFHandler>();
+        mainPlayerStore = stub<MainPlayerStore>()
         provablyFairHandler = new ProvablyFairHandler(
             provablyFairStore,
             roundTimeStore,
             gameUserSettingStore,
             gameUserSettingHandler,
-            roundPFHandler
+            roundPFHandler,
+            mainPlayerStore
         );
     });
 

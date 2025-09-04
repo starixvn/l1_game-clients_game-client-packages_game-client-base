@@ -1,10 +1,11 @@
 import { inject, injectable } from "inversify";
-import { reaction } from "mobx";
+import { reaction, when } from "mobx";
 import { BetStore } from "../../../game/bets";
 import { GameUserSettingHandler } from "../../../game/game-user-settings/game-user-setting-handler";
 import { GameUserSettingAction, GameUserSettingStore } from "../../../game/game-user-settings/game-user-setting-store";
 import { RoundPFHandler } from "../../../game/round-pf";
 import { RoundTimeStore } from "../../../game/rounds/round-time-store";
+import { MainPlayerStore } from "../../../players/main-player-store";
 import { GameServiceMessage } from "../../../shared";
 import { IMultipleHandlers } from "../../../shared/mediator";
 import { StorageManager, localStorageKeys } from "../../../shared/utils";
@@ -23,9 +24,12 @@ export class ProvablyFairHandler implements IMultipleHandlers {
         @inject(GameUserSettingStore) protected readonly gameUserSettingStore: GameUserSettingStore,
         @inject(GameUserSettingHandler) protected readonly gameUserSettingHandler: GameUserSettingHandler,
         @inject(RoundPFHandler) protected readonly roundPFHandler: RoundPFHandler,
-        @inject(BetStore) protected readonly betStore: BetStore
+        @inject(BetStore) protected readonly betStore: BetStore,
+        @inject(MainPlayerStore) protected readonly mainPlayerStore: MainPlayerStore
     ) {
-        this.loadClientSettingFromStorage();
+        when(() => this.mainPlayerStore.readyUserInfo, () => {
+            this.loadClientSettingFromStorage();
+        });
 
         reaction(
             () => this.roundTimeStore.isStartRound,
@@ -91,8 +95,12 @@ export class ProvablyFairHandler implements IMultipleHandlers {
         this.provablyFairStore.lastBetClientSeed = null;
     }
 
+    get permanentStorageKey() {
+        return `${localStorageKeys.permanentGameUserSetting}-${this.mainPlayerStore.UID}-${this.mainPlayerStore.currencyGroup}`;
+    }
+
     loadClientSettingFromStorage() {
-        const data = StorageManager.get(localStorageKeys.permanentGameUserSetting) as PFUserSetting;
+        const data = StorageManager.get(this.permanentStorageKey) as PFUserSetting;
         if (data && data?.pf) {
             const { manualClientSeed, randomClientSeedEnabled, randomClientSeed } = data.pf;
             this.provablyFairStore.manualClientSeed = manualClientSeed;
@@ -136,7 +144,7 @@ export class ProvablyFairHandler implements IMultipleHandlers {
     }
 
     onSaveStorage() {
-        const currentSetting = (StorageManager.get(localStorageKeys.permanentGameUserSetting) || {}) as PFUserSetting;
+        const currentSetting = (StorageManager.get(this.permanentStorageKey) || {}) as PFUserSetting;
 
         const pf = {
             randomClientSeedEnabled: this.provablyFairStore.randomClientSeedEnabled,
@@ -145,6 +153,6 @@ export class ProvablyFairHandler implements IMultipleHandlers {
         };
         currentSetting.pf = pf;
 
-        StorageManager.set(localStorageKeys.permanentGameUserSetting, currentSetting);
+        StorageManager.set(this.permanentStorageKey, currentSetting);
     }
 }

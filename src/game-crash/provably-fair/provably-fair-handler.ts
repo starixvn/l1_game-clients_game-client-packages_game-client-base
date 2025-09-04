@@ -1,11 +1,11 @@
 import { inject, injectable } from "inversify";
 import { reaction } from "mobx";
 import { GameUserSettingHandler } from "../../game/game-user-settings/game-user-setting-handler";
-import { GameUserSettingAction, GameUserSettingStore } from "../../game/game-user-settings/game-user-setting-store";
+import { GameUserSettingStore } from "../../game/game-user-settings/game-user-setting-store";
 import { RoundPFHandler } from "../../game/round-pf";
+import { MainPlayerStore } from "../../players/main-player-store";
 import { GameServiceMessage } from "../../shared";
 import { IHandler } from "../../shared/mediator";
-import { StorageManager, localStorageKeys } from "../../shared/utils";
 import { IGameCrashPermanentUserSettings } from "../game-crash-messages";
 import { RoundTimeStore } from "./../../game/rounds/round-time-store";
 import { ProvablyFairStore, VerificationMode } from "./provably-fair-store";
@@ -17,7 +17,8 @@ export class ProvablyFairHandler implements IHandler<GameServiceMessage.Provably
         @inject(RoundTimeStore) protected readonly roundTimeStore: RoundTimeStore,
         @inject(GameUserSettingStore) protected readonly gameUserSettingStore: GameUserSettingStore,
         @inject(GameUserSettingHandler) protected readonly gameUserSettingHandler: GameUserSettingHandler,
-        @inject(RoundPFHandler) protected readonly roundPFHandler: RoundPFHandler
+        @inject(RoundPFHandler) protected readonly roundPFHandler: RoundPFHandler,
+        @inject(MainPlayerStore) protected readonly mainPlayerStore: MainPlayerStore
     ) {
         reaction(
             () => this.roundTimeStore.isStartRound,
@@ -28,15 +29,6 @@ export class ProvablyFairHandler implements IHandler<GameServiceMessage.Provably
                 }
             }
         );
-        this.loadClientSettingFromStorage();
-        reaction(
-            () => this.gameUserSettingStore.tempStorage,
-            (trigger) => {
-                if (trigger?.action === GameUserSettingAction.Load) {
-                    this.loadClientSettingFromStorage();
-                }
-            }
-        );
     }
     name = GameServiceMessage.ProvablyFair.eventName;
 
@@ -44,8 +36,7 @@ export class ProvablyFairHandler implements IHandler<GameServiceMessage.Provably
         this.provablyFairStore.pf = pf;
     }
 
-    loadClientSettingFromStorage() {
-        const data = StorageManager.get(localStorageKeys.permanentGameUserSetting) as IGameCrashPermanentUserSettings;
+    loadClientSettingFromStorage(data: IGameCrashPermanentUserSettings) {
         if (data && data?.pf) {
             const { manualClientSeed, randomClientSeedEnabled, randomClientSeed } = data.pf;
             this.provablyFairStore.manualClientSeed = manualClientSeed;

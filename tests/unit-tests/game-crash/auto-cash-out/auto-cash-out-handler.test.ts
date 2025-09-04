@@ -4,17 +4,20 @@ import { AutoCashOutHandler } from "../../../../src/game-crash/auto-cash-out/aut
 import { AutoCashOutStore } from "../../../../src/game-crash/auto-cash-out/auto-cash-out-store";
 import { CrashGameConfigStore } from "../../../../src/game-crash/game-configs/crash-game-config-store";
 import { RoundStore } from "../../../../src/game/rounds/round-store";
+import { MainPlayerStore } from "../../../../src/players/main-player-store";
 
 describe("AutoCashOutHandler", () => {
     let autoCashOutHandler: AutoCashOutHandler;
     let autoCashOutStore: AutoCashOutStore;
     let roundStore: RoundStore;
     let gameConfigStore: CrashGameConfigStore;
+    let mainPlayerStore: MainPlayerStore
 
     beforeEach(() => {
         roundStore = stub<RoundStore>();
         gameConfigStore = stub<CrashGameConfigStore>();
-        autoCashOutStore = new AutoCashOutStore(gameConfigStore, roundStore);
+        mainPlayerStore = stub<MainPlayerStore>()
+        autoCashOutStore = new AutoCashOutStore(gameConfigStore, roundStore, mainPlayerStore);
         autoCashOutHandler = new AutoCashOutHandler(autoCashOutStore);
     });
 

@@ -1,9 +1,10 @@
 import { inject, injectable } from "inversify";
 import * as _ from "lodash";
-import { reaction } from "mobx";
+import { reaction, when } from "mobx";
 import { ConnectionStore } from "../../game/connection/connection-store";
 import { GameUserSettingHandler } from "../../game/game-user-settings/game-user-setting-handler";
 import { GameUserSettingAction, GameUserSettingStore } from "../../game/game-user-settings/game-user-setting-store";
+import { MainPlayerStore } from "../../players/main-player-store";
 import { GameClientEmitMessage } from "../../shared/models/game-messages";
 import { StorageManager, localStorageKeys } from "../../shared/utils";
 import { ShoePFHandler } from "../shoe-pf/shoe-pf-handler";
@@ -20,12 +21,15 @@ export class FairnessHandler {
     constructor(
         @inject(FairnessStore) protected readonly fairnessStore: FairnessStore,
         @inject(ConnectionStore) protected readonly connectionStore: ConnectionStore,
-
         @inject(GameUserSettingStore) protected readonly gameUserSettingStore: GameUserSettingStore,
         @inject(GameUserSettingHandler) protected readonly gameUserSettingHandler: GameUserSettingHandler,
         @inject(ShoePFHandler) protected readonly shoePFHandler: ShoePFHandler,
-        @inject(ShoeStore) protected readonly shoeStore: ShoeStore
+        @inject(ShoeStore) protected readonly shoeStore: ShoeStore,
+        @inject(MainPlayerStore) protected readonly mainPlayerStore: MainPlayerStore
     ) {
+        when(() => this.mainPlayerStore.readyUserInfo, () => {
+            this.loadClientSettingFromStorage();
+        });
         this.loadClientSettingFromStorage();
         reaction(
             () => this.gameUserSettingStore.permanentStorage,
@@ -37,8 +41,12 @@ export class FairnessHandler {
         );
     }
 
+    get permanentStorageKey() {
+        return `${localStorageKeys.permanentGameUserSetting}-${this.mainPlayerStore.UID}-${this.mainPlayerStore.currencyGroup}`;
+    }
+
     loadClientSettingFromStorage() {
-        const data = StorageManager.get(localStorageKeys.permanentGameUserSetting) as FairnessUserSetting;
+        const data = StorageManager.get(this.permanentStorageKey) as FairnessUserSetting;
         if (data && data?.clientSeed) {
             this.fairnessStore.clientSeed = data.clientSeed;
         } else {
@@ -84,11 +92,11 @@ export class FairnessHandler {
     }
 
     onSaveStorage() {
-        const currentSetting = (StorageManager.get(localStorageKeys.permanentGameUserSetting) || {}) as FairnessUserSetting;
+        const currentSetting = (StorageManager.get(this.permanentStorageKey) || {}) as FairnessUserSetting;
         currentSetting.clientSeed = this.fairnessStore.clientSeed;
         currentSetting.dontShowAgain = this.fairnessStore.dontShowAgain;
 
-        StorageManager.set(localStorageKeys.permanentGameUserSetting, currentSetting);
+        StorageManager.set(this.permanentStorageKey, currentSetting);
     }
 
     handleShowFairnessSettingsPopup(isShow: boolean) {

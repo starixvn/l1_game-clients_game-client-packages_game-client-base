@@ -2,7 +2,7 @@ import { inject, injectable } from "inversify";
 import { makeAutoObservable, when } from "mobx";
 
 import { RoundStore } from "../../game/rounds/round-store";
-import { localStorageKeys, StorageManager } from "../../shared/utils/storage-manager";
+import { MainPlayerStore } from "../../players/main-player-store";
 import { CrashGameConfigStore } from "../game-configs/crash-game-config-store";
 import { GameCrashServiceMessage, IGameCrashUserSettings } from "../game-crash-messages";
 
@@ -13,11 +13,10 @@ export class AutoCashOutStore {
 
     constructor(
         @inject(CrashGameConfigStore) private readonly gameConfigStore: CrashGameConfigStore,
-        @inject(RoundStore) protected readonly roundStore: RoundStore
+        @inject(RoundStore) protected readonly roundStore: RoundStore,
+        @inject(MainPlayerStore) protected readonly mainPlayerStore: MainPlayerStore
     ) {
         makeAutoObservable(this);
-        this.loadMultiplierFromStorage();
-
         when(
             () => this.roundStore && this.roundStore.ownBets && Object.keys(this.roundStore.ownBets).length > 0,
             () => {
@@ -26,8 +25,7 @@ export class AutoCashOutStore {
         );
     }
 
-    loadMultiplierFromStorage() {
-        const userSetting = StorageManager.get(localStorageKeys.gameUserSetting) as IGameCrashUserSettings;
+    loadMultiplierFromStorage(userSetting: IGameCrashUserSettings) {
         if (userSetting) {
             userSetting.autoCashOutMultiplier && (this.multiplier = userSetting.autoCashOutMultiplier);
             userSetting.enableAutoCashOut && (this.enable = userSetting.enableAutoCashOut);
