@@ -30,7 +30,6 @@ export class FairnessHandler {
         when(() => this.mainPlayerStore.readyUserInfo, () => {
             this.loadClientSettingFromStorage();
         });
-        this.loadClientSettingFromStorage();
         reaction(
             () => this.gameUserSettingStore.permanentStorage,
             (trigger) => {
