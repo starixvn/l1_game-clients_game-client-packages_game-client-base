@@ -35,33 +35,33 @@ export class GameCrashUserSettingHandler {
         when(() => this.mainPlayerStore.readyUserInfo, () => {
             const permanentGameUserSetting = this.getPermanentSetting()
             this.provablyFairHandler.loadClientSettingFromStorage(permanentGameUserSetting);
+
+            reaction(
+                () => this.gameUserSettingStore.tempStorage,
+                (trigger) => {
+                    switch (trigger?.action) {
+                        case GameUserSettingAction.Save:
+                            this.saveTempStorage();
+                            break;
+                        case GameUserSettingAction.Load:
+                            this.reloadOtherStores();
+                            break;
+                        case GameUserSettingAction.Clear:
+                            this.clearTempStorage();
+                            break;
+                    }
+                }
+            );
+
+            reaction(
+                () => this.gameUserSettingStore.permanentStorage,
+                (trigger) => {
+                    if (trigger?.action === GameUserSettingAction.Save) {
+                        this.savePermanentStorage();
+                    }
+                }
+            );
         });
-
-        reaction(
-            () => this.gameUserSettingStore.tempStorage,
-            (trigger) => {
-                switch (trigger?.action) {
-                    case GameUserSettingAction.Save:
-                        this.saveTempStorage();
-                        break;
-                    case GameUserSettingAction.Load:
-                        this.reloadOtherStores();
-                        break;
-                    case GameUserSettingAction.Clear:
-                        this.clearTempStorage();
-                        break;
-                }
-            }
-        );
-
-        reaction(
-            () => this.gameUserSettingStore.permanentStorage,
-            (trigger) => {
-                if (trigger?.action === GameUserSettingAction.Save) {
-                    this.savePermanentStorage();
-                }
-            }
-        );
     }
 
     reloadOtherStores() {
