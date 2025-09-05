@@ -1,3 +1,10 @@
+## [1.66.3](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.66.2...v1.66.3) (2025-09-05)
+
+
+### Bug Fixes
+
+* register reaction when readyUserInfo - Epic GL-4577 ([17ec371](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/17ec37111d3d03afe1b16eb28f737bd11bfa1e81))
+
 ## [1.66.2](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.66.1...v1.66.2) (2025-09-04)
 
 
