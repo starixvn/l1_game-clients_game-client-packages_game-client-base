@@ -50,7 +50,8 @@ export class GameCrashUserSettingHandler {
                             this.clearTempStorage();
                             break;
                     }
-                }
+                },
+                { fireImmediately: true }
             );
 
             reaction(
@@ -59,7 +60,8 @@ export class GameCrashUserSettingHandler {
                     if (trigger?.action === GameUserSettingAction.Save) {
                         this.savePermanentStorage();
                     }
-                }
+                },
+                { fireImmediately: true }
             );
         });
     }
