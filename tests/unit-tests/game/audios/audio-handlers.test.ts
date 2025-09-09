@@ -24,7 +24,7 @@ describe("AudioHandler", () => {
             audioHandler.playMusic(audioId);
 
             // Assert
-            expect(audioStore.music).toEqual({ id: audioId, action: AudioAction.PLAY });
+            expect(audioStore.music).toEqual({ id: audioId, action: AudioAction.PLAY, loop: false });
         });
         it("should not set music action to play if musicEnable is false", () => {
             // Arrange

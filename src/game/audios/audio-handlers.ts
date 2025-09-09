@@ -7,11 +7,11 @@ export class AudioHandler {
     constructor(
         @inject(AudioStore) private readonly audioStore: AudioStore,
         @inject(UserSettingStore) protected readonly userSettingsStore: UserSettingStore
-    ) {}
+    ) { }
 
-    playMusic(audioId: string) {
+    playMusic(audioId: string, loop = false) {
         if (this.userSettingsStore.musicEnable) {
-            this.audioStore.music = { id: audioId, action: AudioAction.PLAY };
+            this.audioStore.music = { id: audioId, action: AudioAction.PLAY, loop };
         }
     }
 
