@@ -1,3 +1,10 @@
+## [1.66.4](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.66.3...v1.66.4) (2025-09-09)
+
+
+### Bug Fixes
+
+* support play music loop ([f7bd9ac](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/f7bd9ac70d1145771bec37cf27e6e41c74612864))
+
 ## [1.66.3](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.66.2...v1.66.3) (2025-09-05)
 
 
