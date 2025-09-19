@@ -25,7 +25,12 @@ export class UserSettingHandlers {
     }
 
     saveStorages() {
-        const data: UserSettingData = { musicEnable: this.userSettingStore.musicEnable, sfxEnable: this.userSettingStore.sfxEnable };
+        const data: UserSettingData = {
+            musicEnable: this.userSettingStore.musicEnable,
+            sfxEnable: this.userSettingStore.sfxEnable,
+            bgmVolume: this.userSettingStore.bgmVolume,
+            sfxVolume: this.userSettingStore.sfxVolume,
+        };
         StorageManager.set(localStorageKeys.playerSetting, data);
     }
 
@@ -59,5 +64,15 @@ export class UserSettingHandlers {
     private getObjectName(type: number): string {
         const dict = [PFObjectName.MusicEnabled, PFObjectName.SfxEnabled];
         return dict[type];
+    }
+
+    setBGMVolume(value: number) {
+        this.userSettingStore.bgmVolume = value;
+        this.saveStorages();
+    }
+
+    setSfxVolume(value: number) {
+        this.userSettingStore.sfxVolume = value;
+        this.saveStorages();
     }
 }

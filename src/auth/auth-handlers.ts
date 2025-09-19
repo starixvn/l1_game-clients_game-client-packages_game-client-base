@@ -235,6 +235,8 @@ export namespace AuthHandlers {
                 const playerSetting: UserSettingData = {
                     musicEnable: urlParams.has(URLParams.musicEnable) ? urlParams.get(URLParams.musicEnable) === "true" : true,
                     sfxEnable: urlParams.has(URLParams.sfxEnable) ? urlParams.get(URLParams.sfxEnable) === "true" : true,
+                    bgmVolume: 1,
+                    sfxVolume: 1,
                 };
                 StorageManager.set(localStorageKeys.playerSetting, playerSetting);
 
