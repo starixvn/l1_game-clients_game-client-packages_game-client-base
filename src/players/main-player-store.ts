@@ -38,6 +38,8 @@ export class MainPlayerStore {
     offerGames?: { gameId: number }[] = null;
     browserUserAgent = "";
     multiplier = 1;
+    playerNickname = "";
+    playerAvatarUrl = "";
 
     get readyUserInfo() {
         return this.UID !== 0 && this.currencyGroup !== "";
@@ -57,6 +59,8 @@ export class MainPlayerStore {
         this.disableJackpotGames = user.disableJackpotGames;
         this.rate = user.rate;
         this.multiplier = user.multiplier;
+        this.playerNickname = user.playerNickname;
+        this.playerAvatarUrl = user.playerAvatarUrl;
     }
 
     setBalance(balance: number, scoin: number, availSpins: number) {
