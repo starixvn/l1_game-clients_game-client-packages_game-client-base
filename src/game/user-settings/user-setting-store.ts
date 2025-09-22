@@ -29,7 +29,7 @@ export class UserSettingStore implements UserSettingData {
         this._sfxEnable = value;
     }
 
-    private _sfxVolume: number = 1;
+    private _sfxVolume = 1;
     public get sfxVolume(): number {
         return this._sfxVolume;
     }
@@ -38,7 +38,7 @@ export class UserSettingStore implements UserSettingData {
         this._sfxVolume = value;
     }
 
-    private _bgmVolume: number = 1;
+    private _bgmVolume = 1;
     public get bgmVolume(): number {
         return this._bgmVolume;
     }

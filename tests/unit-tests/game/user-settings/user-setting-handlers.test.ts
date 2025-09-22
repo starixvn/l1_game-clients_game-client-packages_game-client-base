@@ -56,6 +56,8 @@ describe("UserSettingHandlers", () => {
             const settingsData = {
                 musicEnable: true,
                 sfxEnable: false,
+                bgmVolume: 1,
+                sfxVolume: 1,
             };
 
             userSettingStore = stub<UserSettingStore>(settingsData);

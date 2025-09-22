@@ -262,7 +262,7 @@ describe("NoticeErrorsHandlers", () => {
 
         it("should add notice when showing mobile direct notice", () => {
             // act
-            handler.showMobileDirectNotice();
+            handler.showReconnectNotice();
 
             // assert
             expect(noticeStore.addNotice).toHaveBeenCalledWith({

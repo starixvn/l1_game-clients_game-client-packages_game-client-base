@@ -726,7 +726,12 @@ describe("AuthHandlers tests", () => {
                 await ssoHandler.handle(urlParams);
 
                 // assert
-                expect(StorageManager.set).toHaveBeenCalledWith(localStorageKeys.playerSetting, { musicEnable: true, sfxEnable: false });
+                expect(StorageManager.set).toHaveBeenCalledWith(localStorageKeys.playerSetting, {
+                    musicEnable: true,
+                    sfxEnable: false,
+                    bgmVolume: 1,
+                    sfxVolume: 1,
+                });
             });
 
             it("should call authorize handler", async () => {
