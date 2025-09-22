@@ -113,8 +113,8 @@ export namespace NoticeErrorsHandlers {
                     isDisconnect: this.connectionStore.isDisconnect,
                 }),
                 ({ isConnectFailed, isDisconnect }) => {
-                    if (this.isMobileDirect() && (isConnectFailed || isDisconnect)) {
-                        this.showMobileDirectNotice();
+                    if (this.isShowReconnectNotice() && (isConnectFailed || isDisconnect)) {
+                        this.showReconnectNotice();
                     }
                 }
             );
@@ -124,8 +124,9 @@ export namespace NoticeErrorsHandlers {
             return this.authStore.system === AppTypes.Instant;
         }
 
-        isMobileDirect() {
-            return this.authStore.system === AppTypes.MobileDirect;
+        isShowReconnectNotice() {
+            const showReconnectAppTypes = [AppTypes.Original, AppTypes.MobileDirect];
+            return showReconnectAppTypes.includes(this.authStore.system);
         }
 
         showNotice() {
@@ -147,7 +148,7 @@ export namespace NoticeErrorsHandlers {
             this.backToOperatorLobbyHandler.handle();
         }
 
-        showMobileDirectNotice() {
+        showReconnectNotice() {
             const gameName = Translator.gameTranslate("game_name");
             const message = Translator.getMessageFollowSystem(this.authStore.system, "message_lost_game_connection", { gameName });
             const reConnect = () => {

@@ -6,4 +6,5 @@ export const AppTypes = {
     App: 5,
     DesktopDirect: 6,
     MobileDirect: 7,
+    Original: 10,
 };
