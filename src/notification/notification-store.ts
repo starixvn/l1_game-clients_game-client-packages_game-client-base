@@ -1,10 +1,10 @@
 import { inject, injectable } from "inversify";
 import { makeAutoObservable } from "mobx";
-import { Socket } from "socket.io-client/dist/socket.io.js";
+import { io, Socket } from "socket.io-client/dist/socket.io.js";
+import { io as ioMsgPack } from "socket.io-client/dist/socket.io.msgpack.min.js";
 import { Mediator, NotificationServiceMessage } from "../shared";
 import { SocketEvents } from "../shared/constants/socket-event";
 import { sentryLogger } from "../shared/utils/logger";
-
 export const events = {
     ...SocketEvents,
     ...{
@@ -25,6 +25,18 @@ export class NotificationStore {
     connection: Socket = null;
     isConnected = false;
     isConnectFailed = false;
+    currentOptions: any = null;
+
+    init(options: any) {
+        this.currentOptions = options;
+        if (options.enableMsgpackParserOnNotification) {
+            this.connection = ioMsgPack(options.socketUri, options);
+        } else {
+            this.connection = io(options.socketUri, options);
+        }
+
+        this.initListener();
+    }
 
     initListener() {
         if (this.connection) {
@@ -32,6 +44,13 @@ export class NotificationStore {
             this.connection.on(events.connectError, this.onConnectFailed.bind(this));
             this.connection.on(events.connectFailed, this.onConnectFailed.bind(this));
             this.connection.on(events.disconnect, this.onDisconnected.bind(this));
+        }
+    }
+
+    reconnectIfNeed() {
+        if (!this.isConnected) {
+            this.connection.off();
+            this.init(this.currentOptions);
         }
     }
 

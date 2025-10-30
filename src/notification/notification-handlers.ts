@@ -1,6 +1,4 @@
 import { inject, injectable } from "inversify";
-import { io } from "socket.io-client/dist/socket.io.js";
-import { io as ioMsgPack } from "socket.io-client/dist/socket.io.msgpack.min.js";
 import { ISessionInfo } from "../auth/auth-store";
 import { SiteConfigs } from "../configs";
 import { NotificationServiceMessage } from "../shared";
@@ -13,7 +11,7 @@ export namespace NotificationHandlers {
         constructor(
             @inject(NotificationStore) readonly notificationStore: NotificationStore,
             @inject(SiteConfigs) protected readonly siteConfigs: SiteConfigs
-        ) {}
+        ) { }
 
         handle(sessionInfo: ISessionInfo) {
             const { isDev, enableMsgpackParserOnNotification, subDirectory } = this.siteConfigs;
@@ -29,19 +27,15 @@ export namespace NotificationHandlers {
                     ss: sessionInfo.session,
                     username: sessionInfo.username,
                 },
+                enableMsgpackParserOnNotification
             };
-            if (enableMsgpackParserOnNotification) {
-                this.notificationStore.connection = ioMsgPack(options.socketUri, options);
-            } else {
-                this.notificationStore.connection = io(options.socketUri, options);
-            }
-            this.notificationStore.initListener();
+            this.notificationStore.init(options);
         }
     }
 
     @injectable()
     export class InitPromotionNotifications {
-        constructor(@inject(NotificationStore) readonly notificationStore: NotificationStore) {}
+        constructor(@inject(NotificationStore) readonly notificationStore: NotificationStore) { }
 
         handle() {
             this.notificationStore.send(NotificationServiceMessage.PromotionNotifications.eventName);
