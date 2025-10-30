@@ -74,9 +74,11 @@ export abstract class ConnectionStoreBase {
     isConnectFailed = false;
     signedIn = false;
     isDisconnect = false;
+    currentSocketOption: ISocketOption = null;
 
     ///public method
     initConnection(customizeOptions?: ISocketOption) {
+        this.currentSocketOption = customizeOptions;
         this.reset();
 
         const gameId = this.gameSetting.id;
@@ -98,6 +100,13 @@ export abstract class ConnectionStoreBase {
         }
 
         this.initBaseListener();
+    }
+
+    reconnect() {
+        if (!this.isConnected) {
+            this.connection.off();
+            this.initConnection(this.currentSocketOption);
+        }
     }
 
     onDisconnected(reason = "") {
