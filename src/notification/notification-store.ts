@@ -47,7 +47,7 @@ export class NotificationStore {
         }
     }
 
-    reconnectIfNeed() {
+    reconnect() {
         if (!this.isConnected) {
             this.connection.off();
             this.init(this.currentOptions);
