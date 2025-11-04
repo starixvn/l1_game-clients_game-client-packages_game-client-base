@@ -10,11 +10,11 @@ export class HideGameHandler implements IHandler<void> {
         @inject(RoundRunningHandlers) protected readonly roundRunning: RoundRunningHandlers,
         @inject(ConnectionStore) protected readonly connectStore: ConnectionStore,
         @inject(GameUserSettingHandler) protected readonly gameUserSettingHandler: GameUserSettingHandler
-    ) {}
+    ) { }
 
     handle() {
         this.roundRunning.stopRunner();
-        this.connectStore.onDisconnected();
+        this.connectStore.disconnect();
         this.gameUserSettingHandler.saveTempStorage();
     }
 }

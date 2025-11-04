@@ -73,6 +73,9 @@ export abstract class ConnectionStoreBase {
     isConnected = false;
     isConnectFailed = false;
     signedIn = false;
+    /**
+     * @description If the connection is disconnected by SERVER, the value is true
+     */
     isDisconnect = false;
     currentSocketOption: ISocketOption = null;
 
@@ -107,6 +110,10 @@ export abstract class ConnectionStoreBase {
             this.connection.off();
             this.initConnection(this.currentSocketOption);
         }
+    }
+
+    disconnect() {
+        this.connection.disconnect();
     }
 
     onDisconnected(reason = "") {
