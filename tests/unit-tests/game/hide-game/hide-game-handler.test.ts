@@ -34,14 +34,14 @@ describe("HideGameHandler", () => {
             expect(roundRunning.stopRunner).toBeCalled();
         });
 
-        it("should call connectStore.onDisconnected", () => {
+        it("should call connectStore.disconnect", () => {
             // Arrange
 
             // Act
             handler.handle();
 
             // Assert
-            expect(connectStore.onDisconnected).toBeCalled();
+            expect(connectStore.disconnect).toBeCalled();
         });
 
         it("should call gameUserSettingHandler.saveTempStorage", async () => {
