@@ -1,3 +1,16 @@
+# [1.67.0](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.66.4...v1.67.0) (2025-11-07)
+
+
+### Bug Fixes
+
+* call disconnect socket when hide game ([6f0728f](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/6f0728f141d9ed68117c73b87a85cc08a34957bb))
+
+
+### Features
+
+* add method reconnect ([5e1adce](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/5e1adcec0afe31113c75b2389dba838686bc8de8))
+* add reconnect notification ([e746856](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/e74685604af30e8a09964d0910cb89ed5f0f8ec7))
+
 ## [1.66.4](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.66.3...v1.66.4) (2025-09-09)
 
 
