@@ -100,7 +100,7 @@ export namespace ErrorUtils {
         SB3017: "message_error_occurred",
         SB3018: "message_error_occurred",
         SB3023: "message_error_claim_expired",
-        SB3030: "Cancel_promotion_message"
+        SB3030: "cancel_promotion_message"
     };
 
     const CommonErrorList = [
