@@ -1,3 +1,11 @@
+# [1.68.0](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.67.0...v1.68.0) (2025-11-26)
+
+
+### Features
+
+* add reconnect notice original game - Epic GL-3915 ([3583c9d](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/3583c9d606a3cb87439794e6e943dd648202c33a))
+* add volume user setting - Epic GL-3915 ([a6d5cda](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/a6d5cda27deccbdd1fc1636882f471a7254c24c9))
+
 # [1.67.0](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.66.4...v1.67.0) (2025-11-07)
 
 
