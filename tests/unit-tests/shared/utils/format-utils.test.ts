@@ -50,7 +50,7 @@ describe("FormatUtils", () => {
     });
 
     describe("numberWithCommas", () => {
-        const testCases = [
+        const testCases = [            
             [1000, 1, true, "1,000"],
             [12345.67, 2, false, "12,345.67"],
             [3.8, 2, true, "3.8"],
@@ -59,6 +59,32 @@ describe("FormatUtils", () => {
             [50000, 0, true, "50,000"],
             [12345.6755555513123, 2, false, "12,345.68"],
             [0.075, 2, false, "0.08"],
+            [5.5625, 4, true, "5.5625"],
+            [5.5625, 4, false, "5.5625"],
+            [5566.5625, 4, true, "5,566.5625"],
+            [5566.5625, 4, false, "5,566.5625"],
+            [55666578.5625, 4, true, "55,666,578.5625"],
+            [55666578.5625, 4, false, "55,666,578.5625"],
+            [55666578.56254332, 4, true, "55,666,578.5625"],
+            [55666578.56255332, 4, false, "55,666,578.5626"],
+            // 6 decimal places
+            [1.123456, 6, true, "1.123456"],
+            [1.123456, 6, false, "1.123456"],
+            [1.1234, 6, true, "1.1234"],
+            [1.1234, 6, false, "1.123400"],
+            [1.123400, 6, true, "1.1234"],
+            [12345.123456, 6, true, "12,345.123456"],
+            [12345.123456, 6, false, "12,345.123456"],
+            [12345.12345600, 6, true, "12,345.123456"],
+            [12345.12345600, 6, false, "12,345.123456"],
+            [12345.1234567891, 6, true, "12,345.123457"],
+            [12345.1234564891, 6, false, "12,345.123456"],
+            [9876543.123456, 6, true, "9,876,543.123456"],
+            [9876543.123456, 6, false, "9,876,543.123456"],
+            [0.000001, 6, true, "0.000001"],
+            [0.000001, 6, false, "0.000001"],
+            [0.0000014, 6, true, "0.000001"],
+            [0.0000015, 6, false, "0.000002"],
         ];
 
         test.each(testCases)('numberWithCommas(%p, %p, %p) returns "%p"', (number, toFixed, noZeroSuffix, expected) => {
@@ -72,47 +98,32 @@ describe("FormatUtils", () => {
             [10.12345, 3, "10.123"],
             [123.456, 0, "123"],
             [-5.6789, 1, "-5.6"],
+            [1827.205, 2, "1,827.2"],
+            [5.5625, 4, "5.5625"],
+            [5.562578, 4, "5.5625"],
+            [1827.2625, 4, "1,827.2625"],
+            [1827.26205, 4, "1,827.262"],
+            [1827.262005, 4, "1,827.262"],
+            [5678.562578, 4, "5,678.5625"],
+            // 6 decimal places
+            [3.141592, 6, "3.141592"],
+            [3.1415926535, 6, "3.141592"],
+            [12345.123456, 6, "12,345.123456"],
+            [12345.1234567891, 6, "12,345.123456"],
+            [9876543.123456, 6, "9,876,543.123456"],
+            [9876543.12345678, 6, "9,876,543.123456"],
+            [0.000001, 6, "0.000001"],
+            [0.0000019, 6, "0.000001"],
+            [-1.123456, 6, "-1.123456"],
+            [-1.1234567, 6, "-1.123456"],
+            [-1.123456700, 6, "-1.123456"],
+            [1000.100001, 6, "1,000.100001"],
+            [1000.1000019, 6, "1,000.100001"],
         ];
 
         test.each(testCases)("truncates %p to %p decimal places and returns %p", (number, fixed, expected) => {
             const result = FormatUtils.truncateFixedDecimals(+number, +fixed);
             expect(result).toBe(expected);
-        });
-    });
-
-    describe("formatXMode", () => {
-        const testCases = [
-            [100, 1, 100],
-            [100, 2, 200],
-            [50.5, 3, 151.5],
-            [1.234567, 1, 1.234567],
-            [1.23456789, 2, 2.469136],
-            [0.123456789, 10, 1.234568],
-            [999.999, 0.5, 499.9995],
-            [0, 5, 0],
-            [100, undefined, 100], // default xMode = 1
-            [-50, 2, -100],
-            [1.111111111, 1.5, 1.666667],
-            [0.0000001, 1000000, 0.1],
-        ];
-
-        test.each(testCases)("formatXMode(%p, %p) returns %p", (value, xMode, expected) => {
-            const numValue = Number(value);
-            if (xMode === undefined) {
-                expect(FormatUtils.formatXMode(numValue)).toBe(expected);
-            } else {
-                expect(FormatUtils.formatXMode(numValue, Number(xMode))).toBe(expected);
-            }
-        });
-
-        it("should handle precision correctly with 6 decimal places", () => {
-            const result = FormatUtils.formatXMode(1.23456789123456, 1);
-            expect(result).toBe(1.234568);
-        });
-
-        it("should round correctly at the 6th decimal place", () => {
-            const result = FormatUtils.formatXMode(0.11111111, 1);
-            expect(result).toBe(0.111111);
         });
     });
 });

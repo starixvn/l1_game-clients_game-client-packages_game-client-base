@@ -36,4 +36,5 @@ export class SiteConfigs {
         path: string;
     };
     subPromotionDomain?: string;
+    decimalPlaces?: number;
 }

@@ -7,5 +7,5 @@ declare global {
 }
 
 export function isInjectable(ctor: Object) {
-    return Reflect.hasOwnMetadata(METADATA_KEY.PARAM_TYPES, ctor);
+    return METADATA_KEY?.PARAM_TYPES != null && Reflect.hasOwnMetadata(METADATA_KEY.PARAM_TYPES, ctor);
 }

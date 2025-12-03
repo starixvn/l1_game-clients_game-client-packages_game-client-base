@@ -56,8 +56,4 @@ export namespace FormatUtils {
         }
         return (num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol;
     };
-
-    export const formatXMode = (value: number, xMode = 1) => {
-        return parseFloat((value * xMode).toFixed(6));
-    };
 }
