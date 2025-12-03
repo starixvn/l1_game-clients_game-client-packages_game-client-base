@@ -1,3 +1,15 @@
+# [1.69.0](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.68.0...v1.69.0) (2025-12-03)
+
+
+### Bug Fixes
+
+* rounding number issue - Epic GL - 4802 ([f147867](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/f147867114f55da1646c39db6347becdcf060b78))
+
+
+### Features
+
+* add field x-mode for main player store - Epic GL - 6111 ([5f8ff56](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/commit/5f8ff5698255f7a0b6df9c529d37035cf6224fa7))
+
 # [1.68.0](https://git3.nexdev.net/l1/game-clients/game-client-packages/game-client-base/compare/v1.67.0...v1.68.0) (2025-11-26)
 
 
