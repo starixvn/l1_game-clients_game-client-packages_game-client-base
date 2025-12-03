@@ -82,6 +82,7 @@ export namespace GameServiceMessage {
         fractionalOddsFormat?: boolean;
         isDisplayPlayerCurrency?: boolean;
         disableJackpotGames?: boolean;
+        xMode?: number;
 
         static eventName = "user";
     }

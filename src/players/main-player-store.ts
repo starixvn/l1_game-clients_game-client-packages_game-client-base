@@ -38,6 +38,7 @@ export class MainPlayerStore {
     offerGames?: { gameId: number }[] = null;
     browserUserAgent = "";
     multiplier = 1;
+    xMode = 1;
 
     get readyUserInfo() {
         return this.UID !== 0 && this.currencyGroup !== "";
@@ -57,6 +58,7 @@ export class MainPlayerStore {
         this.disableJackpotGames = user.disableJackpotGames;
         this.rate = user.rate;
         this.multiplier = user.multiplier;
+        this.xMode = user.xMode ?? 1;
     }
 
     setBalance(balance: number, scoin: number, availSpins: number) {

@@ -4,6 +4,12 @@ export namespace FormatUtils {
     };
 
     const formatCommasReg = /\B(?=(\d{3})+(?!\d))/g;
+    const formatNumberWithCommas = (numberString: string): string => {
+        const [integerPart, decimalPart] = numberString.split('.');
+        const formattedInteger = integerPart.replace(formatCommasReg, ",");
+        return decimalPart !== undefined ? `${formattedInteger}.${decimalPart}` : formattedInteger;
+    };
+
     export const numberWithCommas = (number: number, toFixed = 1, noZeroSuffix = true) => {
         if (number) {
             let trimZeroNumber: string;
@@ -15,7 +21,8 @@ export namespace FormatUtils {
             } else {
                 trimZeroNumber = (roundedNumber).toFixed(toFixed);
             }
-            return trimZeroNumber.replace(formatCommasReg, ",");
+            
+            return formatNumberWithCommas(trimZeroNumber);
         }
 
         return "0";
@@ -23,7 +30,8 @@ export namespace FormatUtils {
 
     export const truncateFixedDecimals = (number: number, fixed: number) => {
         const withFixedDecimals = `${number}`.match(new RegExp(`^-?\\d+(?:\.\\d{0,${fixed}})?`))[0];
-        return parseFloat(withFixedDecimals).toString().replace(formatCommasReg, ",");
+        const numberString = parseFloat(withFixedDecimals).toString();
+        return formatNumberWithCommas(numberString);
     };
 
     export const nFormatter = (num, digits = 0) => {
@@ -47,5 +55,9 @@ export namespace FormatUtils {
             return `${num}`;
         }
         return (num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol;
+    };
+
+    export const formatXMode = (value: number, xMode = 1) => {
+        return parseFloat((value * xMode).toFixed(6));
     };
 }
